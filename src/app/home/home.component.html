@@ -1,0 +1,61 @@
+<div class="container mt-5">
+  <h2>Bienvenido, {{ username }}</h2>
+
+  <form [formGroup]="infoForm">
+    <div class="form-group mb-3">
+      <mat-form-field class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          placeholder="Ingresa tu nombre"
+          formControlName="nombre"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="form-group mb-3">
+      <mat-form-field class="full-width">
+        <mat-label>Apellido</mat-label>
+        <input
+          matInput
+          placeholder="Ingresa tu apellido"
+          formControlName="apellido"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="form-group mb-3">
+      <mat-form-field class="full-width">
+        <mat-label>Nivel de Educación</mat-label>
+        <mat-select formControlName="educacion">
+          <mat-option *ngFor="let nivel of nivelesEducacion" [value]="nivel">
+            {{ nivel }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group mb-3">
+      <mat-form-field class="full-width">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          placeholder="Escoge una fecha"
+          formControlName="fechaNacimiento"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button mat-raised-button color="warn" (click)="onClear()">
+        Limpiar
+      </button>
+      <button mat-raised-button color="primary" (click)="onShow()">
+        Mostrar
+      </button>
+    </div>
+  </form>
+</div>
