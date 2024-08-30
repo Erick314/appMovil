@@ -30,5 +30,6 @@ export class LoginComponent {
         alert('Correo y/o contraseña incorrectos');
       }
     }
-  }
+  } 
+  
 }
