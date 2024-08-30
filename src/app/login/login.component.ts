@@ -25,7 +25,7 @@ export class LoginComponent {
       // Simulación de autenticación simple
       if (email === 'user@example.com' && password === 'password123') {
         alert('Ingreso Exitoso!');
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       } else {
         alert('Correo y/o contraseña incorrectos');
       }

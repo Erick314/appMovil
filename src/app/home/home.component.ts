@@ -34,8 +34,8 @@ export class HomeComponent implements OnInit {
   }
 
   onShow() {
-    const { nombre, apellido } = this.infoForm.value;
-    this.snackBar.open(`Nombre: ${nombre}, Apellido: ${apellido}`, 'Close', {
+    const { nombre, apellido, educacion, fechaNacimiento} = this.infoForm.value;
+    this.snackBar.open(`Nombre: ${nombre}, Apellido: ${apellido}, Educación: ${educacion}, Fecha de Nacimiento: ${fechaNacimiento}`, 'Close', {
       duration: 5000,
     });
   }
