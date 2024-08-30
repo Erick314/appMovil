@@ -1,51 +1,54 @@
-<div class="container mt-5">
-  <h2>Login</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <mat-form-field class="full-width">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          placeholder="Enter your email"
-          formControlName="email"
-        />
-        <mat-error
-          *ngIf="
-            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
-          "
-        >
-          Please enter a valid email address.
-        </mat-error>
-      </mat-form-field>
-    </div>
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 400px">
+    <h2 class="text-center">Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group mb-3">
+        <mat-form-field class="full-width">
+          <mat-label>Correo</mat-label>
+          <input
+            matInput
+            placeholder="Ingrese su correo"
+            formControlName="email"
+          />
+          <mat-error
+            *ngIf="
+              loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+            "
+          >
+            Por favor ingrese un correo válido.
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <mat-form-field class="full-width">
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          type="password"
-          placeholder="Enter your password"
-          formControlName="password"
-        />
-        <mat-error
-          *ngIf="
-            loginForm.get('password')?.invalid &&
-            loginForm.get('password')?.touched
-          "
-        >
-          Password is required.
-        </mat-error>
-      </mat-form-field>
-    </div>
+      <div class="form-group mb-3">
+        <mat-form-field class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            type="password"
+            placeholder="Ingrese su contraseña"
+            formControlName="password"
+          />
+          <mat-error
+            *ngIf="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
+          >
+            Contraseña requerida.
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="loginForm.invalid"
-    >
-      Login
-    </button>
-  </form>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="loginForm.invalid"
+        class="w-100"
+      >
+        Ingresar
+      </button>
+    </form>
+  </div>
 </div>
