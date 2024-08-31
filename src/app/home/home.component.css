@@ -1,3 +1,10 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; 
+  background-color: #2e4053; 
+}
 .custom-snackbar {
     background-color: #323232;
     color: #fff;
@@ -9,3 +16,17 @@
 .custom-snackbar .mat-simple-snackbar-action {
     color: #ff4081;
   }
+
+ 
+.titulo-home{
+  color: #2e4053;
+}
+
+.container {
+  padding: 20px;
+  background-color: #ffffff; 
+  border-radius: 8px; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
