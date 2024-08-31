@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css'],
+  providers: [DatePipe]
 })
 export class HomeComponent implements OnInit {
   infoForm: FormGroup;
-  username = 'user@example.com'; // Este valor debería ser pasado desde el servicio de autenticación
+  username = 'Juanitox'; 
   nivelesEducacion = [
     'Básica',
     'Media',
@@ -18,7 +20,7 @@ export class HomeComponent implements OnInit {
     'Doctorado',
   ];
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private datePipe: DatePipe) {
     this.infoForm = this.fb.group({
       nombre: [''],
       apellido: [''],
@@ -35,8 +37,8 @@ export class HomeComponent implements OnInit {
 
   onShow() {
     const { nombre, apellido, educacion, fechaNacimiento} = this.infoForm.value;
-    this.snackBar.open(`Nombre: ${nombre}, Apellido: ${apellido}, Educación: ${educacion}, Fecha de Nacimiento: ${fechaNacimiento}`, 'Close', {
-      duration: 5000,
-    });
+    const formattedDate = this.datePipe.transform(fechaNacimiento, 'dd/MM/yyyy');
+
+    alert(`Nombre: ${nombre}\nApellido: ${apellido}\nEducación: ${educacion}\nFecha de Nacimiento: ${formattedDate}`);
   }
 }

@@ -1,0 +1,16 @@
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Asegura que el fondo cubra toda la vista */
+    background-color: #2e4053; /* Color de fondo */
+  }
+  
+  .container {
+    padding: 20px;
+    background-color: #ffffff; /* Fondo blanco para el formulario */
+    border-radius: 8px; /* Bordes redondeados para el formulario */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra para un efecto de elevación */
+    width: 100%;
+    max-width: 400px; /* Ancho máximo del formulario */
+  }

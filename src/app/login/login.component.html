@@ -4,18 +4,18 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group mb-3">
         <mat-form-field class="full-width">
-          <mat-label>Correo</mat-label>
+          <mat-label>Usuario</mat-label>
           <input
             matInput
-            placeholder="Ingrese su correo"
-            formControlName="email"
+            placeholder="Ingrese su usuario"
+            formControlName="usuario"
           />
           <mat-error
             *ngIf="
-              loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+              loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched
             "
           >
-            Por favor ingrese un correo válido.
+            Por favor ingrese un usuario válido.
           </mat-error>
         </mat-form-field>
       </div>
@@ -35,11 +35,11 @@
               loginForm.get('password')?.touched
             "
           >
-            Contraseña requerida.
+            La contraseña debe contener 4 dígitos.
           </mat-error>
         </mat-form-field>
       </div>
-
+      <a href="">Crea tu cuenta gratis</a><br><br>
       <button
         mat-raised-button
         color="primary"

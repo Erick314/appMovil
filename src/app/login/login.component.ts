@@ -12,18 +12,16 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      usuario: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4),Validators.pattern('^[0-9]+$')]],
     });
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      // Aquí iría la lógica para autenticar al usuario
-      const { email, password } = this.loginForm.value;
+      const { usuario, password } = this.loginForm.value;
 
-      // Simulación de autenticación simple
-      if (email === 'user@example.com' && password === 'password123') {
+      if (usuario === 'Juancho' && password === '1331') {
         alert('Ingreso Exitoso!');
         this.router.navigate(['/home']);
       } else {
