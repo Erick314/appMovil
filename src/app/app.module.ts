@@ -22,8 +22,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { EncuestaComponent } from './encuesta/encuesta.component';
+//encuesta
+import { MatMenuModule } from '@angular/material/menu';
+
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, EncuestaComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -44,6 +48,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatNativeDateModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatMenuModule,
   ],
   providers: [provideClientHydration(), provideAnimationsAsync()],
   bootstrap: [AppComponent],
