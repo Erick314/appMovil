@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { EncuestaComponent } from './encuesta/encuesta.component';
-
+import { SplashComponent } from './splash/splash.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'encuesta', component: EncuestaComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'splash', component: SplashComponent },
   // Otras rutas
 ];
 

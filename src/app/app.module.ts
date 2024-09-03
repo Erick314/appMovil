@@ -25,9 +25,16 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { EncuestaComponent } from './encuesta/encuesta.component';
 //encuesta
 import { MatMenuModule } from '@angular/material/menu';
+import { SplashComponent } from './splash/splash.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, EncuestaComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    EncuestaComponent,
+    SplashComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
