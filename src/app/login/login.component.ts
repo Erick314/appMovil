@@ -29,7 +29,7 @@ export class LoginComponent {
         this.router.navigate(['/encuesta']);
       } else if (usuario === 'cliente2' && password === '1122'){
         alert('Ingreso Exitoso!');
-        this.router.navigate(['/encuesta']);
+        this.router.navigate(['/principal']);
       } 
       else {
         alert('Correo y/o contraseña incorrectos');

@@ -8,11 +8,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { LoginComponent } from './login/login.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon'; 
+import { MatCardModule } from '@angular/material/card'; 
+
+
 //login
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HomeComponent } from './home/home.component';
 
@@ -23,9 +29,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EncuestaComponent } from './encuesta/encuesta.component';
-//encuesta
+
+//Encuesta
 import { MatMenuModule } from '@angular/material/menu';
 import { SplashComponent } from './splash/splash.component';
+
+
+//Principal
 import { PrincipalComponent } from './principal/principal.component';
 
 @NgModule({
@@ -34,6 +44,7 @@ import { PrincipalComponent } from './principal/principal.component';
     LoginComponent,
     HomeComponent,
     EncuestaComponent,
+    PrincipalComponent,
     SplashComponent,
   ],
   imports: [
@@ -57,6 +68,11 @@ import { PrincipalComponent } from './principal/principal.component';
     MatSnackBarModule,
     MatDialogModule,
     MatMenuModule,
+    MatSidenavModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule, 
+    MatCardModule, 
   ],
   providers: [provideClientHydration(), provideAnimationsAsync()],
   bootstrap: [AppComponent],
