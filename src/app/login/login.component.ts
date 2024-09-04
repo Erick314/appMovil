@@ -24,9 +24,17 @@ export class LoginComponent {
       if (usuario === 'Juancho' && password === '1331') {
         alert('Ingreso Exitoso!');
         this.router.navigate(['/home']);
-      } else {
+      } else if (usuario === 'cliente' && password === '1234'){
+        alert('Ingreso Exitoso!');
+        this.router.navigate(['/encuesta']);
+      } else if (usuario === 'cliente2' && password === '1122'){
+        alert('Ingreso Exitoso!');
+        this.router.navigate(['/encuesta']);
+      } 
+      else {
         alert('Correo y/o contraseña incorrectos');
       }
+
     }
   } 
   
