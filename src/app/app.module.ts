@@ -37,6 +37,7 @@ import { SplashComponent } from './splash/splash.component';
 
 //Principal
 import { PrincipalComponent } from './principal/principal.component';
+import { RecuperarComponent } from './recuperar/recuperar.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { PrincipalComponent } from './principal/principal.component';
     EncuestaComponent,
     PrincipalComponent,
     SplashComponent,
+    RecuperarComponent,
   ],
   imports: [
     BrowserModule,

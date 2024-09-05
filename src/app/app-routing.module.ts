@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { EncuestaComponent } from './encuesta/encuesta.component';
 import { SplashComponent } from './splash/splash.component';
 import { PrincipalComponent } from './principal/principal.component';
+import { RecuperarComponent } from './recuperar/recuperar.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'encuesta', component: EncuestaComponent },
   { path: 'splash', component: SplashComponent },
   { path: 'principal', component: PrincipalComponent },
+  { path: 'recuperar', component: RecuperarComponent },
   // Otras rutas
 ];
 
