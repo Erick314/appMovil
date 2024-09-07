@@ -38,6 +38,10 @@ import { SplashComponent } from './splash/splash.component';
 //Principal
 import { PrincipalComponent } from './principal/principal.component';
 import { RecuperarComponent } from './recuperar/recuperar.component';
+import { InicioComponent } from './inicio/inicio.component';
+import { AdminComponent } from './admin/admin.component';
+import { EmpresaComponent } from './empresa/empresa.component';
+import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +52,10 @@ import { RecuperarComponent } from './recuperar/recuperar.component';
     PrincipalComponent,
     SplashComponent,
     RecuperarComponent,
+    InicioComponent,
+    AdminComponent,
+    EmpresaComponent,
+    CrearUsuarioComponent,
   ],
   imports: [
     BrowserModule,
