@@ -1,1 +1,29 @@
-<p>recuperar works!</p>
+<div class="forgot-password-container">
+    <h2>Recuperar Contraseña</h2>
+    <form [formGroup]="forgotPasswordForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Correo electrónico:</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && email?.invalid }"
+          placeholder="Ingrese su correo electrónico"
+        />
+        <div *ngIf="submitted && email?.invalid" class="invalid-feedback">
+          <div *ngIf="email?.errors?.['required']">El correo es obligatorio</div>
+          <div *ngIf="email?.errors?.['email']">Debe ser un correo válido</div>
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="forgotPasswordForm.invalid">
+        Recuperar contraseña
+      </button>
+  
+      <div *ngIf="message" class="alert alert-success">
+        {{ message }}
+      </div>
+    </form>
+  </div>
+  

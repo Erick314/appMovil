@@ -15,6 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card'; 
 
 
+
+
 //login
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -67,7 +69,6 @@ import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
     MatFormFieldModule,
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatInputModule,
     MatButtonModule,
