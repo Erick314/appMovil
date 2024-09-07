@@ -8,10 +8,15 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'appMovil';
-  constructor(public router: Router) {
+  private splashShown = false;
+  
+  constructor(private router: Router) {
     this.initializeApp();
   }
   initializeApp() {
-    this.router.navigateByUrl('splash');
+    if (!this.splashShown) {
+      this.splashShown = true;
+      this.router.navigateByUrl('splash');
+    }
   }
 }

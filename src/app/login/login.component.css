@@ -31,3 +31,12 @@
 
   }
   
+  .link-style {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .link-style:hover {
+    color: darkblue;
+  }

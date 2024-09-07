@@ -7,7 +7,8 @@
     </div>
   
     <div class="survey-container">
-      <h2>¿Cómo te sientes hoy?</h2>
+      <h3>Encuesta de satisfacción</h3><hr>
+      <h4>¿Cómo te sientes hoy?</h4>
       <div class="emoji-container">
         <img src="assets/feliz2.png" alt="Feliz" (click)="selectEmoji('1')" class="emoji">
         <img src="assets/feliz.png" alt="Contento" (click)="selectEmoji('2')" class="emoji">
@@ -16,7 +17,7 @@
         <img src="assets/enojado.png" alt="Enojado" (click)="selectEmoji('5')" class="emoji">
       </div>
   
-      <h2>¿Cuál es tu nivel de satisfacción con nuestro servicio?</h2>
+      <h4>¿Cuál es tu nivel de satisfacción con nuestro servicio?</h4>
       <div class="options-container">
         <label>
           <input type="radio" name="satisfaccion" value="1" (click)="selectOption('satisfaccion', '1')">
@@ -40,7 +41,7 @@
         </label>
       </div>
   
-      <h2>¿Recomendarías nuestro servicio a otras personas?</h2>
+      <h4>¿Recomendarías nuestro servicio a otras personas?</h4>
       <div class="options-container">
         <label>
           <input type="radio" name="recomendacion" value="si" (click)="selectOption('recomendacion', 'si')">
@@ -52,7 +53,7 @@
         </label>
       </div>
   
-      <h2>¿Con qué frecuencia utilizas nuestro servicio?</h2>
+      <h4>¿Con qué frecuencia utilizas nuestro servicio?</h4>
       <div class="options-container">
         <label>
           <input type="radio" name="frecuencia" value="diario" (click)="selectOption('frecuencia', 'diario')">
@@ -72,7 +73,7 @@
         </label>
       </div>
   
-      <h2>Comentarios adicionales (opcional)</h2>
+      <h6>Comentarios adicionales (opcional)</h6>
       <div class="message-container">
         <textarea placeholder="Escribe tus comentarios aquí..." (input)="updateMessage($event)"></textarea>
       </div>

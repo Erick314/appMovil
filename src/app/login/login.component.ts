@@ -39,7 +39,7 @@ export class LoginComponent {
   }
   
   recuperar() {
-    // Aquí podrías agregar la lógica para cerrar sesión si es necesario
+    
     this.router.navigate(['/recuperar']);
   }
   

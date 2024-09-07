@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'splash', component: SplashComponent },
   { path: 'principal', component: PrincipalComponent },
   { path: 'recuperar', component: RecuperarComponent },
-  // Otras rutas
+  { path: '', redirectTo: '/splash', pathMatch: 'full' } ,
 ];
 
 @NgModule({
