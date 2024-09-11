@@ -8,13 +8,13 @@ import { PrincipalComponent } from './principal/principal.component';
 import { RecuperarComponent } from './recuperar/recuperar.component';
 
 const routes: Routes = [
+  { path: '', component: SplashComponent },  
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'encuesta', component: EncuestaComponent },
-  { path: 'splash', component: SplashComponent },
   { path: 'principal', component: PrincipalComponent },
   { path: 'recuperar', component: RecuperarComponent },
-  { path: '', redirectTo: '/splash', pathMatch: 'full' } ,
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({

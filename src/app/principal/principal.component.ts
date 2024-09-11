@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './principal.component.html',
   styleUrl: './principal.component.css'
 })
+
 export class PrincipalComponent {
   @ViewChild('sidenav') sidenav?: MatSidenav;
   
@@ -21,4 +22,8 @@ export class PrincipalComponent {
     // Aquí podrías agregar la lógica para cerrar sesión si es necesario
     this.router.navigate(['/login']);
   }
+  CambioPestana(pestaña: string) {
+    this.router.navigate([pestaña]); 
+  }
+  
 }

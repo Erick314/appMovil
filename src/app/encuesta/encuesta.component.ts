@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AgradecimientoDialogComponent } from '../agradecimiento-dialog/agradecimiento-dialog.component';
+
 
 @Component({
   selector: 'app-encuesta',
@@ -10,15 +13,13 @@ export class EncuestaComponent {
   selectedOptions: { [key: string]: string } = {};
   message: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public dialog: MatDialog) {}
 
   selectEmoji(emoji: string) {
     console.log(`Emoji seleccionado: ${emoji}`);
-    // Aquí puedes agregar la lógica para manejar lo que pasa cuando se selecciona un emoji
   }
 
   logout() {
-    // Aquí podrías agregar la lógica para cerrar sesión si es necesario
     this.router.navigate(['/login']);
   }
 
@@ -31,8 +32,10 @@ export class EncuestaComponent {
   }
 
   submitSurvey() {
-    // Aquí puedes enviar los datos al servidor o hacer algo con la respuesta
     console.log('Respuestas de la encuesta:', this.selectedOptions);
     console.log('Comentario adicional:', this.message);
+
+    // Abre el diálogo de agradecimiento
+    this.dialog.open(AgradecimientoDialogComponent);
   }
 }

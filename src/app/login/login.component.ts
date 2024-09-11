@@ -9,14 +9,23 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  private splashShown = false;
 
   constructor(private fb: FormBuilder, private router: Router) {
+    this.initializeApp();
     this.loginForm = this.fb.group({
       usuario: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(8)]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4),Validators.pattern('^[0-9]+$')]],
     });
   }
-
+  
+  
+  initializeApp() {
+    if (!this.splashShown) {
+      this.splashShown = true;
+      this.router.navigateByUrl('splash');
+    }
+  }
   onSubmit() {
     if (this.loginForm.valid) {
       const { usuario, password } = this.loginForm.value;
@@ -27,7 +36,7 @@ export class LoginComponent {
       } else if (usuario === 'cliente' && password === '1234'){
         alert('Ingreso Exitoso!');
         this.router.navigate(['/encuesta']);
-      } else if (usuario === 'cliente2' && password === '1122'){
+      } else if (usuario === 'admin' && password === '1234'){
         alert('Ingreso Exitoso!');
         this.router.navigate(['/principal']);
       } 

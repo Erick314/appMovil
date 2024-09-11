@@ -44,6 +44,7 @@ import { InicioComponent } from './inicio/inicio.component';
 import { AdminComponent } from './admin/admin.component';
 import { EmpresaComponent } from './empresa/empresa.component';
 import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
+import { AgradecimientoDialogComponent } from './agradecimiento-dialog/agradecimiento-dialog.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
     AdminComponent,
     EmpresaComponent,
     CrearUsuarioComponent,
+    AgradecimientoDialogComponent,
   ],
   imports: [
     BrowserModule,

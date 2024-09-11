@@ -1,14 +1,16 @@
+<div class="menu">
+  <button mat-button [matMenuTriggerFor]="menu">Menú</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+  </mat-menu>
+</div>
+
 <div class="container">
-    <div class="menu">
-      <button mat-button [matMenuTriggerFor]="menu">Menú</button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
-      </mat-menu>
-    </div>
+    
   
     <div class="survey-container">
       <h3>Encuesta de satisfacción</h3><hr>
-      <h4>¿Cómo te sientes hoy?</h4>
+      <h4>¿Cómo se siente con la atención recibida?</h4>
       <div class="emoji-container">
         <img src="assets/feliz2.png" alt="Feliz" (click)="selectEmoji('1')" class="emoji">
         <img src="assets/feliz.png" alt="Contento" (click)="selectEmoji('2')" class="emoji">
@@ -16,7 +18,7 @@
         <img src="assets/triste.png" alt="Triste" (click)="selectEmoji('4')" class="emoji">
         <img src="assets/enojado.png" alt="Enojado" (click)="selectEmoji('5')" class="emoji">
       </div>
-  
+      <br><br><br><br><br>
       <h4>¿Cuál es tu nivel de satisfacción con nuestro servicio?</h4>
       <div class="options-container">
         <label>

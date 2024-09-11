@@ -11,12 +11,6 @@ export class AppComponent {
   private splashShown = false;
   
   constructor(private router: Router) {
-    this.initializeApp();
   }
-  initializeApp() {
-    if (!this.splashShown) {
-      this.splashShown = true;
-      this.router.navigateByUrl('splash');
-    }
-  }
+
 }
