@@ -19,7 +19,6 @@ export class LoginComponent {
     });
   }
   
-  
   initializeApp() {
     if (!this.splashShown) {
       this.splashShown = true;

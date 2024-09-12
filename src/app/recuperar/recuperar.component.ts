@@ -1,43 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-
 
 @Component({
   selector: 'app-recuperar',
   templateUrl: './recuperar.component.html',
   styleUrls: ['./recuperar.component.css']
 })
-
-export class RecuperarComponent implements OnInit {
-  forgotPasswordForm: FormGroup = new FormGroup({}); // Inicialización vacía
+export class RecuperarComponent {
+  forgotPasswordForm: FormGroup;
   submitted = false;
-  message = '';
+  message: string | null = null;
 
-  constructor(private formBuilder: FormBuilder) {}
-
-  ngOnInit(): void {
+  constructor(private formBuilder: FormBuilder) {
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  // Getter para facilitar acceso a los controles del formulario
   get email() {
     return this.forgotPasswordForm.get('email');
   }
 
-  onSubmit(): void {
+  onSubmit() {
     this.submitted = true;
 
-    // Si el formulario es inválido, no hacemos nada
+    // Detener si el formulario es inválido
     if (this.forgotPasswordForm.invalid) {
       return;
     }
 
-    // Aquí realizarías la lógica para enviar la solicitud de recuperación
-    // como una llamada a tu servicio, etc.
-    const email = this.forgotPasswordForm.value.email;
-    this.message = `Se ha enviado un correo de recuperación a ${email}.`;
+    // Simulación de envío de correo de recuperación
+    const email = this.email?.value;
+    this.message = `Correo de recuperación enviado con éxito a ${email}`;
+
+    // Opcional: puedes limpiar el formulario después de mostrar el mensaje
+    this.forgotPasswordForm.reset();
+    this.submitted = false;
   }
 }
