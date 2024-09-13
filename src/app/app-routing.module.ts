@@ -6,6 +6,9 @@ import { EncuestaComponent } from './encuesta/encuesta.component';
 import { SplashComponent } from './splash/splash.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { RecuperarComponent } from './recuperar/recuperar.component';
+import { AdminComponent } from './admin/admin.component';   
+import { EmpresaComponent } from './empresa/empresa.component';   
+import { CrearComponent } from './crear/crear.component';  
 
 const routes: Routes = [
   { path: '', component: SplashComponent },  
@@ -14,6 +17,9 @@ const routes: Routes = [
   { path: 'encuesta', component: EncuestaComponent },
   { path: 'principal', component: PrincipalComponent },
   { path: 'recuperar', component: RecuperarComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'empresa', component: EmpresaComponent },
+  { path: 'crear', component: CrearComponent },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 

@@ -1,12 +1,11 @@
-<div class="menu">
-  <button mat-button [matMenuTriggerFor]="menu">Menú</button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
-  </mat-menu>
-</div>
 
 <div class="container">
-    
+  <div class="menu">
+    <button mat-button [matMenuTriggerFor]="menu">Menú</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+    </mat-menu>
+  </div>
   
     <div class="survey-container">
       <h3>Encuesta de satisfacción</h3><hr>

@@ -29,14 +29,16 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const { usuario, password } = this.loginForm.value;
 
+      
+
       if (usuario === 'Juancho' && password === '1331') {
-        alert('Ingreso Exitoso!');
+        alert('Ingreso Exitoso! ' +usuario);
         this.router.navigate(['/home']);
       } else if (usuario === 'cliente' && password === '1234'){
-        alert('Ingreso Exitoso!');
+        alert('Ingreso Exitoso! ' +usuario);
         this.router.navigate(['/encuesta']);
       } else if (usuario === 'admin' && password === '1234'){
-        alert('Ingreso Exitoso!');
+        alert('Ingreso Exitoso! '+ usuario);
         this.router.navigate(['/principal']);
       } 
       else {
@@ -49,6 +51,10 @@ export class LoginComponent {
   recuperar() {
     
     this.router.navigate(['/recuperar']);
+  }
+
+  crearUsuario(){
+    this.router.navigate(['/crear'])
   }
   
 }

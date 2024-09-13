@@ -14,9 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon'; 
 import { MatCardModule } from '@angular/material/card'; 
 
-
-
-
 //login
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +32,7 @@ import { EncuestaComponent } from './encuesta/encuesta.component';
 //Encuesta
 import { MatMenuModule } from '@angular/material/menu';
 import { SplashComponent } from './splash/splash.component';
+import { CrearComponent } from './crear/crear.component';  
 
 
 //Principal
@@ -43,7 +41,6 @@ import { RecuperarComponent } from './recuperar/recuperar.component';
 import { InicioComponent } from './inicio/inicio.component';
 import { AdminComponent } from './admin/admin.component';
 import { EmpresaComponent } from './empresa/empresa.component';
-import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
 import { AgradecimientoDialogComponent } from './agradecimiento-dialog/agradecimiento-dialog.component';
 
 @NgModule({
@@ -58,8 +55,8 @@ import { AgradecimientoDialogComponent } from './agradecimiento-dialog/agradecim
     InicioComponent,
     AdminComponent,
     EmpresaComponent,
-    CrearUsuarioComponent,
     AgradecimientoDialogComponent,
+    CrearComponent
   ],
   imports: [
     BrowserModule,

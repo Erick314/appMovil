@@ -12,6 +12,7 @@ export class RecuperarComponent {
   message: string | null = null;
 
   constructor(private formBuilder: FormBuilder) {
+
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
@@ -24,16 +25,15 @@ export class RecuperarComponent {
   onSubmit() {
     this.submitted = true;
 
-    // Detener si el formulario es inválido
     if (this.forgotPasswordForm.invalid) {
       return;
     }
 
-    // Simulación de envío de correo de recuperación
+    // Simulación de envío de correo de recuperación, luego incorporaremos lógica de  firebase para recuperar de verdad
     const email = this.email?.value;
     this.message = `Correo de recuperación enviado con éxito a ${email}`;
 
-    // Opcional: puedes limpiar el formulario después de mostrar el mensaje
+    // limpia el formulario después de mostrar el mensaje
     this.forgotPasswordForm.reset();
     this.submitted = false;
   }
