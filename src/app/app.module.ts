@@ -13,9 +13,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon'; 
 import { MatCardModule } from '@angular/material/card'; 
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+
+
 
 //login
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -83,6 +87,9 @@ import { AgradecimientoDialogComponent } from './agradecimiento-dialog/agradecim
     MatButtonModule,
     MatIconModule, 
     MatCardModule, 
+    FormsModule,
+    CommonModule,
+    MatTableModule
   ],
   providers: [provideClientHydration(), provideAnimationsAsync()],
   bootstrap: [AppComponent],

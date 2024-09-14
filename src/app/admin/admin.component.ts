@@ -1,30 +1,40 @@
-import { Component, ViewChild} from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css'
+  styleUrls: ['./admin.component.css']
 })
 export class AdminComponent {
-  @ViewChild('sidenav') sidenav?: MatSidenav;
-  
-  constructor(private router: Router) {}
+  empresaNombre: string = '';
+  sucursalNombre: string = '';
+  empresas: any[] = [];
+  sucursales: any[] = [];
+  displayedColumns: string[] = ['nombre'];
 
-  toggleSidenav() {
-    if (this.sidenav) {
-      this.sidenav.toggle();
+  constructor() {}
+
+  crearEmpresa() {
+    if (this.empresaNombre) {
+      this.empresas.push({ nombre: this.empresaNombre });
+      this.empresaNombre = '';
     }
   }
+
+  crearSucursal() {
+    if (this.sucursalNombre) {
+      this.sucursales.push({ nombre: this.sucursalNombre });
+      this.sucursalNombre = '';
+    }
+  }
+
+  navigate(pestana: string) {
+    console.log('Navegar a:', pestana);
+    // Aquí puedes implementar la lógica de navegación si decides añadir rutas más adelante
+  }
+
   logout() {
-    // Aquí podrías agregar la lógica para cerrar sesión si es necesario
-    this.router.navigate(['/login']);
+    console.log('Cerrar sesión');
+    // Aquí puedes implementar la lógica de cerrar sesión si es necesario
   }
-
-  CambioPestana(pestaña: string) {
-    // Aquí podrías agregar la lógica para cerrar sesión si es necesario
-    this.router.navigate(['/'+pestaña]);
-  }
-
 }

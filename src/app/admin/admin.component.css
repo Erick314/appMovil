@@ -1,0 +1,42 @@
+.main-container {
+    display: flex;
+  }
+  
+  .sidenav-container {
+    height: 100%;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background-color: #2e4053;
+    color: white;
+  }
+  
+  .page-title {
+    margin-left: 16px;
+    font-size: 24px;
+  }
+  
+  .form-container {
+    padding: 16px;
+    max-width: 600px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .table-container {
+    padding: 16px;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .mat-elevation-z8 {
+    margin-top: 16px;
+  }
+  
