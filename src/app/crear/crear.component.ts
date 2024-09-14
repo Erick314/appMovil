@@ -13,12 +13,11 @@ export class CrearComponent {
 
   constructor(private formBuilder: FormBuilder) { 
     this.crearForm = this.formBuilder.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      nombre: ['', [Validators.required, Validators.minLength(3),Validators.maxLength(8)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(12)]]
     });
   }
-
   get f() {
     return this.crearForm.controls;
   }
@@ -29,8 +28,8 @@ export class CrearComponent {
     if (this.crearForm.invalid) {
       return;
     }
+    const nombre = this.f['nombre'].value;
 
-    const nombre = this.crearForm.value.nombre;
     this.message = `Usuario creado exitosamente: ${nombre}`;
   }
 }

@@ -14,7 +14,6 @@ export class EncuestaComponent {
   message: string = '';
 
   constructor(private router: Router, public dialog: MatDialog) {}
-
   selectEmoji(emoji: string) {
     console.log(`Emoji seleccionado: ${emoji}`);
   }
@@ -35,7 +34,6 @@ export class EncuestaComponent {
     console.log('Respuestas de la encuesta:', this.selectedOptions);
     console.log('Comentario adicional:', this.message);
 
-    // Abre el diálogo de agradecimiento
     this.dialog.open(AgradecimientoDialogComponent);
   }
 }

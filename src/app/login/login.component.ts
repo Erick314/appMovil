@@ -15,10 +15,9 @@ export class LoginComponent {
     this.initializeApp();
     this.loginForm = this.fb.group({
       usuario: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(8)]],
-      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4),Validators.pattern('^[0-9]+$')]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(12),Validators.pattern('^[0-9]+$')]],
     });
-  }
-  
+  } 
   initializeApp() {
     if (!this.splashShown) {
       this.splashShown = true;
@@ -28,33 +27,25 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { usuario, password } = this.loginForm.value;
-
-      
-
-      if (usuario === 'Juancho' && password === '1331') {
+      if (usuario === 'Juancho' && password === '12345678') {
         alert('Ingreso Exitoso! ' +usuario);
         this.router.navigate(['/home']);
-      } else if (usuario === 'cliente' && password === '1234'){
+      } else if (usuario === 'cliente' && password === '12345678'){
         alert('Ingreso Exitoso! ' +usuario);
         this.router.navigate(['/encuesta']);
-      } else if (usuario === 'admin' && password === '1234'){
+      } else if (usuario === 'admin' && password === '12345678'){
         alert('Ingreso Exitoso! '+ usuario);
         this.router.navigate(['/principal']);
       } 
       else {
         alert('Correo y/o contraseña incorrectos');
       }
-
     }
-  }
-  
-  recuperar() {
-    
+  } 
+  recuperar() {   
     this.router.navigate(['/recuperar']);
   }
-
   crearUsuario(){
     this.router.navigate(['/crear'])
-  }
-  
+  } 
 }
