@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
+
+
 
 @Component({
   selector: 'app-admin',
@@ -12,7 +16,7 @@ export class AdminComponent {
   sucursales: any[] = [];
   displayedColumns: string[] = ['nombre'];
 
-  constructor() {}
+  constructor(private router : Router) {}
 
   crearEmpresa() {
     if (this.empresaNombre) {
@@ -36,5 +40,21 @@ export class AdminComponent {
   logout() {
     console.log('Cerrar sesión');
     // Aquí puedes implementar la lógica de cerrar sesión si es necesario
+  }
+  ngOnInit() {
+    // Simulación de datos obtenidos, reemplazar con tu lógica de obtención de datos
+    this.empresas = [
+      { nombre: 'Empresa 1' },
+      { nombre: 'Empresa 2' }
+    ];
+
+    this.sucursales = [
+      { nombre: 'Sucursal A' },
+      { nombre: 'Sucursal B' }
+    ];
+  }
+  CambioPestana(pestaña: string) {
+    // Aquí podrías agregar la lógica para cerrar sesión si es necesario
+    this.router.navigate(['/'+pestaña]);
   }
 }
