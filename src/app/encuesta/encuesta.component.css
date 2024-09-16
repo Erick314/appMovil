@@ -88,7 +88,7 @@
 
 /*Css encargado del borde que se muestra al seleccionar una carita */
 .selected-emoji {
-  border: 4px solid #1d832e; /* Cambiar color según tu preferencia */
+  border: 4px solid #1d832e; 
   border-radius: 50%;
   transform: scale(1.4);
 }

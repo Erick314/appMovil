@@ -1,0 +1,112 @@
+.main-container {
+  display: flex;
+  color: white;
+}
+
+.sidenav-container {
+  width: 2100px;
+}
+
+.mat-sidenav-content {
+  padding: 20px;
+  background-color: #f4f6f9;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #2e4053;
+  color: white;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.page-title {
+  font-size: 35px;
+  color: white;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.filter-container mat-form-field {
+  flex-grow: 1;
+}
+
+.table-container {
+  flex-grow: 1;
+  background-color: #2e4053;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.mat-elevation-z8 {
+  background-color: #fff;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.mat-header-cell {
+  background-color: #2e4053;
+  color: white;
+  font-weight: bold;
+}
+
+.mat-cell {
+  color: #34495e;
+}
+
+.export-container {
+  margin-top: 20px;
+  text-align: right;
+}
+
+button {
+  margin-left: 15px;
+}
+
+.mat-raised-button {
+  background-color: #1d832e;
+  color: white;
+}
+
+.mat-raised-button:hover {
+  background-color: #28a745;
+}
+
+.mat-raised-button.mat-accent {
+  background-color: #3498db;
+  color: white;
+}
+
+.mat-raised-button.mat-accent:hover {
+  background-color: #2980b9;
+}
+
+.mat-sidenav {
+  background-color: #b8b9b9;
+}
+
+.mat-nav-list a {
+  color: white;
+  text-decoration: none;
+}
+
+.mat-nav-list a:hover {
+  background-color: #1abc9c;
+}
+.custom-menu-button {
+  color: white; 
+  font-size: 36px;
+}

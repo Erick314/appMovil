@@ -26,6 +26,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { SplashComponent } from './splash/splash.component';
+import { DatePipe } from '@angular/common'; 
+
 
 //Principal
 import { HomeComponent } from './home/home.component';
@@ -84,12 +86,13 @@ import { LoginComponent } from './login/login.component';
     MatCardModule, 
     FormsModule,
     CommonModule,
-    MatTableModule
+    MatTableModule,
   ],
   providers: [
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    DatePipe
 
   ],
   bootstrap: [AppComponent],
