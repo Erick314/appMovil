@@ -6,6 +6,10 @@
     "outDir": "./out-tsc/app",
     "types": [
       "node"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src" 
     ]
   },
   "files": [
@@ -17,3 +21,4 @@
     "src/**/*.d.ts"
   ]
 }
+
