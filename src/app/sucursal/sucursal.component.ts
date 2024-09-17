@@ -24,11 +24,7 @@ export class SucursalComponent {
     { idEmpresa: 3, sucursal: 'Sucursal A', puntoSatisfaccion: 8, empresa: 'Empresa X', fecha: '02-08-2023' },
     { idEmpresa: 4, sucursal: 'Sucursal C', puntoSatisfaccion: 6, empresa: 'Empresa Z', fecha: '03-08-2023' },
     { idEmpresa: 5, sucursal: 'Sucursal B', puntoSatisfaccion: 5, empresa: 'Empresa Y', fecha: '04-08-2023' },
-    { idEmpresa: 6, sucursal: 'Sucursal A', puntoSatisfaccion: 10, empresa: 'Empresa X', fecha: '05-08-2023' },
-    { idEmpresa: 7, sucursal: 'Sucursal C', puntoSatisfaccion: 9, empresa: 'Empresa Z', fecha: '05-08-2023' },
-    { idEmpresa: 8, sucursal: 'Sucursal B', puntoSatisfaccion: 8, empresa: 'Empresa Y', fecha: '06-08-2023' },
-    { idEmpresa: 9, sucursal: 'Sucursal A', puntoSatisfaccion: 7, empresa: 'Empresa X', fecha: '07-08-2023' },
-    { idEmpresa: 10, sucursal: 'Sucursal C', puntoSatisfaccion: 6, empresa: 'Empresa Z', fecha: '15-08-2023' }
+
   ];
 
   filteredData = [...this.encuestas];

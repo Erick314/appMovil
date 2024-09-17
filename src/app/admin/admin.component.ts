@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSidenav } from '@angular/material/sidenav';
-
-
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-admin',
@@ -11,50 +9,80 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class AdminComponent {
   empresaNombre: string = '';
-  sucursalNombre: string = '';
-  empresas: any[] = [];
-  sucursales: any[] = [];
-  displayedColumns: string[] = ['nombre'];
+  rutEmpresa: string = '';
+  razonSocial: string = '';
+  pais: string = '';
 
-  constructor(private router : Router) {}
+  displayedColumns: string[] = ['idEmpresa', 'nombreEmpresa', 'rutEmpresa', 'codigoEmpresa', 'pais', 'fechaCreacion', 'vigencia'];
 
+  empresas = new MatTableDataSource<any>();
+
+  constructor(private router: Router) {}
+
+  // Método para obtener la fecha actual en formato dd-MM-yyyy
+  getFormattedDate(): string {
+    const today = new Date();
+    const day = ('0' + today.getDate()).slice(-2);
+    const month = ('0' + (today.getMonth() + 1)).slice(-2);
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  // Método para generar un código aleatorio de 10 caracteres
+  generarCodigoEmpresa(): string {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let codigo = '';
+    for (let i = 0; i < 10; i++) {
+      codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return codigo;
+  }
+
+  // Método para crear una empresa y actualizar la tabla
   crearEmpresa() {
-    if (this.empresaNombre) {
-      this.empresas.push({ nombre: this.empresaNombre });
-      this.empresaNombre = '';
+    if (this.empresaNombre && this.rutEmpresa && this.razonSocial && this.pais) {
+      const nuevaEmpresa = {
+        idEmpresa: this.empresas.data.length + 1,
+        nombreEmpresa: this.empresaNombre,
+        rutEmpresa: this.rutEmpresa,
+        razonSocial: this.razonSocial,
+        pais: this.pais,
+        codigoEmpresa: this.generarCodigoEmpresa(), // Generar código aleatorio
+        fechaCreacion: this.getFormattedDate(),
+        vigencia: 'Vigente'
+      };
+      const data = this.empresas.data;  // Obtener datos actuales
+      data.push(nuevaEmpresa);          // Agregar la nueva empresa
+      this.empresas.data = data;        // Actualizar la tabla
+      this.limpiarCampos();             // Limpiar los campos de entrada después de agregar
     }
   }
 
-  crearSucursal() {
-    if (this.sucursalNombre) {
-      this.sucursales.push({ nombre: this.sucursalNombre });
-      this.sucursalNombre = '';
-    }
+  // Método para limpiar los campos del formulario después de agregar una empresa
+  limpiarCampos() {
+    this.empresaNombre = '';
+    this.rutEmpresa = '';
+    this.razonSocial = '';
+    this.pais = '';
   }
 
-  navigate(pestana: string) {
-    console.log('Navegar a:', pestana);
-    // Aquí puedes implementar la lógica de navegación si decides añadir rutas más adelante
+  toggleSidenav() {
+    // Función para manejar el sidenav
   }
 
   logout() {
     console.log('Cerrar sesión');
-    // Aquí puedes implementar la lógica de cerrar sesión si es necesario
   }
-  ngOnInit() {
-    // Simulación de datos obtenidos, reemplazar con tu lógica de obtención de datos
-    this.empresas = [
-      { nombre: 'Empresa 1' },
-      { nombre: 'Empresa 2' }
-    ];
 
-    this.sucursales = [
-      { nombre: 'Sucursal A' },
-      { nombre: 'Sucursal B' }
+  ngOnInit() {
+    // Datos iniciales de empresas (ejemplo)
+    this.empresas.data = [
+      { idEmpresa: 1, nombreEmpresa: 'TechSol', rutEmpresa: '12345678-9', codigoEmpresa: 'abc123def4', pais: 'Chile', fechaCreacion: '01-01-2023', vigencia: 'Vigente' },
+      { idEmpresa: 2, nombreEmpresa: 'InnovaTech', rutEmpresa: '98765432-1', codigoEmpresa: 'xys987lmn2', pais: 'Perú', fechaCreacion: '15-02-2023', vigencia: 'Vigente' }
     ];
   }
+
   CambioPestana(pestaña: string) {
-    // Aquí podrías agregar la lógica para cerrar sesión si es necesario
-    this.router.navigate(['/'+pestaña]);
+    this.router.navigate(['/' + pestaña]);
   }
 }

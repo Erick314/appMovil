@@ -27,6 +27,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { SplashComponent } from './splash/splash.component';
 import { DatePipe } from '@angular/common'; 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 
 //Principal
@@ -87,6 +89,7 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     CommonModule,
     MatTableModule,
+    MatCheckboxModule
   ],
   providers: [
     provideClientHydration(),

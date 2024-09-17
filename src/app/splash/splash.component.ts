@@ -21,8 +21,6 @@ export class SplashComponent implements OnInit {
       setTimeout(() => {
         this.router.navigateByUrl('login'); // Redirigir a la página de login después de 4 segundos
       }, 4000);
-    } else {
-      console.warn('No se puede ejecutar la redirección en el servidor');
-    }
+    } 
   }
 }

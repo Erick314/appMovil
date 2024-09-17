@@ -110,3 +110,30 @@ button {
   color: white; 
   font-size: 36px;
 }
+.page-title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 40px;
+}
+.menu-icon {
+  width: 35px;
+  height: 35px;
+}
+.footer {
+  background-color: #2e4053;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: calc(100% - 240px); /* Ajusta el ancho según tu sidenav */
+  left: 240px; /* Ajusta para tener en cuenta el sidenav */
+}
+
+.mat-sidenav-container {
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
+.mat-sidenav-content {
+  padding-bottom: 50px; /* Da espacio para el footer */
+}
