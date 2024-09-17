@@ -138,3 +138,5 @@ export class SucursalComponent {
 
 // Tipo de archivo Excel
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
+
