@@ -264,7 +264,7 @@ button {
   padding: 10px 20px;
   margin: 10px 15px; /* Margen para separarlos */
   border-radius: 30px; /* Borde redondeado */
-  background: linear-gradient(145deg, #60b360, #1f5f23); /* Degradado de fondo */
+  background: linear-gradient(145deg, #4993ee, #14667c); /* Degradado de fondo */
   box-shadow: 6px 6px 12px #0b0731, -6px -6px 12px #0b0731; /* Sombra interna */
   color: #fff; /* Color de texto blanco */
   text-decoration: none; /* Sin subrayado */
@@ -272,9 +272,9 @@ button {
   font-weight: 500;
   transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
 }
-
+  
 .nav-item:hover {
-  background: linear-gradient(145deg, #4993ee, #14667c); /* Cambiar el degradado al hacer hover */
+  background: linear-gradient(145deg, #60b360, #1f5f23); /* Cambiar el degradado al hacer hover */
   box-shadow: inset 4px 4px 8px #0b0731, inset -4px -4px 8px #0b0731; /* Sombra interna invertida */
 }
 .bottom-nav {
@@ -298,4 +298,21 @@ button {
 
 .logout-item:hover {
   background: linear-gradient(145deg, #d8b714, #afa017); /* Cambiar el degradado al hacer hover */
+}
+
+
+/* Contenedor de la imagen del logo */
+.logo-container {
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  flex-grow: 100; /* Ocupar el espacio disponible */
+}
+
+/* Estilo para la imagen del logo */
+.logo-image {
+  width: 100px; /* Ajusta el tamaño según sea necesario */
+  height: auto;
+  border-radius: 50%; /* Opción para redondear la imagen */
+  box-shadow: 0px 0px 10px rgb(18, 71, 25); /* Sombra alrededor de la imagen */
 }
