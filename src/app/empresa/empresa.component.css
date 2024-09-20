@@ -130,10 +130,107 @@ button {
   left: 240px; /* Ajusta para tener en cuenta el sidenav */
 }
 
+
 .mat-sidenav-container {
   height: 100vh; /* Ocupa toda la altura de la pantalla */
 }
 
 .mat-sidenav-content {
   padding-bottom: 50px; /* Da espacio para el footer */
+}
+.sidenav-container {
+  height: 100vh; /* Asegurar que el contenedor lateral use toda la altura */
+}
+
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Esto empuja el contenido hacia abajo */
+  height: 100%; /* Ocupar toda la altura */
+}
+
+.nav-list {
+  flex-grow: 1; /* Esto asegura que la lista ocupe el espacio disponible */
+}
+
+.bottom-nav {
+  padding-bottom: 20px; /* Mantener un poco de espacio en la parte inferior */
+}
+
+.sidenav-container {
+  height: 100vh; /* Asegurar que el contenedor lateral use toda la altura */
+}
+.bottom-nav {
+  padding-bottom: 20px; /* Mantener un poco de espacio en la parte inferior */
+}
+
+/* Opción para cambiar el color del texto y el fondo de las opciones del menú */
+.mat-nav-list a {
+  color: black; /* Color del texto */
+  text-decoration: none;
+  border: 1px solid #ccc; /* Borde inicial */
+}
+
+/* Borde inicial para todos los elementos */
+.mat-sidenav {
+  background-color: #b8b9b9;
+  width: 240px; /* Fijar el ancho del sidenav */
+  padding: 0; /* Quitar padding para evitar desbordamiento */
+}
+
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Esto empuja el contenido hacia abajo */
+  height: 100%; /* Ocupar toda la altura */
+  overflow-x: hidden; /* Ocultar cualquier contenido desbordado horizontalmente */
+}
+
+.nav-list {
+  flex-grow: 1; /* Esto asegura que la lista ocupe el espacio disponible */
+  padding: 0 10px; /* Ajuste de padding para que no desborde */
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrar el contenido */
+  padding: 10px 20px;
+  margin: 10px 15px; /* Margen para separarlos */
+  border-radius: 30px; /* Borde redondeado */
+  background: linear-gradient(145deg, #60b360, #1f5f23); /* Degradado de fondo */
+  box-shadow: 6px 6px 12px #0b0731, -6px -6px 12px #0b0731; /* Sombra interna */
+  color: #fff; /* Color de texto blanco */
+  text-decoration: none; /* Sin subrayado */
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+}
+
+.nav-item:hover {
+  background: linear-gradient(145deg, #4993ee, #14667c); /* Cambiar el degradado al hacer hover */
+  box-shadow: inset 4px 4px 8px #0b0731, inset -4px -4px 8px #0b0731; /* Sombra interna invertida */
+}
+.bottom-nav {
+  padding: 10px 0 20px 0; /* Ajuste de padding para evitar desbordamiento */
+}
+
+.mat-sidenav-container {
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  overflow: hidden; /* Oculta desbordamiento para evitar scroll */
+}
+
+.mat-sidenav-content {
+  padding-bottom: 50px; /* Da espacio para el footer */
+  overflow-x: hidden; /* Oculta desbordamiento horizontal */
+}
+
+
+.logout-item {
+  background: linear-gradient(145deg, #eec90f, #afa017); /* Degradado de fondo */
+  box-shadow: 6px 6px 12px #0b0731, -6px -6px 12px #0b0731; /* Sombra interna */
+}
+
+.logout-item:hover {
+  background: linear-gradient(145deg, #d8b714, #afa017); /* Cambiar el degradado al hacer hover */
 }

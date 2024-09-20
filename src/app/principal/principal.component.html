@@ -1,12 +1,17 @@
 <div class="main-container">
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav mode="side" opened>
-      <mat-nav-list>
-        <a mat-list-item (click)="CambioPestana('principal')">Inicio</a>
-        <a mat-list-item (click)="CambioPestana('admin')">Administrar</a>
-        <a mat-list-item (click)="CambioPestana('empresa')">Administrar Empresa</a>
-        <a mat-list-item (click)="CambioPestana('sucursal')">Reporte Sucursal</a>
-      </mat-nav-list>
+      <div class="sidenav-content"> <!-- Asegura que ocupe toda la altura -->
+        <mat-nav-list class="nav-list"> <!-- Lista de navegación crece -->
+          <a mat-list-item (click)="CambioPestana('principal')" class="nav-item">Inicio</a>
+          <a mat-list-item (click)="CambioPestana('admin')" class="nav-item">Administrar</a>
+          <a mat-list-item (click)="CambioPestana('empresa')" class="nav-item">Administrar Empresa</a>
+          <a mat-list-item (click)="CambioPestana('sucursal')" class="nav-item">Reporte Sucursal</a>
+        </mat-nav-list>
+        <div class="bottom-nav"> <!-- Cerrar sesión se mantiene en la parte inferior -->
+          <a mat-list-item (click)="CambioPestana('login')" class="nav-item logout-item">Cerrar Sesión</a>
+        </div>
+      </div>
     </mat-sidenav>
 
     <mat-sidenav-content>
@@ -15,8 +20,7 @@
           <mat-icon>menu</mat-icon>
         </button>
         <h1 class="page-title">Bienvenido al Panel Principal</h1>
-        <a href=""><img src="assets/cerrarS2.png" alt="Cerrar" class="menu-icon" (click)="logout()"></a>
-
+        <a href=""><img src="assets/cerrarS.png" alt="Cerrar" class="menu-icon" (click)="logout()"></a>
       </header>
 
       <div class="dashboard-cards">
@@ -41,14 +45,15 @@
           <mat-card-content>576</mat-card-content>
         </mat-card>
         <mat-card class="dashboard-card">
-          <mat-card-title>Promedio de evualuacion</mat-card-title>
+          <mat-card-title>Promedio de evaluación</mat-card-title>
           <mat-card-content>7</mat-card-content>
         </mat-card>
       </div>
-          <!-- Footer -->
-          <footer class="footer">
-            <p>&copy; 2024 J.E.J. Todos los derechos reservados.</p>
-          </footer>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>&copy; 2024 J.E.J. Todos los derechos reservados.</p>
+      </footer>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
