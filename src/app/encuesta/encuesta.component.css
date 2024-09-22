@@ -92,3 +92,12 @@
   border-radius: 50%;
   transform: scale(1.4);
 }
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #2e4053, #74b9ff); /* Degradado azul */
+  position: relative;
+  overflow: hidden; /* Asegura que el contenido no se salga de la vista */
+}

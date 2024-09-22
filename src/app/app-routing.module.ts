@@ -10,6 +10,8 @@ import { AdminComponent } from './admin/admin.component';
 import { EmpresaComponent } from './empresa/empresa.component';   
 import { CrearComponent } from './crear/crear.component'; 
 import { SucursalComponent } from './sucursal/sucursal.component';   
+import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-finalizada.component';
+
 
 const routes: Routes = [
   { path: '', component: SplashComponent },  
@@ -22,6 +24,7 @@ const routes: Routes = [
   { path: 'empresa', component: EmpresaComponent },
   { path: 'crear', component: CrearComponent },
   { path: 'sucursal', component: SucursalComponent },
+  { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 

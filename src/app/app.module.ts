@@ -43,6 +43,7 @@ import { SucursalComponent } from './sucursal/sucursal.component';
 import { CrearComponent } from './crear/crear.component'; 
 import { EncuestaComponent } from './encuesta/encuesta.component';
 import { LoginComponent } from './login/login.component';
+import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-finalizada.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { LoginComponent } from './login/login.component';
     EmpresaComponent,
     AgradecimientoDialogComponent,
     CrearComponent,
-    SucursalComponent
+    SucursalComponent,
+    EncuestaFinalizadaComponent
   ],
   imports: [
     BrowserModule,

@@ -44,7 +44,8 @@ export class EncuestaComponent {
   finalizarEncuesta() {
     this.encuestaFinalizada = true;
     console.log('Emoji seleccionado, sin responder más preguntas:', this.selectedEmojiValue);
-    this.dialog.open(AgradecimientoDialogComponent);
+    this.router.navigate(['/encuesta-finalizada']);
+
   }
 
   // Enviar toda la encuesta

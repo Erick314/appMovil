@@ -15,7 +15,10 @@ export class CrearComponent {
     this.crearForm = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.minLength(3),Validators.maxLength(8)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(12)]]
+      password: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(12)]],
+      codigo: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(12)]],
+      tipoUsuario: ['', Validators.required], // Campo agregado para tipo de usuario
+
     });
   }
   get f() {

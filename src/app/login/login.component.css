@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(135deg, #74b9ff, #2e4053); /* Degradado azul */
+  background: linear-gradient(135deg, #2e4053, #74b9ff); /* Degradado azul */
   position: relative;
   overflow: hidden; /* Asegura que el contenido no se salga de la vista */
 }
@@ -42,7 +42,7 @@
 }
 
 .link-style:hover {
-  color: #1e3799; /* Azul más oscuro al pasar el ratón */
+  color: #2e4053; /* Azul más oscuro al pasar el ratón */
 }
 
 
@@ -63,9 +63,9 @@
 /* Estilo del SVG de la ola */
 .wave {
   position: absolute;
-  width: 200%; /* Duplicar el ancho para crear el efecto de repetición */
+  width: 300%; /* Duplicar el ancho para crear el efecto de repetición */
   height: 100%;
-  animation: wave-animation 15s linear infinite; /* Animación continua */
+  animation: wave-animation 5s linear infinite; /* Animación continua */
 }
 
 .wave path {
