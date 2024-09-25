@@ -11,6 +11,7 @@ import { EmpresaComponent } from './empresa/empresa.component';
 import { CrearComponent } from './crear/crear.component'; 
 import { SucursalComponent } from './sucursal/sucursal.component';   
 import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-finalizada.component';
+import { PreguntaComponent } from './pregunta/pregunta.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'empresa', component: EmpresaComponent },
   { path: 'crear', component: CrearComponent },
   { path: 'sucursal', component: SucursalComponent },
+  { path: 'pregunta', component: PreguntaComponent },
   { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];

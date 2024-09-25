@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Crear Nueva Pregunta</h2>
+<mat-dialog-content>
+  <form>
+    <mat-form-field class="full-width">
+      <mat-label>Pregunta</mat-label>
+      <input matInput [(ngModel)]="pregunta.pregunta" name="pregunta" required>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Opción 1</mat-label>
+      <input matInput [(ngModel)]="pregunta.alternativaUno" name="alternativaUno" required>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Opción 2</mat-label>
+      <input matInput [(ngModel)]="pregunta.alternativaDos" name="alternativaDos" required>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Opción 3</mat-label>
+      <input matInput [(ngModel)]="pregunta.alternativaTres" name="alternativaTres" required>
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="pregunta.vigencia" name="vigencia">Vigente</mat-checkbox>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Guardar</button>
+</mat-dialog-actions>

@@ -1,0 +1,113 @@
+<div class="main-container">
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" opened>
+      <div class="sidenav-content">
+        <mat-nav-list class="nav-list">
+          <a mat-list-item (click)="CambioPestana('principal')" class="nav-item">Inicio</a>
+          <a mat-list-item (click)="CambioPestana('admin')" class="nav-item">Super Administración</a>
+          <a mat-list-item (click)="CambioPestana('empresa')" class="nav-item">Administrar</a>
+          <a mat-list-item (click)="CambioPestana('pregunta')" class="nav-item">Crear Pregunta</a>
+          <a mat-list-item (click)="CambioPestana('sucursal')" class="nav-item">Reportes</a>
+        </mat-nav-list>
+        <div class="logo-container">
+          <img src="assets/2.png" alt="Logo" class="logo-image">
+        </div>
+        <div class="bottom-nav">
+          <a mat-list-item (click)="logout()" class="nav-item logout-item">Cerrar Sesión</a>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <header class="header">
+        <button mat-icon-button (click)="sidenav.toggle()" class="custom-menu-button">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <h1 class="page-title">Crear y Asignar Preguntas</h1>
+        <a href=""><img src="assets/cerrarS.png" alt="Cerrar" class="menu-icon" (click)="logout()"></a>
+      </header>
+
+      <!-- Sección para Crear Preguntas -->
+      <div class="table-container">
+        <h2>Crear Preguntas</h2>
+        <button mat-raised-button color="primary" (click)="openDialog()">Nueva Pregunta</button>
+        <table mat-table [dataSource]="preguntas" class="mat-elevation-z8">
+          <ng-container matColumnDef="idPregunta">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.idPregunta}} </td>
+          </ng-container>
+          <ng-container matColumnDef="pregunta">
+            <th mat-header-cell *matHeaderCellDef> Pregunta </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.pregunta}} </td>
+          </ng-container>
+          <ng-container matColumnDef="alternativaUno">
+            <th mat-header-cell *matHeaderCellDef> Alternativa 1 </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.alternativaUno}} </td>
+          </ng-container>
+          <ng-container matColumnDef="alternativaDos">
+            <th mat-header-cell *matHeaderCellDef> Alternativa 2 </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.alternativaDos}} </td>
+          </ng-container>
+          <ng-container matColumnDef="alternativaTres">
+            <th mat-header-cell *matHeaderCellDef> Alternativa 3 </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.alternativaTres}} </td>
+          </ng-container>
+          <ng-container matColumnDef="vigencia">
+            <th mat-header-cell *matHeaderCellDef> Vigente </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.vigencia ? 'Sí' : 'No'}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <!-- Sección para Asignar Preguntas a Sucursales -->
+      <div class="assign-container">
+        <div class="assign-left">
+          <mat-form-field>
+            <mat-label>Selecciona Sucursal</mat-label>
+            <mat-select [(ngModel)]="selectedSucursal" (selectionChange)="cargarPreguntasAsignadas()">
+              <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.id">
+                {{ sucursal.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="assign-right">
+          <h2>Preguntas Disponibles</h2>
+          <mat-selection-list #preguntaSeleccionada>
+            <mat-list-option *ngFor="let pregunta of preguntas" [value]="pregunta">
+              {{ pregunta.pregunta }}
+            </mat-list-option>
+          </mat-selection-list>
+          <button mat-raised-button color="primary" (click)="asignarPreguntas(preguntaSeleccionada.selectedOptions.selected)">
+            Asignar Preguntas
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla de Preguntas Asignadas a la Sucursal -->
+      <div class="table-container">
+        <h2>Preguntas Asignadas a la Sucursal</h2>
+        <table mat-table [dataSource]="preguntasAsignadas" class="mat-elevation-z8">
+          <ng-container matColumnDef="idPregunta">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.idPregunta}} </td>
+          </ng-container>
+          <ng-container matColumnDef="pregunta">
+            <th mat-header-cell *matHeaderCellDef> Pregunta </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.pregunta}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+
+      <footer class="footer">
+        <p>&copy; 2024 J.E.J. Todos los derechos reservados.</p>
+      </footer>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

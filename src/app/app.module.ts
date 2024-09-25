@@ -44,6 +44,9 @@ import { CrearComponent } from './crear/crear.component';
 import { EncuestaComponent } from './encuesta/encuesta.component';
 import { LoginComponent } from './login/login.component';
 import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-finalizada.component';
+import { PreguntaComponent } from './pregunta/pregunta.component';
+import { PreguntaModalComponent } from './pregunta-modal/pregunta-modal.component';
+import { AsignarPreguntaSucursalComponent } from './asignar-pregunta-sucursal/asignar-pregunta-sucursal.component';
 
 
 @NgModule({
@@ -61,7 +64,10 @@ import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-fina
     AgradecimientoDialogComponent,
     CrearComponent,
     SucursalComponent,
-    EncuestaFinalizadaComponent
+    EncuestaFinalizadaComponent,
+    PreguntaComponent,
+    PreguntaModalComponent,
+    AsignarPreguntaSucursalComponent
   ],
   imports: [
     BrowserModule,

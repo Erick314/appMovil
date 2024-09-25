@@ -274,7 +274,7 @@ button {
 }
   
 .nav-item:hover {
-  background: linear-gradient(145deg, #60b360, #1f5f23); /* Cambiar el degradado al hacer hover */
+  background: linear-gradient(145deg, #4993ee, #60b360); /* Cambiar el degradado al hacer hover */
   box-shadow: inset 4px 4px 8px #0b0731, inset -4px -4px 8px #0b0731; /* Sombra interna invertida */
 }
 .bottom-nav {
