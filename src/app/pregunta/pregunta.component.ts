@@ -32,7 +32,22 @@ interface Asignacion {
 })
 export class PreguntaComponent {
   // Lista de columnas a mostrar en la tabla de preguntas asignadas
-  displayedColumns: string[] = ['idPregunta', 'pregunta'];
+  displayedColumns: string[] = [
+    'idPregunta',
+    'pregunta',
+    'alternativaUno',
+    'alternativaDos',
+    'alternativaTres',
+    'vigencia'
+  ];
+  // Columnas para la tabla de preguntas asignadas
+  displayedColumnsAsignaciones: string[] = [
+    'idSucursalPregunta',
+    'sucursal',
+    'idPregunta',
+    'pregunta'
+  ];
+
 
   // Datos iniciales
   preguntas: Pregunta[] = [
@@ -66,47 +81,63 @@ export class PreguntaComponent {
       if (result) {
         result.idPregunta = this.preguntas.length + 1; // Asignar un ID único
         this.preguntas.push(result);
+        this.preguntas = [...this.preguntas];// Esto lo hacemos para forzar que al guardar actualice la tabla con la nueva data
+
+
       }
     });
   }
 
   // Cargar preguntas asignadas a la sucursal seleccionada
   cargarPreguntasAsignadas() {
+    console.log('Sucursal seleccionada:', this.selectedSucursal); // Verificar sucursal seleccionada
     if (this.selectedSucursal !== null) { // Asegurarse de que no sea null, aunque ya no debería ser necesario
       // Filtrar preguntas asignadas según la sucursal seleccionada
       this.preguntasAsignadas = this.todasLasPreguntasAsignadas
         .filter(asignacion => asignacion.idSucursal === this.selectedSucursal)
         .map(asignacion => {
           const pregunta = this.preguntas.find(p => p.idPregunta === asignacion.idPregunta);
+          console.log('Pregunta encontrada para la asignación:', pregunta); // Verificar pregunta encontrada
           return pregunta ? pregunta : { idPregunta: 0, pregunta: '', alternativaUno: '', alternativaDos: '', alternativaTres: '', vigencia: false };
         });
+      console.log('Preguntas asignadas a la sucursal:', this.preguntasAsignadas); // Verificar preguntas asignadas cargadas
     }
   }
+    
 
-  // Asignar preguntas seleccionadas a la sucursal
   asignarPreguntas(preguntasSeleccionadas: any[]) {
+    console.log('Preguntas seleccionadas:', preguntasSeleccionadas); // Verificar preguntas seleccionadas
     if (this.selectedSucursal !== null) {
       preguntasSeleccionadas.forEach(pregunta => {
-        if (!this.preguntasAsignadas.find(p => p.idPregunta === pregunta.value.idPregunta)) {
-          this.todasLasPreguntasAsignadas.push({
+        console.log('Asignando pregunta:', pregunta.value); // Verificar cada pregunta antes de asignar
+        if (!this.todasLasPreguntasAsignadas.find(p => p.idPregunta === pregunta.value.idPregunta && p.idSucursal === this.selectedSucursal)) {
+          const nuevaAsignacion = {
             idSucursalPregunta: this.todasLasPreguntasAsignadas.length + 1, // Generar ID único
             idSucursal: this.selectedSucursal, // selectedSucursal ahora es siempre un número
             idPregunta: pregunta.value.idPregunta,
             sucursal: this.sucursales.find(s => s.id === this.selectedSucursal)?.nombre || '',
             pregunta: pregunta.value.pregunta
-          });
+          };
+          this.todasLasPreguntasAsignadas.push(nuevaAsignacion);
+          console.log('Nueva asignación:', nuevaAsignacion); // Verificar nueva asignación
+        } else {
+          console.log('La pregunta ya está asignada a esta sucursal.'); // Mensaje si la pregunta ya está asignada
         }
       });
       this.cargarPreguntasAsignadas(); // Recargar preguntas asignadas
+      console.log('Preguntas asignadas después de la operación:', this.todasLasPreguntasAsignadas); // Verificar lista completa de asignaciones
+      
+      // Asegurar que Angular detecte cambios en el dataSource
+      this.todasLasPreguntasAsignadas = [...this.todasLasPreguntasAsignadas];
     }
   }
+  
+
 
   // Cambiar de pestaña
   CambioPestana(pestaña: string) {
     this.router.navigate(['/' + pestaña]);
   }
-
-  // Logout
   logout() {
     this.router.navigate(['/login']);
   }
