@@ -47,6 +47,9 @@ import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-fina
 import { PreguntaComponent } from './pregunta/pregunta.component';
 import { PreguntaModalComponent } from './pregunta-modal/pregunta-modal.component';
 import { AsignarPreguntaSucursalComponent } from './asignar-pregunta-sucursal/asignar-pregunta-sucursal.component';
+import { environment } from '../environments/environment'; 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 
 @NgModule({
@@ -95,6 +98,9 @@ import { AsignarPreguntaSucursalComponent } from './asignar-pregunta-sucursal/as
     MatIconModule, 
     MatCardModule, 
     FormsModule,
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase), // Inicializar Firebase con configuración de environment
+    AngularFirestoreModule,
     CommonModule,
     MatTableModule,
     MatCheckboxModule

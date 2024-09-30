@@ -1,23 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
+import { FirebaseService } from '../services/firebase.service'; // Importa el servicio de Firebase
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   empresaNombre: string = '';
   rutEmpresa: string = '';
   razonSocial: string = '';
-  pais: string = '';
+  region: string = '';
 
-  displayedColumns: string[] = ['idEmpresa', 'nombreEmpresa', 'rutEmpresa', 'codigoEmpresa', 'pais', 'fechaCreacion', 'vigencia'];
+  regiones: string[] = [
+    'Arica y Parinacota',
+    'Tarapacá',
+    'Antofagasta',
+    'Atacama',
+    'Coquimbo',
+    'Valparaíso',
+    'Metropolitana de Santiago',
+    'Libertador General Bernardo O\'Higgins',
+    'Maule',
+    'Ñuble',
+    'Biobío',
+    'La Araucanía',
+    'Los Ríos',
+    'Los Lagos',
+    'Aysén del General Carlos Ibáñez del Campo',
+    'Magallanes y de la Antártica Chilena'
+  ];
+
+  displayedColumns: string[] = ['idEmpresa', 'nombreEmpresa', 'rutEmpresa', 'codigoEmpresa', 'region', 'fechaCreacion', 'vigencia'];
 
   empresas = new MatTableDataSource<any>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private firebaseService: FirebaseService) {}
 
   // Método para obtener la fecha actual en formato dd-MM-yyyy
   getFormattedDate(): string {
@@ -38,23 +58,25 @@ export class AdminComponent {
     return codigo;
   }
 
-  // Método para crear una empresa y actualizar la tabla
+  // Método para crear una empresa y guardar en Firestore
   crearEmpresa() {
-    if (this.empresaNombre && this.rutEmpresa && this.razonSocial && this.pais) {
+    if (this.empresaNombre && this.rutEmpresa && this.razonSocial && this.region) {
       const nuevaEmpresa = {
-        idEmpresa: this.empresas.data.length + 1,
+        idEmpresa: this.empresas.data.length + 1, // Si necesitas un ID, puedes usar esto o usar el auto-generado de Firestore.
         nombreEmpresa: this.empresaNombre,
         rutEmpresa: this.rutEmpresa,
         razonSocial: this.razonSocial,
-        pais: this.pais,
+        region: this.region,
         codigoEmpresa: this.generarCodigoEmpresa(), // Generar código aleatorio
         fechaCreacion: this.getFormattedDate(),
         vigencia: 'Vigente'
       };
-      const data = this.empresas.data;  // Obtener datos actuales
-      data.push(nuevaEmpresa);          // Agregar la nueva empresa
-      this.empresas.data = data;        // Actualizar la tabla
-      this.limpiarCampos();             // Limpiar los campos de entrada después de agregar
+      this.firebaseService.addEmpresa(nuevaEmpresa).then(() => {
+        console.log('Empresa agregada exitosamente a Firestore');
+        this.limpiarCampos(); // Limpiar los campos del formulario después de agregar
+      }).catch(error => {
+        console.error('Error al agregar empresa a Firestore: ', error);
+      });
     }
   }
 
@@ -63,7 +85,7 @@ export class AdminComponent {
     this.empresaNombre = '';
     this.rutEmpresa = '';
     this.razonSocial = '';
-    this.pais = '';
+    this.region = '';
   }
 
   toggleSidenav() {
@@ -75,11 +97,10 @@ export class AdminComponent {
   }
 
   ngOnInit() {
-    // Datos iniciales de empresas (ejemplo)
-    this.empresas.data = [
-      { idEmpresa: 1, nombreEmpresa: 'TechSol', rutEmpresa: '12345678-9', codigoEmpresa: 'abc123def4', pais: 'Chile', fechaCreacion: '01-01-2023', vigencia: 'Vigente' },
-      { idEmpresa: 2, nombreEmpresa: 'InnovaTech', rutEmpresa: '98765432-1', codigoEmpresa: 'xys987lmn2', pais: 'Perú', fechaCreacion: '15-02-2023', vigencia: 'Vigente' }
-    ];
+    // Obtener las empresas desde Firestore
+    this.firebaseService.getEmpresas().subscribe(empresas => {
+      this.empresas.data = empresas;
+    });
   }
 
   CambioPestana(pestaña: string) {

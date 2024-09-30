@@ -46,9 +46,14 @@
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <mat-label>País</mat-label>
-            <input matInput placeholder="País" [(ngModel)]="pais" name="pais" required>
+            <mat-label>Región</mat-label>
+            <mat-select [(ngModel)]="region" name="region" required>
+              <mat-option *ngFor="let reg of regiones" [value]="reg">
+                {{ reg }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
+          
 
           <button mat-raised-button color="primary" type="submit">Crear Empresa</button>
         </form>
@@ -82,9 +87,9 @@
           </ng-container>
 
           <!-- País Column -->
-          <ng-container matColumnDef="pais">
-            <th mat-header-cell *matHeaderCellDef> País </th>
-            <td mat-cell *matCellDef="let element"> {{element.pais}} </td>
+          <ng-container matColumnDef="region">
+            <th mat-header-cell *matHeaderCellDef> Región </th>
+            <td mat-cell *matCellDef="let element"> {{element.region}} </td>
           </ng-container>
 
           <!-- Fecha Creación Column -->

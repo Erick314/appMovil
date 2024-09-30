@@ -78,3 +78,8 @@
     background-color: #1a2833;
   }
   
+  .error-message {
+    color: #ff0000;
+    margin-top: 8px;
+  }
+  
