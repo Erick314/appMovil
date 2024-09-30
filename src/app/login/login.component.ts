@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FirebaseService } from '../services/firebase.service'; // Importa el servicio de Firebase
-import { first } from 'rxjs/operators'; // Importa el operador 'first' para obtener el primer resultado
+import { FirebaseService } from '../services/firebase.service'; 
+import { first } from 'rxjs/operators'; 
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'], // Corrección de 'styleUrl' a 'styleUrls'
+  styleUrls: ['./login.component.css'], 
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -16,7 +17,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private firebaseService: FirebaseService // Inyecta el servicio de Firebase
+    private authService: AuthService,  // Usa AuthService para manejar la autenticación
+    private firebaseService: FirebaseService
   ) {
     this.initializeApp();
     this.loginForm = this.fb.group({
@@ -37,37 +39,30 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const { usuario, password } = this.loginForm.value;
 
-      // Busca el usuario en Firebase por nombre
-      this.firebaseService.getUsuarioByNombre(usuario).pipe(first()).subscribe((usuarios) => {
-        if (usuarios.length > 0) {
-          const usuarioEncontrado = usuarios[0];
-
-          if (usuarioEncontrado.password === password) {
-            // Validar el tipo de usuario
-            if (usuarioEncontrado.tipoUsuario === 'Empresa') {
-              this.router.navigate(['/principal']); // Redirigir al menú de admin
-            } else if (usuarioEncontrado.tipoUsuario === 'Cliente') {
-              alert('Ingreso Exitoso! ' + usuario);
-              this.router.navigate(['/encuesta']); // Redirigir al menú de cliente
-            } else {
-              alert('Tipo de usuario no reconocido.');
-            }
-          } else {
-            alert('Contraseña incorrecta');
+      this.authService.loginPorNombre(usuario, password).then((credenciales) => {
+        if (credenciales) {
+          // Ingresar con autenticación
+          if (this.authService.getUsuarioLogueado().tipoUsuario === 'Empresa' || this.authService.getUsuarioLogueado().tipoUsuario === 'SuperAdmin') {
+            this.router.navigate(['/principal']);
+          } else if (this.authService.getUsuarioLogueado().tipoUsuario === 'Cliente') {
+            alert('Ingreso Exitoso como Cliente!');
+            this.router.navigate(['/encuesta']);
           }
         } else {
-          alert('Usuario no encontrado');
+          // Acceso sin autenticación
+          alert('Se ingresa sin autenticarse.');
+          this.router.navigate(['/principal']);  // Permitir el acceso al sistema
         }
+      }).catch(error => {
+        alert(error);
       });
     }
   }
 
-  // Método para redirigir a la página de recuperación de contraseña
   recuperar() {
     this.router.navigate(['/recuperar']);
   }
 
-  // Método para redirigir a la página de creación de usuario
   crearUsuario() {
     this.router.navigate(['/crear']);
   }
