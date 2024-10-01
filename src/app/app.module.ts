@@ -40,7 +40,7 @@ import { AdminComponent } from './admin/admin.component';
 import { EmpresaComponent } from './empresa/empresa.component';
 import { AgradecimientoDialogComponent } from './agradecimiento-dialog/agradecimiento-dialog.component';
 import { SucursalComponent } from './sucursal/sucursal.component';
-import { CrearComponent } from './crear/crear.component'; 
+import { CrearusuarioComponent } from './crearusuario/crearusuario.component'; 
 import { EncuestaComponent } from './encuesta/encuesta.component';
 import { LoginComponent } from './login/login.component';
 import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-finalizada.component';
@@ -65,7 +65,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     AdminComponent,
     EmpresaComponent,
     AgradecimientoDialogComponent,
-    CrearComponent,
+    CrearusuarioComponent,
     SucursalComponent,
     EncuestaFinalizadaComponent,
     PreguntaComponent,

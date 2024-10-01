@@ -9,9 +9,9 @@ import firebase from 'firebase/compat/app';
 })
 export class AuthService {
 
-  private usuarioLogueado: any = null; // Almacena los datos del usuario autenticado
-  private alertaMostrada: number = 0;  // Contador para las veces que se muestra la alerta
-  private maxAlertas: number = 2;      // Número máximo de veces que se puede mostrar la alerta
+  private usuarioLogueado: any = null; 
+  private alertaMostrada: number = 0; 
+  private maxAlertas: number = 2;      
 
   constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore) {}
 
@@ -36,10 +36,10 @@ export class AuthService {
                       if (this.alertaMostrada < this.maxAlertas) {
                         console.warn('Autenticación no disponible: acceso sin autenticación.');
                         alert('Se ingresa sin autentificarse, ya que la cuota ha sido excedida.');
-                        this.alertaMostrada++;  // Incrementar el contador de alertas
+                        this.alertaMostrada++;  
                       }
                       this.usuarioLogueado = usuario; // Almacenar usuario aunque no se autentifique
-                      resolve(null);  // No devolver credenciales pero continuar el flujo
+                      resolve(null);  //
                     } else {
                       reject('Error de autenticación: ' + error.message);
                     }

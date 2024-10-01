@@ -8,7 +8,7 @@ import { PrincipalComponent } from './principal/principal.component';
 import { RecuperarComponent } from './recuperar/recuperar.component';
 import { AdminComponent } from './admin/admin.component';   
 import { EmpresaComponent } from './empresa/empresa.component';   
-import { CrearComponent } from './crear/crear.component'; 
+import { CrearusuarioComponent } from './crearusuario/crearusuario.component'; 
 import { SucursalComponent } from './sucursal/sucursal.component';   
 import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-finalizada.component';
 import { PreguntaComponent } from './pregunta/pregunta.component';
@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'recuperar', component: RecuperarComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'empresa', component: EmpresaComponent },
-  { path: 'crear', component: CrearComponent },
+  { path: 'crear', component: CrearusuarioComponent },
   { path: 'sucursal', component: SucursalComponent },
   { path: 'pregunta', component: PreguntaComponent },
   { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent },

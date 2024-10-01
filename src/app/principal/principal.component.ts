@@ -11,14 +11,13 @@ import { AuthService } from '../services/auth.service';  // Importa el servicio 
 
 export class PrincipalComponent implements OnInit {
   @ViewChild('sidenav') sidenav?: MatSidenav;
-  usuarioLogueado: any = null;  // Variable para almacenar los datos del usuario
+  usuarioLogueado: any = null; 
 
   constructor(
     private router: Router,
-    private authService: AuthService // Inyectar el servicio de autenticación
+    private authService: AuthService 
   ) {}
 
-  // Método que se ejecuta cuando el componente se inicializa
   ngOnInit(): void {
     // Obtener los datos del usuario logueado desde el AuthService
     this.usuarioLogueado = this.authService.getUsuarioLogueado();
@@ -37,7 +36,7 @@ export class PrincipalComponent implements OnInit {
 
   logout() {
     this.authService.logout().then(() => {
-      this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
+      this.router.navigate(['/login']);
     });
   }
 
