@@ -5,7 +5,7 @@
         <mat-nav-list class="nav-list"> <!-- Lista de navegación crece -->
           <a mat-list-item (click)="CambioPestana('principal')" class="nav-item">Inicio</a>
             <a mat-list-item (click)="CambioPestana('admin')" class="nav-item">Super Administración</a>
-            <a mat-list-item (click)="CambioPestana('empresa')" class="nav-item">Administrar</a>
+            <a mat-list-item (click)="CambioPestana('empresa')" class="nav-item">Administrar Sucursales</a>
             <a mat-list-item (click)="CambioPestana('pregunta')" class="nav-item">Crear Pregunta</a>
             <a mat-list-item (click)="CambioPestana('sucursal')" class="nav-item">Reportes</a>
         </mat-nav-list>
@@ -49,13 +49,7 @@
         </form>
       
         <h3>Lista de Sucursales</h3>
-        <table mat-table [dataSource]="sucursales" class="mat-elevation-z8">
-          
-          <!-- ID Column -->
-          <ng-container matColumnDef="idSucursal">
-            <th mat-header-cell *matHeaderCellDef> ID Sucursal </th>
-            <td mat-cell *matCellDef="let element"> {{element.idSucursal}} </td>
-          </ng-container>
+        <table mat-table [dataSource]="sucursales" class="mat-elevation-z8">         
       
           <!-- Nombre Sucursal Column -->
           <ng-container matColumnDef="nombreSucursal">
@@ -78,7 +72,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-      </div>
+      </div><br><br><br>
 
       <!-- Footer -->
       <footer class="footer">

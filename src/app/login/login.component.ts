@@ -45,12 +45,10 @@ export class LoginComponent {
           if (this.authService.getUsuarioLogueado().tipoUsuario === 'Empresa' || this.authService.getUsuarioLogueado().tipoUsuario === 'SuperAdmin') {
             this.router.navigate(['/principal']);
           } else if (this.authService.getUsuarioLogueado().tipoUsuario === 'Cliente') {
-            alert('Ingreso Exitoso como Cliente!');
             this.router.navigate(['/encuesta']);
           }
         } else {
           // Acceso sin autenticación
-          alert('Se ingresa sin autenticarse.');
           this.router.navigate(['/principal']);  // Permitir el acceso al sistema
         }
       }).catch(error => {

@@ -240,13 +240,14 @@ button {
 }
 
 .logout-item {
-  background: linear-gradient(145deg, #4993ee, #1f5f23); /* Degradado de fondo */
+  background: linear-gradient(145deg, #eec90f, #afa017); /* Degradado de fondo */
   box-shadow: 6px 6px 12px #0b0731, -6px -6px 12px #0b0731; /* Sombra interna */
 }
 
 .logout-item:hover {
-  background: linear-gradient(145deg, #60b360, #4993ee); /* Cambiar el degradado al hacer hover */
+  background: linear-gradient(145deg, #d8b714, #afa017); /* Cambiar el degradado al hacer hover */
 }
+
 
 
 

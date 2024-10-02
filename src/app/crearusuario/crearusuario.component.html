@@ -19,8 +19,8 @@
         </div>
       </div>
 
-      <!-- Campo para el código de empresa (solo visible si tipoUsuario es Empresa) -->
-      <div class="form-group" *ngIf="f['tipoUsuario'].value === 'Empresa'">
+      <!-- Campo para el código de empresa (se muestra para ambos tipos de usuario) -->
+      <div class="form-group">
         <label for="codigo">Código de Empresa:</label>
         <input
           type="text"
@@ -41,8 +41,19 @@
         <button type="button" class="btn btn-secondary mt-2" (click)="validarCodigoEmpresa()" *ngIf="!empresaValida">Validar Código</button>
       </div>
 
-      <!-- Mostrar otros campos solo si el código de empresa es válido o si el tipoUsuario es Cliente -->
-      <div *ngIf="(empresaValida && f['tipoUsuario'].value === 'Empresa') || f['tipoUsuario'].value === 'Cliente'">
+      <!-- Campos adicionales si el tipo de usuario es "Cliente" y se valida el código -->
+      <div *ngIf="f['tipoUsuario'].value === 'Cliente' && empresaValida">
+        <div class="form-group">
+          <label for="sucursal">Seleccione la Sucursal:</label>
+          <select id="sucursal" formControlName="sucursal" class="form-control">
+            <option value="">Seleccione una sucursal</option>
+            <option *ngFor="let sucursal of sucursales" [value]="sucursal.nombreSucursal">{{ sucursal.nombreSucursal }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Campos adicionales si el tipo de usuario es "Empresa" o "Cliente" después de validar el código -->
+      <div *ngIf="empresaValida">
         <div class="form-group">
           <label for="nombre">Nombre:</label>
           <input
@@ -104,7 +115,7 @@
         </div>
 
         <!-- Botón para crear usuario solo visible cuando el código es válido -->
-        <button type="submit" class="btn btn-primary" *ngIf="empresaValida || f['tipoUsuario'].value === 'Cliente'">Crear Usuario</button>
+        <button type="submit" class="btn btn-primary">Crear Usuario</button>
       </div>
     </form>
 
@@ -112,6 +123,5 @@
     <div *ngIf="message" class="alert alert-success mt-3">
       {{ message }}
     </div>
-
   </div>
 </div>

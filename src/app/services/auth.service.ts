@@ -72,4 +72,8 @@ export class AuthService {
   getLoggedInUser(): Observable<firebase.User | null> {
     return this.afAuth.authState;
   }
+
+  registrarUsuario(email: string, password: string): Promise<any> {
+    return this.afAuth.createUserWithEmailAndPassword(email, password);
+  }
 }
