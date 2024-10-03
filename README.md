@@ -30,7 +30,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 Instalar para comenzar ambientar proyecto:
 
 - npm install
+- 
 - npm install -g @angular/cli
+- 
 -npm install -g firebase-tools
+
 - firebase login
+- 
 -npm install xlsx
