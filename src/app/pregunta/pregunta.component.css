@@ -33,13 +33,19 @@
 .assign-container {
   display: flex;
   justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  background-color: #105757; /* Fondo color plomo */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #000000;
 }
 
 .assign-left,
 .assign-right {
   width: 45%;
-  background-color: #2e4053;
-  color: white;
+  background-color: #ffffff; /* Cambiar color del fondo de los contenedores */
+  color: rgb(0, 0, 0);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -67,7 +73,7 @@
 }
 
 .mat-cell {
-  color: #34495e;
+  color: #ffffff;
 }
 
 button {
@@ -76,7 +82,7 @@ button {
 
 .mat-raised-button {
   background-color: #1d832e;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .mat-raised-button:hover {
@@ -85,7 +91,7 @@ button {
 
 .mat-raised-button.mat-accent {
   background-color: #3498db;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .mat-raised-button.mat-accent:hover {
@@ -93,7 +99,7 @@ button {
 }
 
 .mat-sidenav {
-  background-color: #b8b9b9;
+  background-color: #ffffff;
 }
 
 .mat-nav-list a {
@@ -168,7 +174,7 @@ button {
 }
 
 .mat-sidenav {
-  background-color: #b8b9b9;
+  background-color: #ffffff;
   width: 240px;
   padding: 0;
 }
@@ -242,4 +248,93 @@ button {
   height: auto;
   border-radius: 50%;
   box-shadow: 0px 0px 10px rgb(18, 71, 25);
+}
+.table-container {
+  margin-bottom: 40px; /* Añadir más espacio debajo de la tabla */
+}
+
+.assign-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Aumentar espacio entre los elementos */
+  padding: 20px;
+  background-color: #2e4053; /* Fondo suave para separar la sección */
+  border-radius: 8px; /* Redondear las esquinas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para un efecto elevado */
+}
+
+.assign-left,
+.assign-right {
+  flex: 1;
+}
+
+.mat-form-field {
+  width: 100%; /* Hacer que el dropdown ocupe todo el ancho */
+}
+
+.assign-right {
+  padding-left: 20px; /* Separación entre el selector de sucursal y las preguntas disponibles */
+}
+
+.assign-right h2 {
+  margin-bottom: 20px;
+  color: #000000; 
+}
+.mat-selection-list {
+  max-height: 200px; 
+  overflow-y: auto; /* Añadir scroll vertical si hay muchas preguntas */
+  background-color: #2e4053; 
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: rgb(0, 0, 0); 
+
+}
+
+.mat-selection-list mat-list-option {
+  padding: 10px;
+  color: rgb(0, 0, 0); 
+
+}
+
+button {
+  margin-top: 20px; 
+  color: #000000;
+
+}
+
+.mat-raised-button {
+  background-color: #1976d2;
+  color: rgb(0, 0, 0);
+}
+.mat-option-text {
+  color: #000000 !important;  /* Asegúrate de que el color del texto sea negro */
+}
+.mat-select {
+  background-color: #ffffff !important;  /* Fondo blanco para el dropdown */
+  color: #000000 !important;             /* Texto en negro */
+}
+
+.mat-select-panel {
+  background-color: #ffffff !important;  /* Asegura que el panel del dropdown tenga un fondo blanco */
+}
+
+.mat-option {
+  color: #000000 !important;  /* Forzar el color de las opciones en el dropdown */
+}
+.mat-select {
+  background-color: #ffffff !important;  /* Asegura el fondo blanco del dropdown */
+  color: #000000 !important;             /* Texto en negro para el dropdown */
+}
+
+.mat-select-panel {
+  background-color: #ffffff !important;  /* Fondo blanco para el panel del dropdown */
+}
+
+.mat-option {
+  color: #000000 !important;  /* Asegura que las opciones dentro del dropdown sean negras */
+}
+
+.mat-option-text {
+  color: #000000 !important;  /* Asegura que el texto de las opciones sea negro */
 }

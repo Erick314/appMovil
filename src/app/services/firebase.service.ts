@@ -24,7 +24,15 @@ export class FirebaseService {
   getSucursalesByEmpresa(idEmpresa: number): Observable<any[]> {
     return this.firestore.collection('sucursales', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
   }
-  
+  getAsignaciones(): Observable<any[]> {
+    return this.firestore.collection('asignaciones').valueChanges();
+  }
+  generateUniqueId(): string {
+    return this.firestore.createId();  // Genera un ID único para Firebase
+  }
+  addAsignacion(asignacion: any): Promise<any> {
+    return this.firestore.collection('asignaciones').doc(asignacion.idSucursalPregunta).set(asignacion);
+  }
   
   addSucursal(sucursalData: any) {
     const usuarioLogueado = this.authService.getUsuarioLogueado();
@@ -68,5 +76,25 @@ export class FirebaseService {
     const month = ('0' + (today.getMonth() + 1)).slice(-2);
     const year = today.getFullYear();
     return `${day}-${month}-${year}`;
+  }
+
+  addPregunta(pregunta: any): Promise<any> {
+    const usuarioLogueado = this.authService.getUsuarioLogueado();
+    
+    if (usuarioLogueado && usuarioLogueado.idEmpresa) {
+      const preguntaData = {
+        ...pregunta,
+        empresa: usuarioLogueado.idEmpresa, // Capturar la empresa del usuario logueado
+        fechaCreacion: this.getFormattedDate() // Fecha actual
+      };
+      return this.firestore.collection('preguntas').add(preguntaData); // Guardar en Firestore
+    } else {
+      return Promise.reject('Usuario no autenticado o sin empresa asociada');
+    }
+  }
+
+  // Método para obtener todas las preguntas
+  getPreguntas(): Observable<any[]> {
+    return this.firestore.collection('preguntas').valueChanges();
   }
 }

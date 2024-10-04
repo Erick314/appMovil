@@ -1,38 +1,40 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-pregunta-modal',
   templateUrl: './pregunta-modal.component.html',
-  styleUrls: ['./pregunta-modal.component.css']
 })
 export class PreguntaModalComponent {
   pregunta = {
-    idPregunta: 0,
     pregunta: '',
     alternativaUno: '',
     alternativaDos: '',
     alternativaTres: '',
-    idEmpresa: 55, // Valor predeterminado para la empresa
-    vigencia: false
+    vigencia: true
   };
 
   constructor(
     public dialogRef: MatDialogRef<PreguntaModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {}
+    private firebaseService: FirebaseService // Inyectar el servicio para guardar
+  ) {}
 
+  // Método para cancelar
   onCancel(): void {
     this.dialogRef.close();
   }
 
+  // Método para guardar la pregunta
   onSave(): void {
-    if (this.pregunta.pregunta.trim() === '' || 
-        this.pregunta.alternativaUno.trim() === '' || 
-        this.pregunta.alternativaDos.trim() === '' || 
-        this.pregunta.alternativaTres.trim() === '') {
-      alert('Todos los campos son obligatorios');
-    } else {
-      this.dialogRef.close(this.pregunta);
-    }
+    // Guardar la pregunta en Firebase con el servicio
+    this.firebaseService.addPregunta(this.pregunta)
+      .then(() => {
+        console.log('Pregunta guardada exitosamente');
+        this.dialogRef.close(this.pregunta);
+      })
+      .catch(error => {
+        console.error('Error al guardar la pregunta:', error);
+      });
   }
 }

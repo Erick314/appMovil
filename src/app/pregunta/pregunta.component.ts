@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { PreguntaModalComponent } from '../pregunta-modal/pregunta-modal.component'; // Importa el modal
+import { PreguntaModalComponent } from '../pregunta-modal/pregunta-modal.component';
+import { FirebaseService } from '../services/firebase.service';
 
 interface Pregunta {
   idPregunta: number;
@@ -13,16 +14,14 @@ interface Pregunta {
 }
 
 interface Sucursal {
-  id: number;
-  nombre: string;
+  nombreSucursal: string;
 }
 
 interface Asignacion {
-  idSucursalPregunta: number;
-  idSucursal: number;
-  idPregunta: number;
-  sucursal: string;
+  idSucursalPregunta: string;
+  nombreSucursal: string;
   pregunta: string;
+  fechaAsignacion: string;
 }
 
 @Component({
@@ -31,47 +30,47 @@ interface Asignacion {
   styleUrls: ['./pregunta.component.css']
 })
 export class PreguntaComponent {
-  // Lista de columnas a mostrar en la tabla de preguntas asignadas
-  displayedColumns: string[] = [
-    'idPregunta',
-    'pregunta',
-    'alternativaUno',
-    'alternativaDos',
-    'alternativaTres',
-    'vigencia'
-  ];
-  // Columnas para la tabla de preguntas asignadas
-  displayedColumnsAsignaciones: string[] = [
-    'idSucursalPregunta',
-    'sucursal',
-    'idPregunta',
-    'pregunta'
-  ];
+  displayedColumns: string[] = ['idPregunta', 'pregunta', 'alternativaUno', 'alternativaDos', 'alternativaTres', 'vigencia'];
+  displayedColumnsAsignaciones: string[] = [ 'nombreSucursal', 'pregunta', 'fechaAsignacion'];
 
-
-  // Datos iniciales
-  preguntas: Pregunta[] = [
-    { idPregunta: 1, pregunta: '¿Cuál es tu color favorito?', alternativaUno: 'Rojo', alternativaDos: 'Azul', alternativaTres: 'Verde', vigencia: true },
-    { idPregunta: 2, pregunta: '¿Cuál es tu animal favorito?', alternativaUno: 'Perro', alternativaDos: 'Gato', alternativaTres: 'Pez', vigencia: true }
-  ];
-
-  sucursales: Sucursal[] = [
-    { id: 1, nombre: 'Sucursal 1' },
-    { id: 2, nombre: 'Sucursal 2' },
-    { id: 3, nombre: 'Sucursal 3' }
-  ];
-
-  // Lista de preguntas asignadas a la sucursal seleccionada
-  preguntasAsignadas: Pregunta[] = [];
-  // Lista de todas las preguntas asignadas a todas las sucursales
+  preguntas: Pregunta[] = [];
+  sucursales: Sucursal[] = [];
   todasLasPreguntasAsignadas: Asignacion[] = [];
+  selectedSucursal: string = ''; 
+  preguntasAsignadas: Pregunta[] = [];
 
-  // Cambia el tipo de selectedSucursal a number y asigna un valor por defecto
-  selectedSucursal: number = 1; // Asigna una sucursal por defecto para evitar null
+  constructor(private router: Router, public dialog: MatDialog, private firebaseService: FirebaseService) {
+    // Obtener preguntas desde Firebase
+    this.firebaseService.getPreguntas().subscribe((data: any[]) => {
+      this.preguntas = data;
+    });
 
-  constructor(private router: Router, public dialog: MatDialog) {}
+    // Obtener sucursales desde Firebase
+    this.firebaseService.getSucursales().subscribe((data: any[]) => {
+      this.sucursales = data;
+    });
 
-  // Abrir modal para crear nueva pregunta
+    // Obtener asignaciones previas
+    this.firebaseService.getAsignaciones().subscribe((data: any[]) => {
+      this.todasLasPreguntasAsignadas = data;
+    });
+  }
+
+  // Método para manejar el cambio de selección de sucursal
+  cargarPreguntasAsignadas() {
+    console.log('Sucursal seleccionada:', this.selectedSucursal); // Verificar sucursal seleccionada
+    if (this.selectedSucursal !== null) {
+      // Filtrar preguntas asignadas según la sucursal seleccionada
+      this.preguntasAsignadas = this.todasLasPreguntasAsignadas
+        .filter(asignacion => asignacion.nombreSucursal === this.selectedSucursal)
+        .map(asignacion => {
+          const pregunta = this.preguntas.find(p => p.pregunta === asignacion.pregunta);
+          return pregunta ? pregunta : { idPregunta: 0, pregunta: '', alternativaUno: '', alternativaDos: '', alternativaTres: '', vigencia: false };
+        });
+      console.log('Preguntas asignadas a la sucursal:', this.preguntasAsignadas); // Verificar preguntas asignadas cargadas
+    }
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(PreguntaModalComponent, {
       width: '400px'
@@ -79,65 +78,59 @@ export class PreguntaComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        result.idPregunta = this.preguntas.length + 1; // Asignar un ID único
         this.preguntas.push(result);
-        this.preguntas = [...this.preguntas];// Esto lo hacemos para forzar que al guardar actualice la tabla con la nueva data
-
-
       }
     });
   }
 
-  // Cargar preguntas asignadas a la sucursal seleccionada
-  cargarPreguntasAsignadas() {
-    console.log('Sucursal seleccionada:', this.selectedSucursal); // Verificar sucursal seleccionada
-    if (this.selectedSucursal !== null) { // Asegurarse de que no sea null, aunque ya no debería ser necesario
-      // Filtrar preguntas asignadas según la sucursal seleccionada
-      this.preguntasAsignadas = this.todasLasPreguntasAsignadas
-        .filter(asignacion => asignacion.idSucursal === this.selectedSucursal)
-        .map(asignacion => {
-          const pregunta = this.preguntas.find(p => p.idPregunta === asignacion.idPregunta);
-          console.log('Pregunta encontrada para la asignación:', pregunta); // Verificar pregunta encontrada
-          return pregunta ? pregunta : { idPregunta: 0, pregunta: '', alternativaUno: '', alternativaDos: '', alternativaTres: '', vigencia: false };
-        });
-      console.log('Preguntas asignadas a la sucursal:', this.preguntasAsignadas); // Verificar preguntas asignadas cargadas
-    }
-  }
-    
-
   asignarPreguntas(preguntasSeleccionadas: any[]) {
-    console.log('Preguntas seleccionadas:', preguntasSeleccionadas); // Verificar preguntas seleccionadas
-    if (this.selectedSucursal !== null) {
-      preguntasSeleccionadas.forEach(pregunta => {
-        console.log('Asignando pregunta:', pregunta.value); // Verificar cada pregunta antes de asignar
-        if (!this.todasLasPreguntasAsignadas.find(p => p.idPregunta === pregunta.value.idPregunta && p.idSucursal === this.selectedSucursal)) {
-          const nuevaAsignacion = {
-            idSucursalPregunta: this.todasLasPreguntasAsignadas.length + 1, // Generar ID único
-            idSucursal: this.selectedSucursal, // selectedSucursal ahora es siempre un número
-            idPregunta: pregunta.value.idPregunta,
-            sucursal: this.sucursales.find(s => s.id === this.selectedSucursal)?.nombre || '',
-            pregunta: pregunta.value.pregunta
-          };
-          this.todasLasPreguntasAsignadas.push(nuevaAsignacion);
-          console.log('Nueva asignación:', nuevaAsignacion); // Verificar nueva asignación
+    if (this.selectedSucursal && preguntasSeleccionadas.length > 0) {
+      const fechaAsignacion = this.firebaseService.getFormattedDate();
+  
+      preguntasSeleccionadas.forEach(preguntaSeleccionada => {
+        const preguntaData = preguntaSeleccionada.value;  // Obtener los datos de la pregunta seleccionada
+        
+        // Verificar si la pregunta ya está asignada a la sucursal
+        const asignacionExistente = this.todasLasPreguntasAsignadas.find(asignacion => 
+          asignacion.nombreSucursal === this.selectedSucursal && asignacion.pregunta === preguntaData.pregunta
+        );
+  
+        if (asignacionExistente) {
+          console.warn('La pregunta ya ha sido asignada a esta sucursal:', preguntaData.pregunta);
         } else {
-          console.log('La pregunta ya está asignada a esta sucursal.'); // Mensaje si la pregunta ya está asignada
+          const nuevaAsignacion: Asignacion = {
+            idSucursalPregunta: this.firebaseService.generateUniqueId(),  // Generar un ID único para la asignación
+            nombreSucursal: this.selectedSucursal,  // La sucursal seleccionada
+            pregunta: preguntaData.pregunta,  // El texto de la pregunta seleccionada
+            fechaAsignacion: fechaAsignacion  // Fecha actual formateada
+          };
+  
+          // Añadir la asignación a Firebase
+          this.firebaseService.addAsignacion(nuevaAsignacion).then(() => {
+            console.log('Asignación guardada en Firebase:', nuevaAsignacion);
+  
+            // Actualizar el arreglo local de todas las preguntas asignadas
+            this.todasLasPreguntasAsignadas.push(nuevaAsignacion);
+  
+            // Refrescar la vista localmente sin recargar la página
+            this.todasLasPreguntasAsignadas = [...this.todasLasPreguntasAsignadas];
+  
+          }).catch(err => {
+            console.error('Error guardando la asignación en Firebase:', err);
+          });
         }
       });
-      this.cargarPreguntasAsignadas(); // Recargar preguntas asignadas
-      console.log('Preguntas asignadas después de la operación:', this.todasLasPreguntasAsignadas); // Verificar lista completa de asignaciones
-      
-      // Asegurar que Angular detecte cambios en el dataSource
-      this.todasLasPreguntasAsignadas = [...this.todasLasPreguntasAsignadas];
+    } else {
+      console.warn('Debe seleccionar una sucursal y al menos una pregunta para asignar.');
     }
   }
   
-
-
-  // Cambiar de pestaña
+  
+  
   CambioPestana(pestaña: string) {
     this.router.navigate(['/' + pestaña]);
   }
+
   logout() {
     this.router.navigate(['/login']);
   }
