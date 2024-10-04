@@ -1,0 +1,277 @@
+.main-container {
+    display: flex;
+    color: white;
+  }
+  
+  .sidenav-container {
+    width: 2100px;
+  }
+  
+  .mat-sidenav-content {
+    padding: 20px;
+    background-color: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #2e4053;
+    color: white;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  
+  .page-title {
+    font-size: 35px;
+    color: white;
+  }
+  
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .filter-container mat-form-field {
+    flex-grow: 1;
+  }
+  
+  .table-container {
+    flex-grow: 1;
+    background-color: #2e4053;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mat-elevation-z8 {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .mat-header-cell {
+    background-color: #2e4053;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .mat-cell {
+    color: #34495e;
+  }
+  
+  .export-container {
+    margin-top: 20px;
+    text-align: right;
+  }
+  .export-container button:hover {
+    background-color: #1d832e;
+    color: white; 
+  }
+  .export-container button {
+    background-color: #ffffff; 
+    color: green; 
+    border: 1px solid #1d832e; 
+    border-radius: 25px; 
+  }
+  
+  button {
+    margin-left: 15px;
+  }
+  
+  .mat-raised-button {
+    background-color: #1d832e;
+    color: white;
+  }
+  
+  .mat-raised-button:hover {
+    background-color: #28a745;
+  }
+  
+  .mat-raised-button.mat-accent {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .mat-raised-button.mat-accent:hover {
+    background-color: #2980b9;
+  }
+  
+  .mat-sidenav {
+    background-color: #b8b9b9;
+  }
+  
+  .mat-nav-list a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .mat-nav-list a:hover {
+    background-color: #1abc9c;
+  }
+  
+  .excel-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px; 
+    vertical-align: middle;
+  }
+  
+  
+  .custom-menu-button {
+    color: white; 
+    font-size: 36px;
+  }
+  
+  .page-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 40px;
+  }
+  .menu-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .footer {
+    background-color: #2e4053;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 240px); /* Ajusta el ancho según tu sidenav */
+    left: 240px; /* Ajusta para tener en cuenta el sidenav */
+  }
+  
+  
+  .mat-sidenav-container {
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+  }
+  
+  .mat-sidenav-content {
+    padding-bottom: 50px; /* Da espacio para el footer */
+  }
+  .sidenav-container {
+    height: 100vh; /* Asegurar que el contenedor lateral use toda la altura */
+  }
+  
+  .sidenav-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Esto empuja el contenido hacia abajo */
+    height: 100%; /* Ocupar toda la altura */
+  }
+  
+  .nav-list {
+    flex-grow: 1; /* Esto asegura que la lista ocupe el espacio disponible */
+  }
+  
+  .bottom-nav {
+    padding-bottom: 20px; /* Mantener un poco de espacio en la parte inferior */
+  }
+  
+  .sidenav-container {
+    height: 100vh; /* Asegurar que el contenedor lateral use toda la altura */
+  }
+  .bottom-nav {
+    padding-bottom: 20px; /* Mantener un poco de espacio en la parte inferior */
+  }
+  
+  /* Opción para cambiar el color del texto y el fondo de las opciones del menú */
+  .mat-nav-list a {
+    color: black; /* Color del texto */
+    text-decoration: none;
+    border: 1px solid #ccc; /* Borde inicial */
+  }
+  
+  /* Borde inicial para todos los elementos */
+  .mat-sidenav {
+    background-color: #b8b9b9;
+    width: 240px; /* Fijar el ancho del sidenav */
+    padding: 0; /* Quitar padding para evitar desbordamiento */
+  }
+  
+  .sidenav-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Esto empuja el contenido hacia abajo */
+    height: 100%; /* Ocupar toda la altura */
+    overflow-x: hidden; /* Ocultar cualquier contenido desbordado horizontalmente */
+  }
+  
+  .nav-list {
+    flex-grow: 1; /* Esto asegura que la lista ocupe el espacio disponible */
+    padding: 0 10px; /* Ajuste de padding para que no desborde */
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrar el contenido */
+    padding: 10px 20px;
+    margin: 10px 15px; /* Margen para separarlos */
+    border-radius: 30px; /* Borde redondeado */
+    background: linear-gradient(145deg, #4993ee, #14667c); /* Degradado de fondo */
+    box-shadow: 6px 6px 12px #0b0731, -6px -6px 12px #0b0731; /* Sombra interna */
+    color: #fff; /* Color de texto blanco */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+  }
+    
+  .nav-item:hover {
+    background: linear-gradient(145deg, #4993ee, #60b360); /* Cambiar el degradado al hacer hover */
+    box-shadow: inset 4px 4px 8px #0b0731, inset -4px -4px 8px #0b0731; /* Sombra interna invertida */
+  }
+  .bottom-nav {
+    padding: 10px 0 20px 0; /* Ajuste de padding para evitar desbordamiento */
+  }
+  
+  .mat-sidenav-container {
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    overflow: hidden; /* Oculta desbordamiento para evitar scroll */
+  }
+  
+  .mat-sidenav-content {
+    padding-bottom: 50px; /* Da espacio para el footer */
+    overflow-x: hidden; /* Oculta desbordamiento horizontal */
+  }
+  
+  
+  .logout-item {
+    background: linear-gradient(145deg, #eec90f, #afa017); /* Degradado de fondo */
+    box-shadow: 6px 6px 12px #0b0731, -6px -6px 12px #0b0731; /* Sombra interna */
+  }
+  
+  .logout-item:hover {
+    background: linear-gradient(145deg, #d8b714, #afa017); /* Cambiar el degradado al hacer hover */
+  }
+  
+  
+  
+  
+  /* Contenedor de la imagen del logo */
+  .logo-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    flex-grow: 100; /* Ocupar el espacio disponible */
+  }
+  
+  /* Estilo para la imagen del logo */
+  .logo-image {
+    width: 100px; /* Ajusta el tamaño según sea necesario */
+    height: auto;
+    border-radius: 50%; /* Opción para redondear la imagen */
+    box-shadow: 0px 0px 10px rgb(18, 71, 25); /* Sombra alrededor de la imagen */
+  }
+  

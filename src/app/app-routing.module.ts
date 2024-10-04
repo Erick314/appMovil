@@ -12,6 +12,7 @@ import { CrearusuarioComponent } from './crearusuario/crearusuario.component';
 import { SucursalComponent } from './sucursal/sucursal.component';   
 import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-finalizada.component';
 import { PreguntaComponent } from './pregunta/pregunta.component';
+import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.component';
 
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'crear', component: CrearusuarioComponent },
   { path: 'sucursal', component: SucursalComponent },
   { path: 'pregunta', component: PreguntaComponent },
+  { path: 'reporte-encuesta', component: ReporteEncuestaComponent },
   { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];

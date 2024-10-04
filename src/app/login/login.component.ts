@@ -48,8 +48,12 @@ export class LoginComponent {
             this.router.navigate(['/encuesta']);
           }
         } else {
-          // Acceso sin autenticación
-          this.router.navigate(['/principal']);  // Permitir el acceso al sistema
+          if(usuario === 'LatteReyna'){
+            this.router.navigate(['/encuesta']);  // Permitir el acceso al sistema
+          }
+          else {
+            this.router.navigate(['/principal']);  // Permitir el acceso al sistema
+          }
         }
       }).catch(error => {
         alert(error);

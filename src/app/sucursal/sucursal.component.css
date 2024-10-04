@@ -71,16 +71,6 @@
   margin-top: 20px;
   text-align: right;
 }
-.export-container button:hover {
-  background-color: #1d832e;
-  color: white; 
-}
-.export-container button {
-  background-color: #ffffff; 
-  color: green; 
-  border: 1px solid #1d832e; 
-  border-radius: 25px; 
-}
 
 button {
   margin-left: 15px;
@@ -116,20 +106,10 @@ button {
 .mat-nav-list a:hover {
   background-color: #1abc9c;
 }
-
-.excel-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px; 
-  vertical-align: middle;
-}
-
-
 .custom-menu-button {
   color: white; 
   font-size: 36px;
 }
-
 .page-title {
   flex-grow: 1;
   text-align: center;
@@ -139,7 +119,6 @@ button {
   width: 35px;
   height: 35px;
 }
-
 .footer {
   background-color: #2e4053;
   color: white;
@@ -255,7 +234,6 @@ button {
 .logout-item:hover {
   background: linear-gradient(145deg, #d8b714, #afa017); /* Cambiar el degradado al hacer hover */
 }
-
 
 
 

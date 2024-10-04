@@ -1,10 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FirebaseService } from '../services/firebase.service';  
-import { AuthService } from '../services/auth.service';  // Importar el AuthService
 import { MatTableDataSource } from '@angular/material/table';
+import { FirebaseService } from '../services/firebase.service'; // Importa el servicio de Firebase
 
 @Component({
   selector: 'app-empresa',
@@ -12,88 +9,103 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./empresa.component.css']
 })
 export class EmpresaComponent {
-  @ViewChild('sidenav') sidenav?: MatSidenav;
 
-  sucursalForm: FormGroup;
-  displayedColumns: string[] = [ 'nombreSucursal', 'direccion', 'vigencia'];
-  sucursales = new MatTableDataSource();  
+  empresaNombre: string = '';
+  rutEmpresa: string = '';
+  razonSocial: string = '';
+  region: string = '';
 
-  constructor(
-    private router: Router,
-    private fb: FormBuilder,
-    private firebaseService: FirebaseService,
-    private authService: AuthService  // Inyectar AuthService
-  ) {
-    // Inicializar el formulario de sucursal
-    this.sucursalForm = this.fb.group({
-      nombreSucursal: ['', Validators.required],
-      direccion: ['', Validators.required],
-      vigencia: [true]  
-    });
+  regiones: string[] = [
+    'Arica y Parinacota',
+    'Tarapacá',
+    'Antofagasta',
+    'Atacama',
+    'Coquimbo',
+    'Valparaíso',
+    'Metropolitana de Santiago',
+    'Libertador General Bernardo O\'Higgins',
+    'Maule',
+    'Ñuble',
+    'Biobío',
+    'La Araucanía',
+    'Los Ríos',
+    'Los Lagos',
+    'Aysén del General Carlos Ibáñez del Campo',
+    'Magallanes y de la Antártica Chilena'
+  ];
 
-    // Obtener el usuario logueado desde AuthService
-    const usuario = this.authService.getUsuarioLogueado(); 
+  displayedColumns: string[] = ['idEmpresa', 'nombreEmpresa', 'rutEmpresa', 'codigoEmpresa', 'region', 'fechaCreacion', 'vigencia'];
 
-    if (usuario) {
-      if (usuario.tipoUsuario === 'SuperAdmin') {
-        // Si el usuario es SuperAdmin, obtener todas las sucursales
-        this.firebaseService.getSucursales().subscribe({
-          next: (data: any[]) => {
-            this.sucursales.data = data;
-          },
-          error: (error) => {
-            console.error('Error al obtener sucursales: ', error);
-          }
-        });
-      } else if (usuario.idEmpresa) {
-        // Si el usuario no es SuperAdmin, obtener sucursales filtradas por idEmpresa
-        this.firebaseService.getSucursalesByEmpresa(usuario.idEmpresa).subscribe({
-          next: (data: any[]) => {
-            this.sucursales.data = data;
-          },
-          error: (error) => {
-            console.error('Error al obtener sucursales: ', error);
-          }
-        });
-      } else {
-        console.error('Error: Usuario no autenticado o sin idEmpresa.');
-      }
-    } else {
-      console.error('Error: No se encontró el usuario logueado.');
+  empresas = new MatTableDataSource<any>();
+
+  constructor(private router: Router, private firebaseService: FirebaseService) {}
+
+  // Método para obtener la fecha actual en formato dd-MM-yyyy
+  getFormattedDate(): string {
+    const today = new Date();
+    const day = ('0' + today.getDate()).slice(-2);
+    const month = ('0' + (today.getMonth() + 1)).slice(-2);
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  // Método para generar un código aleatorio de 10 caracteres
+  generarCodigoEmpresa(): string {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let codigo = '';
+    for (let i = 0; i < 10; i++) {
+      codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
+    return codigo;
+  }
+
+  // Método para crear una empresa y guardar en Firestore
+  crearEmpresa() {
+    if (this.empresaNombre && this.rutEmpresa && this.razonSocial && this.region) {
+      const nuevaEmpresa = {
+        idEmpresa: this.empresas.data.length + 1, // Si necesitas un ID, puedes usar esto o usar el auto-generado de Firestore.
+        nombreEmpresa: this.empresaNombre,
+        rutEmpresa: this.rutEmpresa,
+        razonSocial: this.razonSocial,
+        region: this.region,
+        codigoEmpresa: this.generarCodigoEmpresa(), // Generar código aleatorio
+        fechaCreacion: this.getFormattedDate(),
+        vigencia: 'Vigente'
+      };
+      this.firebaseService.addEmpresa(nuevaEmpresa).then(() => {
+        console.log('Empresa agregada exitosamente a Firestore');
+        this.limpiarCampos(); // Limpiar los campos del formulario después de agregar
+      }).catch(error => {
+        console.error('Error al agregar empresa a Firestore: ', error);
+      });
+    }
+  }
+
+  // Método para limpiar los campos del formulario después de agregar una empresa
+  limpiarCampos() {
+    this.empresaNombre = '';
+    this.rutEmpresa = '';
+    this.razonSocial = '';
+    this.region = '';
   }
 
   toggleSidenav() {
-    if (this.sidenav) {
-      this.sidenav.toggle();
-    }
+    // Función para manejar el sidenav
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    console.log('Cerrar sesión');
+  }
+
+  ngOnInit() {
+    // Obtener las empresas desde Firestore
+    this.firebaseService.getEmpresas().subscribe(empresas => {
+      this.empresas.data = empresas;
+    });
   }
 
   CambioPestana(pestaña: string) {
     this.router.navigate(['/' + pestaña]);
   }
 
-  // Función para crear una nueva sucursal
-  crearSucursal() {
-    if (this.sucursalForm.valid) {
-      const nuevaSucursal = {
-        nombreSucursal: this.sucursalForm.value.nombreSucursal,
-        direccion: this.sucursalForm.value.direccion
-      };
-  
-      // Guardar la nueva sucursal en Firebase
-      this.firebaseService.addSucursal(nuevaSucursal)
-        .then(() => {
-          console.log('Sucursal creada exitosamente');
-          this.sucursalForm.reset({ vigencia: true });  // Restablecer el formulario
-        })
-        .catch(error => {
-          console.error('Error al crear sucursal: ', error);
-        });
-    }
-  }
 }

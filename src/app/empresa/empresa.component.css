@@ -110,6 +110,10 @@ button {
   color: white; 
   font-size: 36px;
 }
+.custom-menu-button {
+  color: white; 
+  font-size: 36px;
+}
 .page-title {
   flex-grow: 1;
   text-align: center;
@@ -119,6 +123,12 @@ button {
   width: 35px;
   height: 35px;
 }
+
+
+.page-title {
+  margin-left: 15px;
+}
+
 .footer {
   background-color: #2e4053;
   color: white;
@@ -129,6 +139,11 @@ button {
   width: calc(100% - 240px); /* Ajusta el ancho según tu sidenav */
   left: 240px; /* Ajusta para tener en cuenta el sidenav */
 }
+
+
+
+
+
 
 
 .mat-sidenav-container {
@@ -190,7 +205,6 @@ button {
   flex-grow: 1; /* Esto asegura que la lista ocupe el espacio disponible */
   padding: 0 10px; /* Ajuste de padding para que no desborde */
 }
-
 .nav-item {
   display: flex;
   align-items: center;
@@ -225,7 +239,6 @@ button {
   overflow-x: hidden; /* Oculta desbordamiento horizontal */
 }
 
-
 .logout-item {
   background: linear-gradient(145deg, #eec90f, #afa017); /* Degradado de fondo */
   box-shadow: 6px 6px 12px #0b0731, -6px -6px 12px #0b0731; /* Sombra interna */
@@ -234,6 +247,8 @@ button {
 .logout-item:hover {
   background: linear-gradient(145deg, #d8b714, #afa017); /* Cambiar el degradado al hacer hover */
 }
+
+
 
 
 

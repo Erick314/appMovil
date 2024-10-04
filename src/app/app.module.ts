@@ -50,6 +50,8 @@ import { AsignarPreguntaSucursalComponent } from './asignar-pregunta-sucursal/as
 import { environment } from '../environments/environment'; 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.component';
+
 
 
 @NgModule({
@@ -70,7 +72,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     EncuestaFinalizadaComponent,
     PreguntaComponent,
     PreguntaModalComponent,
-    AsignarPreguntaSucursalComponent
+    AsignarPreguntaSucursalComponent,
+    ReporteEncuestaComponent
   ],
   imports: [
     BrowserModule,

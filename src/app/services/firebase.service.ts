@@ -102,9 +102,22 @@ export class FirebaseService {
       return Promise.reject('Usuario no autenticado o sin empresa asociada');
     }
   }
-
+  getPreguntasAsignadasPorSucursal(nombreSucursal: string): Observable<any[]> {
+    return this.firestore.collection('asignaciones', ref => ref.where('nombreSucursal', '==', nombreSucursal)).valueChanges();
+  }
+  
   // Método para obtener todas las preguntas
   getPreguntas(): Observable<any[]> {
     return this.firestore.collection('preguntas').valueChanges();
   }
+  getPreguntaPorId(idPregunta: string): Observable<any> {
+    return this.firestore.collection('preguntas').doc(idPregunta).valueChanges();
+  }
+  getPreguntasPorEmpresa(idEmpresa: number): Observable<any[]> {
+    return this.firestore.collection('preguntas', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
+  }
+  guardarEncuesta(encuesta: any): Promise<any> {
+    return this.firestore.collection('encuestas').add(encuesta);
+  }
+  
 }

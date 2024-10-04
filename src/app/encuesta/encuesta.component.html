@@ -5,24 +5,25 @@
       <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
     </mat-menu>
   </div>
-  
+
   <!-- Pregunta con emojis -->
   <div class="survey-container">
     <h3>Encuesta de satisfacción</h3><hr>
     <h6>¿Cómo se siente con la atención recibida?</h6>
     <div class="emoji-container">
-      <img src="assets/feliz2.png" alt="Feliz" (click)="selectEmoji(5)" 
-           [class.selected-emoji]="selectedEmojiValue === 5" class="emoji">
-      <img src="assets/feliz.png" alt="Contento" (click)="selectEmoji(4)" 
-           [class.selected-emoji]="selectedEmojiValue === 4" class="emoji">
-      <img src="assets/confuso.png" alt="Confuso" (click)="selectEmoji(3)" 
-           [class.selected-emoji]="selectedEmojiValue === 3" class="emoji">
-      <img src="assets/triste.png" alt="Triste" (click)="selectEmoji(2)" 
-           [class.selected-emoji]="selectedEmojiValue === 2" class="emoji">
       <img src="assets/enojado.png" alt="Enojado" (click)="selectEmoji(1)" 
            [class.selected-emoji]="selectedEmojiValue === 1" class="emoji">
-    </div><hr><br>
-    
+      <img src="assets/triste.png" alt="Triste" (click)="selectEmoji(2)" 
+           [class.selected-emoji]="selectedEmojiValue === 2" class="emoji">
+      <img src="assets/confuso.png" alt="Confuso" (click)="selectEmoji(3)" 
+           [class.selected-emoji]="selectedEmojiValue === 3" class="emoji">
+      <img src="assets/feliz.png" alt="Contento" (click)="selectEmoji(4)" 
+           [class.selected-emoji]="selectedEmojiValue === 4" class="emoji">
+      <img src="assets/feliz2.png" alt="Feliz" (click)="selectEmoji(5)" 
+           [class.selected-emoji]="selectedEmojiValue === 5" class="emoji">
+    </div>
+
+    <hr><br>
 
     <!-- Opciones para finalizar o continuar con la encuesta -->
     <div *ngIf="!showAdditionalQuestions && selectedEmojiValue !== null">
@@ -30,53 +31,27 @@
       <button (click)="finalizarEncuesta()" class="submit-button">Finalizar</button>
     </div>
 
-    <!-- Preguntas adicionales (se muestran solo si el usuario decide continuar) -->
+    <!-- Mostrar todas las preguntas obtenidas -->
     <div *ngIf="showAdditionalQuestions">
-      <h6>¿Cuál es tu nivel de satisfacción con nuestro servicio?</h6>
-      <div class="options-container">
-        <label>
-          <input type="radio" name="satisfaccion" value="1" (click)="selectOption('satisfaccion', '1')"> Muy insatisfecho
-        </label>
-        <label>
-          <input type="radio" name="satisfaccion" value="2" (click)="selectOption('satisfaccion', '2')"> Insatisfecho
-        </label>
-        <label>
-          <input type="radio" name="satisfaccion" value="3" (click)="selectOption('satisfaccion', '3')"> Neutral
-        </label>
-        <label>
-          <input type="radio" name="satisfaccion" value="4" (click)="selectOption('satisfaccion', '4')"> Satisfecho
-        </label>
-        <label>
-          <input type="radio" name="satisfaccion" value="5" (click)="selectOption('satisfaccion', '5')"> Muy satisfecho
-        </label>
-      </div><hr>
+      <h6>Por favor, responde las siguientes preguntas:</h6>
 
-      <h6>¿Con qué frecuencia utilizas nuestro servicio?</h6>
-      <div class="options-container">
-        <label>
-          <input type="radio" name="frecuencia" value="diario" (click)="selectOption('frecuencia', 'diario')">
-          Diario
-        </label>
-        <label>
-          <input type="radio" name="frecuencia" value="semanal" (click)="selectOption('frecuencia', 'semanal')">
-          Semanal
-        </label>
-        <label>
-          <input type="radio" name="frecuencia" value="mensual" (click)="selectOption('frecuencia', 'mensual')">
-          Mensual
-        </label>
-        <label>
-          <input type="radio" name="frecuencia" value="ocasional" (click)="selectOption('frecuencia', 'ocasional')">
-          Ocasional
-        </label>
-      </div><hr>
+      <div *ngFor="let pregunta of preguntas; let i = index">
+        <h6>{{ pregunta.pregunta }}</h6>
+        <div class="options-container">
+          <label *ngFor="let alternativa of [pregunta.alternativaUno, pregunta.alternativaDos, pregunta.alternativaTres]">
+            <input type="radio" name="pregunta{{i}}" (change)="selectOption(pregunta.idPregunta, alternativa)">
+            {{ alternativa }}
+          </label>
+        </div>
+      </div>
+      <hr>
 
       <h6>Comentarios adicionales (opcional)</h6>
       <div class="message-container">
         <textarea placeholder="Escribe tus comentarios aquí..." (input)="updateMessage($event)"></textarea>
       </div>
-      
-      <button (click)="submitSurvey()" class="submit-button">Enviar Encuesta</button>
+
+      <button (click)="finalizarEncuesta()" class="submit-button">Enviar Encuesta</button>
     </div>
   </div>
 </div>
