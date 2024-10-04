@@ -35,7 +35,6 @@ export class AuthService {
                     if (error.code === 'auth/quota-exceeded') {
                       if (this.alertaMostrada < this.maxAlertas) {
                         console.warn('Autenticación no disponible: acceso sin autenticación.');
-                        alert('Se ingresa sin autentificarse, ya que la cuota ha sido excedida.');
                         this.alertaMostrada++;  
                       }
                       this.usuarioLogueado = usuario; // Almacenar usuario aunque no se autentifique

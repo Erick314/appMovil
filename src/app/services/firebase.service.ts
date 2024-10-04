@@ -56,6 +56,16 @@ export class FirebaseService {
   getSucursales() {
     return this.firestore.collection('sucursales').valueChanges();
   }
+  getSucursalesEmpresa() {
+    const usuarioLogueado = this.authService.getUsuarioLogueado();
+    if (usuarioLogueado.tipoUsuario === 'SuperAdmin') {
+      // Si es SuperAdmin, obtenemos todas las sucursales
+      return this.firestore.collection('sucursales').valueChanges();
+    } else {
+      // Si es usuario de empresa, obtenemos solo las sucursales asociadas a su empresa
+      return this.firestore.collection('sucursales', ref => ref.where('empresa', '==', usuarioLogueado.idEmpresa)).valueChanges();
+    }
+  }
     // Método para validar si el código de empresa existe
   validarCodigoEmpresa(codigo: string): Observable<any> {
     return this.firestore.collection('empresas', ref => ref.where('codigoEmpresa', '==', codigo)).valueChanges();
