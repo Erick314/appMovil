@@ -11,6 +11,29 @@
     background-color: #2e4053;
   }
   
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #3f51b5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .user-info span {
+    margin-right: 10px;
+    font-size: 1rem;
+  }
+  
   .page-title {
     margin-left: 15px;
   }

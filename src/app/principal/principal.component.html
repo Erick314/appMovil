@@ -24,7 +24,14 @@
           <mat-icon>menu</mat-icon>
         </button>
         <h1 class="page-title">Bienvenido al Panel Principal</h1>
-        <a href=""><img src="assets/cerrarS.png" alt="Cerrar" class="menu-icon" (click)="logout()"></a>
+        <div class="user-info">
+          <div class="user-avatar">
+            <a href=""><img src="assets/usuario.png" alt="user" class="menu-icon" ></a>
+          </div>
+          <span>{{ usuarioLogueado?.nombre || 'Usuario' }}</span>
+          <a href=""><img src="assets/cerrarS.png" alt="Cerrar" class="menu-icon" (click)="logout()"></a>
+        </div>
+     
       </header>
 
       <div class="dashboard-cards">
@@ -40,19 +47,19 @@
         </mat-card>
         <mat-card class="dashboard-card">
           <mat-card-title>Cantidad empresas</mat-card-title>
-          <mat-card-content>17</mat-card-content>
+          <mat-card-content>P. de desarrollo</mat-card-content>
         </mat-card>
         <mat-card class="dashboard-card">
           <mat-card-title>Encuestas totales contestadas</mat-card-title>
-          <mat-card-content>3</mat-card-content>
+          <mat-card-content>P. de desarrollo</mat-card-content>
         </mat-card>
         <mat-card class="dashboard-card">
           <mat-card-title>Encuestas contestadas hoy</mat-card-title>
-          <mat-card-content>576</mat-card-content>
+          <mat-card-content>P. de desarrollo</mat-card-content>
         </mat-card>
         <mat-card class="dashboard-card">
           <mat-card-title>Promedio de evaluación</mat-card-title>
-          <mat-card-content>7</mat-card-content>
+          <mat-card-content>P. de desarrollo</mat-card-content>
         </mat-card>
 
         <!-- Aquí van las nuevas tarjetas que muestran los datos del usuario -->
