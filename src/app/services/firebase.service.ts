@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service'; 
+import { from } from 'rxjs'; 
+
 
 
 @Injectable({
@@ -78,8 +80,15 @@ export class FirebaseService {
   getUsuarioByNombre(nombre: string): Observable<any[]> {
     return this.firestore.collection('usuarios', ref => ref.where('nombre', '==', nombre)).valueChanges();
   }
+  getUsuarioByCodigoEmpresa(codigo: string){
+    return this.firestore.collection('empresas', ref => ref.where('codigoEmpresa', '==', codigo)).valueChanges();
+  }
 
-
+  actualizarContraseña(usuario: string, nuevaContraseña: string) {
+    return from(this.firestore.collection('usuarios')
+      .doc(usuario).update({ password: nuevaContraseña }));
+  }
+ 
   getFormattedDate(): string {
     const today = new Date();
     const day = ('0' + today.getDate()).slice(-2);

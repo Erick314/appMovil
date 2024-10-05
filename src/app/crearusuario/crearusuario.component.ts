@@ -16,7 +16,7 @@ export class CrearusuarioComponent {
   empresaValida = false;
   codigoInvalido = false;
   empresaSeleccionada: any = null;
-  sucursales: any[] = [];  // Lista de sucursales para la empresa seleccionada
+  sucursales: any[] = []; 
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,7 +31,7 @@ export class CrearusuarioComponent {
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
       codigo: ['', [Validators.required, Validators.minLength(8)]],
       tipoUsuario: ['', Validators.required],
-      sucursal: ['']  // Campo para seleccionar sucursal
+      sucursal: ['']
     });
   }
 
@@ -45,7 +45,7 @@ export class CrearusuarioComponent {
     this.empresaValida = false;
     this.codigoInvalido = false;
     this.empresaSeleccionada = null;
-    this.sucursales = [];  // Limpiar lista de sucursales al cambiar tipo de usuario
+    this.sucursales = []; 
 
     const tipoUsuario = (event.target as HTMLSelectElement).value;
     if (tipoUsuario === 'Empresa' || tipoUsuario === 'Cliente') {
