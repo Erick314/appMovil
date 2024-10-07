@@ -3,7 +3,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import * as XLSXStyle from 'xlsx-style';   // Importar xlsx-style con un alias diferente para estilos
+import * as XLSXStyle from 'xlsx-style';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import * as XLSXStyle from 'xlsx-style';   // Importar xlsx-style con un alias d
 })
 export class ReporteEncuestaComponent {
   @ViewChild('sidenav') sidenav?: MatSidenav;
-
+  usuarioLogueado: any = null; 
   displayedColumns: string[] = ['idEmpresa', 'sucursal', 'puntoSatisfaccion', 'empresa', 'fecha'];
 
   encuestas = [
@@ -28,7 +29,7 @@ export class ReporteEncuestaComponent {
   filteredData = [...this.encuestas];
   searchText: string = ''; // Variable para el filtro
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   // Método para filtrar encuestas por sucursal o empresa
   filtrarPorSucursalOEmpresa() {
@@ -95,7 +96,14 @@ export class ReporteEncuestaComponent {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, fileName);
   }
+  ngOnInit() {
+    this.usuarioLogueado = this.authService.getUsuarioLogueado();
+    
+    if (!this.usuarioLogueado) {
+      return;
+    }
 
+  }
   toggleSidenav() {
     if (this.sidenav) {
       this.sidenav.toggle();

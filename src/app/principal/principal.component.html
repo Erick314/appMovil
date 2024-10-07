@@ -24,15 +24,15 @@
           <mat-icon>menu</mat-icon>
         </button>
         <h1 class="page-title">Bienvenido al Panel Principal</h1>
-        <div class="user-info">
-          <div class="user-avatar">
-            <a href=""><img src="assets/usuario.png" alt="user" class="menu-icon" ></a>
+        <div class="user-info-container">
+          <div class="user-info">
+            <span>{{ usuarioLogueado?.nombre || 'Usuario' }}</span>
+            <a ><img src="assets/user2.png" alt="user" class="menu-icon"></a>
           </div>
-          <span>{{ usuarioLogueado?.nombre || 'Usuario' }}</span>
           <a href=""><img src="assets/cerrarS.png" alt="Cerrar" class="menu-icon" (click)="logout()"></a>
         </div>
-     
       </header>
+      
 
       <div class="dashboard-cards">
         <!-- Aquí están las tarjetas que tenías antes -->
@@ -61,33 +61,7 @@
           <mat-card-title>Promedio de evaluación</mat-card-title>
           <mat-card-content>P. de desarrollo</mat-card-content>
         </mat-card>
-
-        <!-- Aquí van las nuevas tarjetas que muestran los datos del usuario -->
-        <mat-card class="dashboard-card">
-          <mat-card-title>Usuario Actual</mat-card-title>
-          <mat-card-content>{{ usuarioLogueado?.nombre || 'Cargando...' }}</mat-card-content>
-        </mat-card>
-
-        <mat-card class="dashboard-card">
-          <mat-card-title>Tipo de Usuario</mat-card-title>
-          <mat-card-content>{{ usuarioLogueado?.tipoUsuario || 'Cargando...' }}</mat-card-content>
-        </mat-card>
-
-        <mat-card class="dashboard-card">
-          <mat-card-title>Email</mat-card-title>
-          <mat-card-content>{{ usuarioLogueado?.email || 'Cargando...' }}</mat-card-content>
-        </mat-card>
-
-        <mat-card class="dashboard-card">
-          <mat-card-title>Empresa</mat-card-title>
-          <mat-card-content>{{ usuarioLogueado?.codigoEmpresa || 'Cargando...' }}</mat-card-content>
-        </mat-card>
-
         
-        <mat-card class="dashboard-card">
-          <mat-card-title>idempresa</mat-card-title>
-          <mat-card-content>{{ usuarioLogueado?.idEmpresa || 'Cargando...' }}</mat-card-content>
-        </mat-card>
       </div>
 
       <footer class="footer">

@@ -3,6 +3,10 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service'; 
 import { from } from 'rxjs'; 
+import { map } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
+
 
 
 
@@ -11,7 +15,7 @@ import { from } from 'rxjs';
 })
 export class FirebaseService {
 
-  constructor(private firestore: AngularFirestore, private authService: AuthService) {}
+  constructor(private firestore: AngularFirestore, private authService: AuthService,private afAuth: AngularFireAuth) {}
 
   // Método para agregar una nueva empresa
   addEmpresa(empresa: any): Promise<any> {
@@ -84,10 +88,10 @@ export class FirebaseService {
     return this.firestore.collection('empresas', ref => ref.where('codigoEmpresa', '==', codigo)).valueChanges();
   }
 
-  actualizarContraseña(usuario: string, nuevaContraseña: string) {
-    return from(this.firestore.collection('usuarios')
-      .doc(usuario).update({ password: nuevaContraseña }));
+  enviarCorreoRestablecimiento(email: string): Promise<void> {
+    return this.afAuth.sendPasswordResetEmail(email);
   }
+  
  
   getFormattedDate(): string {
     const today = new Date();

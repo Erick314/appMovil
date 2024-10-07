@@ -57,6 +57,37 @@ export class AuthService {
     });
   }
   
+  cambiarContrasena(nuevaContrasena: string): Promise<void> {
+    return this.afAuth.currentUser
+      .then(user => {
+        if (user) {
+          return user.updatePassword(nuevaContrasena);
+        } else {
+          throw new Error('No hay usuario autenticado');
+        }
+      })
+      .catch(error => {
+        throw new Error('Error al actualizar la contraseña: ' + error.message);
+      });
+  }
+
+  enviarCorreoRestablecimiento(email: string): Promise<void> {
+    return this.afAuth.sendPasswordResetEmail(email);
+  }
+  reauthenticateUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
+    const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+    return this.afAuth.currentUser
+      .then(user => {
+        if (user) {
+          return user.reauthenticateWithCredential(credential); // Devuelve un UserCredential
+        } else {
+          throw new Error('No hay usuario autenticado');
+        }
+      });
+  }
+  
+  
+  
   // Método para obtener los datos del usuario logueado
   getUsuarioLogueado(): any {
     return this.usuarioLogueado;
@@ -64,7 +95,7 @@ export class AuthService {
 
   logout(): Promise<void> {
     this.usuarioLogueado = null;
-    this.alertaMostrada = 0;  // Reiniciar contador al cerrar sesión
+    this.alertaMostrada = 0;  
     return this.afAuth.signOut();
   }
 

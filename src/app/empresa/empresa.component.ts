@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
-import { FirebaseService } from '../services/firebase.service'; // Importa el servicio de Firebase
+import { FirebaseService } from '../services/firebase.service'; 
+import { AuthService } from '../services/auth.service';  
+import { MatSidenav } from '@angular/material/sidenav';
+
+
 
 @Component({
   selector: 'app-empresa',
@@ -9,11 +13,13 @@ import { FirebaseService } from '../services/firebase.service'; // Importa el se
   styleUrls: ['./empresa.component.css']
 })
 export class EmpresaComponent {
-
+  usuarioLogueado: any = null; 
   empresaNombre: string = '';
   rutEmpresa: string = '';
   razonSocial: string = '';
   region: string = '';
+  @ViewChild('sidenav') sidenav?: MatSidenav;
+
 
   regiones: string[] = [
     'Arica y Parinacota',
@@ -38,7 +44,11 @@ export class EmpresaComponent {
 
   empresas = new MatTableDataSource<any>();
 
-  constructor(private router: Router, private firebaseService: FirebaseService) {}
+  constructor(
+    private router: Router, 
+    private firebaseService: FirebaseService,
+    private authService: AuthService
+  ) {}
 
   // Método para obtener la fecha actual en formato dd-MM-yyyy
   getFormattedDate(): string {
@@ -90,8 +100,9 @@ export class EmpresaComponent {
   }
 
   toggleSidenav() {
-    // Función para manejar el sidenav
-  }
+    if (this.sidenav) {
+      this.sidenav.toggle();
+    }  }
 
   logout() {
     console.log('Cerrar sesión');
@@ -102,6 +113,12 @@ export class EmpresaComponent {
     this.firebaseService.getEmpresas().subscribe(empresas => {
       this.empresas.data = empresas;
     });
+    this.usuarioLogueado = this.authService.getUsuarioLogueado();
+    
+    if (!this.usuarioLogueado) {
+      return;
+    }
+
   }
 
   CambioPestana(pestaña: string) {

@@ -27,7 +27,6 @@ export class PrincipalComponent implements OnInit {
     this.usuarioLogueado = this.authService.getUsuarioLogueado();
     
     if (!this.usuarioLogueado) {
-      console.error('No se pudo obtener el usuario logueado.');
       return;
     }
 

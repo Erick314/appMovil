@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PreguntaModalComponent } from '../pregunta-modal/pregunta-modal.component';
 import { FirebaseService } from '../services/firebase.service';
+import { AuthService } from '../services/auth.service';
+import { MatSidenav } from '@angular/material/sidenav';
+
 
 interface Pregunta {
   idPregunta: number;
@@ -30,16 +33,17 @@ interface Asignacion {
   styleUrls: ['./pregunta.component.css']
 })
 export class PreguntaComponent {
+  @ViewChild('sidenav') sidenav?: MatSidenav;
   displayedColumns: string[] = ['idPregunta', 'pregunta', 'alternativaUno', 'alternativaDos', 'alternativaTres', 'vigencia'];
   displayedColumnsAsignaciones: string[] = [ 'nombreSucursal', 'pregunta', 'fechaAsignacion'];
-
+  usuarioLogueado: any = null; 
   preguntas: Pregunta[] = [];
   sucursales: Sucursal[] = [];
   todasLasPreguntasAsignadas: Asignacion[] = [];
   selectedSucursal: string = ''; 
   preguntasAsignadas: Pregunta[] = [];
 
-  constructor(private router: Router, public dialog: MatDialog, private firebaseService: FirebaseService) {
+  constructor(private router: Router, public dialog: MatDialog, private firebaseService: FirebaseService, private authService: AuthService) {
     // Obtener preguntas desde Firebase
     this.firebaseService.getPreguntas().subscribe((data: any[]) => {
       this.preguntas = data;
@@ -133,5 +137,18 @@ export class PreguntaComponent {
 
   logout() {
     this.router.navigate(['/login']);
+  }
+  ngOnInit() {
+    this.usuarioLogueado = this.authService.getUsuarioLogueado();
+    
+    if (!this.usuarioLogueado) {
+      return;
+    }
+
+  }
+  toggleSidenav() {
+    if (this.sidenav) {
+      this.sidenav.toggle();
+    }
   }
 }

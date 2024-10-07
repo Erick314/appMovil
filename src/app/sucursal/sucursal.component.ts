@@ -6,6 +6,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { AuthService } from '../services/auth.service';  
 import { MatTableDataSource } from '@angular/material/table';
 
+
 @Component({
   selector: 'app-sucursal',
   templateUrl: './sucursal.component.html',
@@ -15,7 +16,7 @@ import { MatTableDataSource } from '@angular/material/table';
 export class SucursalComponent {
   
   @ViewChild('sidenav') sidenav?: MatSidenav;
-
+  usuarioLogueado: any = null; 
   sucursalForm: FormGroup;
   displayedColumns: string[] = [ 'nombreSucursal', 'direccion', 'vigencia'];
   sucursales = new MatTableDataSource();  
@@ -96,6 +97,14 @@ export class SucursalComponent {
         .catch(error => {
           console.error('Error al crear sucursal: ', error);
         });
+    }
+  }
+  ngOnInit(): void {
+    // Obtener los datos del usuario logueado
+    this.usuarioLogueado = this.authService.getUsuarioLogueado();
+    
+    if (!this.usuarioLogueado) {
+      return;
     }
   }
 }

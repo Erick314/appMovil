@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from '../services/firebase.service'; // Servicio para acceder a Firestore
-import { first } from 'rxjs/operators'; // Importamos first() para tomar solo el primer valor
+import { AuthService } from '../services/auth.service'; // Servicio de Firebase Authentication
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recuperar',
@@ -12,103 +13,37 @@ export class RecuperarComponent {
   forgotPasswordForm: FormGroup;
   submitted = false;
   message: string | null = null;
-  usuarioExiste = false;
-  isCodigoValidado = false;
 
-  constructor(private formBuilder: FormBuilder, private firebaseService: FirebaseService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService, // Inyectar el servicio de Auth
+    private router: Router
+  ) {
     this.forgotPasswordForm = this.formBuilder.group({
-      usuario: ['', [Validators.required]],
-      codigoEmpresa: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]] // Solo pedimos el email
     });
   }
 
-  get usuario() {
-    return this.forgotPasswordForm.get('usuario');
+  get email() {
+    return this.forgotPasswordForm.get('email');
   }
 
-  get codigoEmpresa() {
-    return this.forgotPasswordForm.get('codigoEmpresa');
-  }
-
-  get password() {
-    return this.forgotPasswordForm.get('password');
-  }
-
-  get confirmPassword() {
-    return this.forgotPasswordForm.get('confirmPassword');
-  }
-
-  // Validar si el usuario existe en la base de datos
-  onSubmit() {
+  // Método para enviar el correo de restablecimiento de contraseña
+  onEnviarCorreoRestablecimiento() {
     this.submitted = true;
-    
-    if (this.forgotPasswordForm.get('usuario')?.invalid) {
+
+    if (this.forgotPasswordForm.invalid) {
+      this.message = 'Por favor, ingrese un correo electrónico válido.';
       return;
     }
 
-    // Verificar si el usuario existe en Firestore
-    this.firebaseService.getUsuarioByNombre(this.usuario?.value)
-      .pipe(first()) // Usamos first para tomar el primer valor y desuscribirnos
-      .subscribe(usuarioSnapshot => {
-        if (usuarioSnapshot.length > 0) {
-          this.usuarioExiste = true;
-          this.message = 'Usuario encontrado. Ahora valide su código de empresa.';
-        } else {
-          this.message = 'El usuario no existe.';
-          this.usuarioExiste = false;
-        }
-      }, error => {
-        console.error('Error al buscar el usuario:', error);
-        this.message = 'Hubo un error al buscar el usuario.';
-      });
-  }
+    const email = this.email?.value;
 
-  // Validar el código de empresa
-  validarCodigoEmpresa() {
-    const codigo = this.forgotPasswordForm.get('codigoEmpresa')?.value;
-
-    this.firebaseService.getUsuarioByCodigoEmpresa(codigo)
-      .pipe(first()) // Usamos first para tomar el primer valor y desuscribirnos
-      .subscribe(empresaSnapshot => {
-        if (empresaSnapshot.length > 0) {
-          this.isCodigoValidado = true;
-          this.message = 'Código de empresa validado. Ahora puede restablecer su contraseña.';
-        } else {
-          this.message = 'Código de empresa no válido.';
-          this.isCodigoValidado = false;
-        }
-      }, error => {
-        console.error('Error al validar el código de empresa:', error);
-        this.message = 'Hubo un error al validar el código de empresa.';
-      });
-  }
-
-  // Restablecer la contraseña
-  onRestablecerContrasena() {
-    this.submitted = true;
-  
-    if (this.forgotPasswordForm.invalid || this.password?.value !== this.confirmPassword?.value) {
-      this.message = 'Por favor, asegúrese de que las contraseñas coincidan.';
-      return;
-    }
-  
-    const nuevaContrasena = this.password?.value;
-    const usuario = this.usuario?.value;
-  
-    // Usamos subscribe para manejar el observable en lugar de then y catch
-    this.firebaseService.actualizarContraseña(usuario, nuevaContrasena).subscribe({
-      next: () => {
-        this.message = 'Contraseña actualizada exitosamente.';
-        this.forgotPasswordForm.reset();
-        this.submitted = false;
-      },
-      error: (error: any) => {
-        console.error('Error al actualizar la contraseña:', error);
-        this.message = 'Hubo un error al actualizar la contraseña.';
-      }
+    // Llamar al servicio para enviar el correo de restablecimiento
+    this.authService.enviarCorreoRestablecimiento(email).then(() => {
+      this.message = 'Se ha enviado un correo para restablecer la contraseña. Por favor, revisa tu bandeja de entrada.';
+    }).catch(error => {
+      this.message = `Hubo un error al enviar el correo: ${error.message}`;
     });
   }
-  
 }
