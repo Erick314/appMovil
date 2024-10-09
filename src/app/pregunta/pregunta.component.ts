@@ -48,9 +48,10 @@ export class PreguntaComponent {
     this.firebaseService.getPreguntas().subscribe((data: any[]) => {
       this.preguntas = data;
     });
+    const usuario = this.authService.getUsuarioLogueado(); 
 
     // Obtener sucursales desde Firebase
-    this.firebaseService.getSucursales().subscribe((data: any[]) => {
+    this.firebaseService.getSucursalesByEmpresa(usuario.idEmpresa).subscribe((data: any[]) => {
       this.sucursales = data;
     });
 
