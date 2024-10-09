@@ -51,13 +51,22 @@ export class PreguntaComponent {
     const usuario = this.authService.getUsuarioLogueado(); 
 
     // Obtener sucursales desde Firebase
-    this.firebaseService.getSucursalesByEmpresa(usuario.idEmpresa).subscribe((data: any[]) => {
-      this.sucursales = data;
-    });
+    if(usuario.idEmpresa === 3){
+      this.firebaseService.getSucursales().subscribe((data: any[]) => {
+        this.sucursales = data;            
+      });
+    } else {
+      this.firebaseService.getSucursalesByEmpresa(usuario.idEmpresa).subscribe((data: any[]) => {
+        this.sucursales = data;
+            
+      });
+    }
 
+          
     // Obtener asignaciones previas
     this.firebaseService.getAsignaciones().subscribe((data: any[]) => {
       this.todasLasPreguntasAsignadas = data;
+      //
     });
   }
 
