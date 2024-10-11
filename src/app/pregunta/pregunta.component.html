@@ -4,11 +4,9 @@
       <div class="sidenav-content">
         <mat-nav-list class="nav-list">
           <a mat-list-item (click)="CambioPestana('principal')" class="nav-item">Inicio</a>
-            <!-- Si usuario logueado tiene tipo de empresa SuperAdmin que cargue este menu, mediente *ngIf
-           <div *ngIf>
-            <a mat-list-item (click)="CambioPestana('empresa')" class="nav-item">Super Administración</a>
-          </div>   -->
-          <a mat-list-item (click)="CambioPestana('empresa')" class="nav-item">Super Administración</a>
+          <a *ngIf="usuarioLogueado?.tipoUsuario === 'SuperAdmin'" mat-list-item (click)="CambioPestana('empresa')" class="nav-item">
+            Super Administración
+          </a>
           <a mat-list-item (click)="CambioPestana('sucursal')" class="nav-item">Administrar Sucursales</a>
           <a mat-list-item (click)="CambioPestana('pregunta')" class="nav-item">Crear Pregunta</a>
           <a mat-list-item (click)="CambioPestana('reporte-encuesta')" class="nav-item">Reportes</a>

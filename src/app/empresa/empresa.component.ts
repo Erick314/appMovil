@@ -104,9 +104,9 @@ export class EmpresaComponent {
       this.sidenav.toggle();
     }  }
 
-  logout() {
-    console.log('Cerrar sesión');
-  }
+    logout() {
+      this.router.navigate(['/login']);
+    }
 
   ngOnInit() {
     // Obtener las empresas desde Firestore

@@ -28,6 +28,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SplashComponent } from './splash/splash.component';
 import { DatePipe } from '@angular/common'; 
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 
@@ -54,6 +55,7 @@ import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.co
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,6 +79,7 @@ import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.co
   ],
   imports: [
     BrowserModule,
+    MatRadioModule,
     AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

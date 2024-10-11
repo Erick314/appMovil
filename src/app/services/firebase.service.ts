@@ -33,6 +33,9 @@ export class FirebaseService {
   getAsignaciones(): Observable<any[]> {
     return this.firestore.collection('asignaciones').valueChanges();
   }
+  getAsignacionesByEmpresa(nombreSucursal: string): Observable<any[]> {
+    return this.firestore.collection('asignaciones', ref => ref.where('sucursal', '==', nombreSucursal)).valueChanges();
+  }
   generateUniqueId(): string {
     return this.firestore.createId();  // Genera un ID único para Firebase
   }
@@ -129,8 +132,19 @@ export class FirebaseService {
   getPreguntasPorEmpresa(idEmpresa: number): Observable<any[]> {
     return this.firestore.collection('preguntas', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
   }
-  guardarEncuesta(encuesta: any): Promise<any> {
-    return this.firestore.collection('encuestas').add(encuesta);
+  guardarEncuesta(respuestasEncuesta: any): Promise<any> {
+    return this.firestore.collection('encuestas').add(respuestasEncuesta);
+}
+
+  guardarRespuesta(encuestaId: string, respuesta: any) {
+    return this.firestore.collection(`encuestas/${encuestaId}/respuestasPreguntas`).add(respuesta);
   }
-  
+  getPreguntasByEmpresa(idEmpresa: number): Observable<any[]> {
+    return this.firestore.collection('preguntas', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
+  }
+  getEncuestas(): Observable<any[]> {
+    return this.firestore.collection('encuestas').valueChanges();
+  }
+
+
 }

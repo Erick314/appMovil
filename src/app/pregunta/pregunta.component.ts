@@ -44,47 +44,69 @@ export class PreguntaComponent {
   preguntasAsignadas: Pregunta[] = [];
 
   constructor(private router: Router, public dialog: MatDialog, private firebaseService: FirebaseService, private authService: AuthService) {
+
+
     // Obtener preguntas desde Firebase
-    this.firebaseService.getPreguntas().subscribe((data: any[]) => {
-      this.preguntas = data;
-    });
+    
     const usuario = this.authService.getUsuarioLogueado(); 
 
-    // Obtener sucursales desde Firebase
-    if(usuario.idEmpresa === 3){
-      this.firebaseService.getSucursales().subscribe((data: any[]) => {
-        this.sucursales = data;            
+    if (usuario.idEmpresa === 3) {
+      // Si es SuperAdmin, obtener todas las sucursales y asignaciones
+      this.firebaseService.getSucursales().subscribe((sucursalesData: any[]) => {
+        this.sucursales = sucursalesData;
+        // Cargar todas las asignaciones
+        this.firebaseService.getAsignaciones().subscribe((asignacionesData: any[]) => {
+          this.todasLasPreguntasAsignadas = asignacionesData;
+
+          this.firebaseService.getPreguntas().subscribe((data: any[]) => {
+            this.preguntas = data;  });
+          
+        });
       });
     } else {
-      this.firebaseService.getSucursalesByEmpresa(usuario.idEmpresa).subscribe((data: any[]) => {
-        this.sucursales = data;
-            
+      // Si no es SuperAdmin, obtener solo las sucursales de la empresa del usuario
+      this.firebaseService.getSucursalesByEmpresa(usuario.idEmpresa).subscribe((sucursalesData: any[]) => {
+        this.sucursales = sucursalesData;
+
+        // Filtrar las asignaciones para que solo incluyan las de las sucursales disponibles
+        const nombresSucursales = this.sucursales.map(sucursal => sucursal.nombreSucursal);
+
+        this.firebaseService.getAsignaciones().subscribe((asignacionesData: any[]) => {
+          this.todasLasPreguntasAsignadas = asignacionesData.filter(asignacion =>
+            nombresSucursales.includes(asignacion.nombreSucursal)
+          );
+          this.firebaseService.getPreguntas().subscribe((data: any[]) => {
+            this.preguntas = data.filter(pregunta =>
+              pregunta.empresa === usuario.idEmpresa || pregunta.empresa === 3
+          );       
+         });
+        });
       });
     }
-
-          
-    // Obtener asignaciones previas
-    this.firebaseService.getAsignaciones().subscribe((data: any[]) => {
-      this.todasLasPreguntasAsignadas = data;
-      //
-    });
   }
 
-  // Método para manejar el cambio de selección de sucursal
   cargarPreguntasAsignadas() {
-    console.log('Sucursal seleccionada:', this.selectedSucursal); // Verificar sucursal seleccionada
-    if (this.selectedSucursal !== null) {
-      // Filtrar preguntas asignadas según la sucursal seleccionada
-      this.preguntasAsignadas = this.todasLasPreguntasAsignadas
-        .filter(asignacion => asignacion.nombreSucursal === this.selectedSucursal)
-        .map(asignacion => {
-          const pregunta = this.preguntas.find(p => p.pregunta === asignacion.pregunta);
-          return pregunta ? pregunta : { idPregunta: 0, pregunta: '', alternativaUno: '', alternativaDos: '', alternativaTres: '', vigencia: false };
-        });
-      console.log('Preguntas asignadas a la sucursal:', this.preguntasAsignadas); // Verificar preguntas asignadas cargadas
+    if (!this.selectedSucursal) {
+      this.preguntasAsignadas = [];
+      return;
     }
+  
+    // Obtener los nombres de las sucursales disponibles
+    const sucursalesDisponibles = this.sucursales.map(sucursal => sucursal.nombreSucursal);
+  
+    // Filtrar las preguntas asignadas solo para las sucursales disponibles y la sucursal seleccionada
+    this.preguntasAsignadas = this.todasLasPreguntasAsignadas
+      .filter(asignacion => 
+        sucursalesDisponibles.includes(asignacion.nombreSucursal) &&
+        asignacion.nombreSucursal === this.selectedSucursal
+      )
+      .map(asignacion => {
+        const pregunta = this.preguntas.find(p => p.pregunta === asignacion.pregunta);
+        return pregunta ? pregunta : { idPregunta: 0, pregunta: '', alternativaUno: '', alternativaDos: '', alternativaTres: '', vigencia: false };
+      });
   }
-
+  
+  
   openDialog(): void {
     const dialogRef = this.dialog.open(PreguntaModalComponent, {
       width: '400px'

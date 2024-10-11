@@ -4,15 +4,9 @@
         <div class="sidenav-content"> 
           <mat-nav-list class="nav-list"> 
             <a mat-list-item (click)="CambioPestana('principal')" class="nav-item">Inicio</a>
-             <!-- Si usuario logueado tiene tipo de empresa SuperAdmin que cargue este menu, mediente *ngIf
-           <div *ngIf>
-            <a mat-list-item (click)="CambioPestana('empresa')" class="nav-item">Super Administración</a>
-          </div>   
-          Posible solución 2, Vicho: cargarlas en una colección y correrlas mediente un for que recorra la lista
-          podriamos asignar 2 tipos de usuarios uno con los menu que deberia ver un Admin y otros con los que 
-          deberia ver un superAdmin
-          -->
-            <a mat-list-item (click)="CambioPestana('empresa')" class="nav-item">Super Administración</a>
+            <a *ngIf="usuarioLogueado?.tipoUsuario === 'SuperAdmin'" mat-list-item (click)="CambioPestana('empresa')" class="nav-item">
+              Super Administración
+            </a>
             <a mat-list-item (click)="CambioPestana('sucursal')" class="nav-item">Administrar Sucursales</a>
             <a mat-list-item (click)="CambioPestana('pregunta')" class="nav-item">Crear Pregunta</a>
             <a mat-list-item (click)="CambioPestana('reporte-encuesta')" class="nav-item">Reportes</a>
@@ -53,40 +47,74 @@
         <div class="table-container">
           <h2>Reporte de Encuestas</h2>
           <table mat-table [dataSource]="filteredData" class="mat-elevation-z8">
-            <!-- ID Empresa Column -->
-            <ng-container matColumnDef="idEmpresa">
-              <th mat-header-cell *matHeaderCellDef> ID Empresa </th>
-              <td mat-cell *matCellDef="let element"> {{element.idEmpresa}} </td>
+            <!-- Usuario Column -->
+            <ng-container matColumnDef="usuario">
+              <th mat-header-cell *matHeaderCellDef> Usuario </th>
+              <td mat-cell *matCellDef="let element"> {{element.usuario}} </td>
             </ng-container>
-  
-            <!-- Sucursal Column -->
-            <ng-container matColumnDef="sucursal">
-              <th mat-header-cell *matHeaderCellDef> Sucursal </th>
-              <td mat-cell *matCellDef="let element"> {{element.sucursal}} </td>
+        
+            <!-- Calificación Column -->
+            <ng-container matColumnDef="calificacion">
+              <th mat-header-cell *matHeaderCellDef> Calificación </th>
+              <td mat-cell *matCellDef="let element"> {{element.calificacion}} </td>
             </ng-container>
-  
-            <!-- Punto Satisfacción Column -->
-            <ng-container matColumnDef="puntoSatisfaccion">
-              <th mat-header-cell *matHeaderCellDef> Punto Satisfacción </th>
-              <td mat-cell *matCellDef="let element"> {{element.puntoSatisfaccion}} </td>
+        
+            <!-- Pregunta 1 y Respuesta 1 Columns -->
+            <ng-container matColumnDef="pregunta1">
+              <th mat-header-cell *matHeaderCellDef> Pregunta 1 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta1?.pregunta}} </td>
             </ng-container>
-  
-            <!-- Empresa Column -->
-            <ng-container matColumnDef="empresa">
-              <th mat-header-cell *matHeaderCellDef> Empresa </th>
-              <td mat-cell *matCellDef="let element"> {{element.empresa}} </td>
+            <ng-container matColumnDef="respuesta1">
+              <th mat-header-cell *matHeaderCellDef> Respuesta 1 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta1?.respuesta}} </td>
             </ng-container>
-  
-            <!-- Fecha Column -->
-            <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef> Fecha </th>
-              <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
+        
+            <!-- Pregunta 2 y Respuesta 2 Columns -->
+            <ng-container matColumnDef="pregunta2">
+              <th mat-header-cell *matHeaderCellDef> Pregunta 2 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta2?.pregunta}} </td>
             </ng-container>
-  
+            <ng-container matColumnDef="respuesta2">
+              <th mat-header-cell *matHeaderCellDef> Respuesta 2 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta2?.respuesta}} </td>
+            </ng-container>
+        
+            <!-- Pregunta 3 y Respuesta 3 Columns -->
+            <ng-container matColumnDef="pregunta3">
+              <th mat-header-cell *matHeaderCellDef> Pregunta 3 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta3?.pregunta}} </td>
+            </ng-container>
+            <ng-container matColumnDef="respuesta3">
+              <th mat-header-cell *matHeaderCellDef> Respuesta 3 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta3?.respuesta}} </td>
+            </ng-container>
+        
+            <!-- Pregunta 4 y Respuesta 4 Columns -->
+            <ng-container matColumnDef="pregunta4">
+              <th mat-header-cell *matHeaderCellDef> Pregunta 4 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta4?.pregunta}} </td>
+            </ng-container>
+            <ng-container matColumnDef="respuesta4">
+              <th mat-header-cell *matHeaderCellDef> Respuesta 4 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta4?.respuesta}} </td>
+            </ng-container>
+        
+            <!-- Pregunta 5 y Respuesta 5 Columns -->
+            <ng-container matColumnDef="pregunta5">
+              <th mat-header-cell *matHeaderCellDef> Pregunta 5 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta5?.pregunta}} </td>
+            </ng-container>
+            <ng-container matColumnDef="respuesta5">
+              <th mat-header-cell *matHeaderCellDef> Respuesta 5 </th>
+              <td mat-cell *matCellDef="let element"> {{element.pregunta5?.respuesta}} </td>
+            </ng-container>
+        
+            <!-- Table Headers and Rows -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
         </div>
+        
   
         <div class="export-container">
           <button mat-raised-button color="accent" (click)="exportarExcel()">

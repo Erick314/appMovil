@@ -1,42 +1,59 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import * as XLSXStyle from 'xlsx-style';
 import { AuthService } from '../services/auth.service';
-
+import { FirebaseService } from '../services/firebase.service'; // Servicio para obtener datos de Firebase
 
 @Component({
   selector: 'app-reporte-encuesta',
   templateUrl: './reporte-encuesta.component.html',
-  styleUrl: './reporte-encuesta.component.css'
+  styleUrls: ['./reporte-encuesta.component.css']
 })
-export class ReporteEncuestaComponent {
+export class ReporteEncuestaComponent implements OnInit {
   @ViewChild('sidenav') sidenav?: MatSidenav;
-  usuarioLogueado: any = null; 
-  displayedColumns: string[] = ['idEmpresa', 'sucursal', 'puntoSatisfaccion', 'empresa', 'fecha'];
+  usuarioLogueado: any = null;
+  displayedColumns: string[] = ['usuario', 'calificacion', 'pregunta1', 'respuesta1', 'pregunta2', 'respuesta2', 'pregunta3', 'respuesta3', 'pregunta4', 'respuesta4', 'pregunta5', 'respuesta5'];
 
-  encuestas = [
-    { idEmpresa: 1, sucursal: 'Sucursal A', puntoSatisfaccion: 9, empresa: 'Empresa X', fecha: '10-01-2023' },
-    { idEmpresa: 2, sucursal: 'Sucursal B', puntoSatisfaccion: 7, empresa: 'Empresa Y', fecha: '10-12-2023' },
-    { idEmpresa: 3, sucursal: 'Sucursal A', puntoSatisfaccion: 8, empresa: 'Empresa X', fecha: '02-08-2023' },
-    { idEmpresa: 4, sucursal: 'Sucursal C', puntoSatisfaccion: 6, empresa: 'Empresa Z', fecha: '03-08-2023' },
-    { idEmpresa: 5, sucursal: 'Sucursal B', puntoSatisfaccion: 5, empresa: 'Empresa Y', fecha: '04-08-2023' },
-
-  ];
-
-  filteredData = [...this.encuestas];
+  encuestas: any[] = []; // Array para almacenar las encuestas obtenidas de la base de datos
+  filteredData: any[] = []; // Array para almacenar los datos filtrados
   searchText: string = ''; // Variable para el filtro
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private firebaseService: FirebaseService // Inyectar el servicio de Firebase
+  ) {}
+
+  ngOnInit() {
+    this.usuarioLogueado = this.authService.getUsuarioLogueado();
+
+    if (!this.usuarioLogueado) {
+      console.error("No hay usuario logueado.");
+      return;
+    }
+
+    // Obtener las encuestas desde la base de datos
+    this.firebaseService.getEncuestas().subscribe((data: any[]) => {
+      // Filtrar las encuestas según el tipo de usuario
+      this.encuestas = this.usuarioLogueado.tipoUsuario === 'SuperAdmin'
+        ? data
+        : data.filter(encuesta => encuesta.empresa === this.usuarioLogueado.idEmpresa);
+      
+      // Inicializar los datos filtrados con las encuestas obtenidas
+      this.filteredData = [...this.encuestas];
+    });
+  }
 
   // Método para filtrar encuestas por sucursal o empresa
   filtrarPorSucursalOEmpresa() {
     if (this.searchText) {
       this.filteredData = this.encuestas.filter(encuesta =>
-        encuesta.sucursal.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        encuesta.empresa.toLowerCase().includes(this.searchText.toLowerCase())
+        (encuesta.usuario || '').toLowerCase().includes(this.searchText.toLowerCase()) ||
+        (encuesta.sucursal || '').toLowerCase().includes(this.searchText.toLowerCase()) ||
+        (encuesta.empresa || '').toString().includes(this.searchText)
       );
     } else {
       this.filteredData = [...this.encuestas];
@@ -45,17 +62,35 @@ export class ReporteEncuestaComponent {
 
   // Método para exportar los datos a Excel
   exportarExcel() {
+    if (!this.usuarioLogueado) {
+      console.error("No hay usuario logueado.");
+      return;
+    }
+
     // Construir encabezados personalizados
-    const header = [['ID', 'Sucursal', 'Satisfacción', 'Empresa', 'Fecha encuesta']];
-  
-    // Convertir los datos de encuestas a formato JSON para el cuerpo
+    const header = [['Usuario', 'Calificación', 'Pregunta 1', 'Respuesta 1', 'Pregunta 2', 'Respuesta 2', 'Pregunta 3', 'Respuesta 3', 'Pregunta 4', 'Respuesta 4', 'Pregunta 5', 'Respuesta 5']];
+
+    // Convertir los datos de encuestas al formato requerido para el cuerpo
     const data = this.filteredData.map(encuesta => [
-      encuesta.idEmpresa,
-      encuesta.sucursal,
-      encuesta.puntoSatisfaccion,
-      encuesta.empresa,
-      encuesta.fecha
+      encuesta.usuario,
+      encuesta.calificacion,
+      encuesta.pregunta1?.pregunta || '',
+      encuesta.pregunta1?.respuesta || '',
+      encuesta.pregunta2?.pregunta || '',
+      encuesta.pregunta2?.respuesta || '',
+      encuesta.pregunta3?.pregunta || '',
+      encuesta.pregunta3?.respuesta || '',
+      encuesta.pregunta4?.pregunta || '',
+      encuesta.pregunta4?.respuesta || '',
+      encuesta.pregunta5?.pregunta || '',
+      encuesta.pregunta5?.respuesta || ''
     ]);
+
+    // Calcular el promedio de las calificaciones
+    const promedio = (this.filteredData.reduce((acc, encuesta) => acc + (encuesta.calificacion || 0), 0) / this.filteredData.length).toFixed(2);
+
+    // Añadir el promedio al final del archivo
+    data.push(['Promedio General', promedio]);
 
     // Combinar los encabezados con los datos
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([...header, ...data]);
@@ -65,22 +100,20 @@ export class ReporteEncuestaComponent {
       font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 14 },
       fill: { fgColor: { rgb: '0000FF' } },
       alignment: { horizontal: 'center' },
-      border: {                   // Bordes
+      border: {
         top: { style: 'thin', color: { rgb: '000000' } },
         bottom: { style: 'thin', color: { rgb: '000000' } },
         left: { style: 'thin', color: { rgb: '000000' } },
-        right: { style: 'thin', color: { rgb: '000000' } },
+        right: { style: 'thin', color: { rgb: '000000' } }
       }
     };
-    
-    
 
-    // Aplicar estilos a la fila de encabezados (primera fila)
-    const range = XLSX.utils.decode_range(ws['!ref'] || '');  // Obtener el rango de celdas
-    for (let C = range.s.c; C <= range.e.c; ++C) {            // Iterar sobre las columnas
+    // Aplicar estilos a la fila de encabezados
+    const range = XLSX.utils.decode_range(ws['!ref'] || '');
+    for (let C = range.s.c; C <= range.e.c; ++C) {
       const cell_address = XLSX.utils.encode_cell({ r: 0, c: C });
       if (!ws[cell_address]) continue;
-      ws[cell_address].s = headerStyle;                       // Aplicar estilo a la celda
+      ws[cell_address].s = headerStyle;
     }
 
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -91,50 +124,28 @@ export class ReporteEncuestaComponent {
     this.guardarExcel(excelBuffer, 'Reporte_Encuestas.xlsx');
   }
 
-
+  // Método para guardar el archivo Excel
   guardarExcel(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, fileName);
   }
-  ngOnInit() {
-    this.usuarioLogueado = this.authService.getUsuarioLogueado();
-    
-    if (!this.usuarioLogueado) {
-      return;
-    }
 
-  }
+  // Método para alternar el menú lateral
   toggleSidenav() {
     if (this.sidenav) {
       this.sidenav.toggle();
     }
   }
 
+  // Método para cambiar de página
+  CambioPestana(pestana: string) {
+    this.router.navigate(['/' + pestana]);
+  }
+
+  // Método para cerrar sesión
   logout() {
     this.router.navigate(['/login']);
   }
-
-  CambioPestana(pestaña: string) {
-    this.router.navigate(['/' + pestaña]);
-  }
-
-  // Método para calcular los promedios
-  calcularPromedios() {
-    const sucursales = this.filteredData.reduce((acc: any, encuesta) => {
-      if (!acc[encuesta.sucursal]) {
-        acc[encuesta.sucursal] = { total: 0, count: 0 };
-      }
-      acc[encuesta.sucursal].total += encuesta.puntoSatisfaccion;
-      acc[encuesta.sucursal].count += 1;
-      return acc;
-    }, {});
-
-    const promedios = Object.keys(sucursales).map(sucursal => ({
-      sucursal,
-      promedio: (sucursales[sucursal].total / sucursales[sucursal].count).toFixed(2)
-    }));
-
-    return promedios;
-  }
 }
+
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';

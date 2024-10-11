@@ -6,9 +6,10 @@
     </mat-menu>
   </div>
 
-  <!-- Pregunta con emojis -->
+  <!-- Encuesta de satisfacción -->
   <div class="survey-container">
-    <h3>Encuesta de satisfacción</h3><hr>
+    <h3>Encuesta de satisfacción</h3>
+    <hr>
     <h6>¿Cómo se siente con la atención recibida?</h6>
     <div class="emoji-container">
       <img src="assets/enojado.png" alt="Enojado" (click)="selectEmoji(1)" 
@@ -25,25 +26,26 @@
 
     <hr><br>
 
-    <!-- Opciones para finalizar o continuar con la encuesta -->
+    <!-- Opciones para continuar o finalizar la encuesta -->
     <div *ngIf="!showAdditionalQuestions && selectedEmojiValue !== null">
       <button (click)="continuarEncuesta()" class="submit-button">Contestar encuesta completa</button>
       <button (click)="finalizarEncuesta()" class="submit-button">Finalizar</button>
     </div>
 
-    <!-- Mostrar todas las preguntas obtenidas -->
+    <!-- Preguntas adicionales -->
     <div *ngIf="showAdditionalQuestions">
       <h6>Por favor, responde las siguientes preguntas:</h6>
 
       <div *ngFor="let pregunta of preguntas; let i = index">
         <h6>{{ pregunta.pregunta }}</h6>
-        <div class="options-container">
-          <label *ngFor="let alternativa of [pregunta.alternativaUno, pregunta.alternativaDos, pregunta.alternativaTres]">
-            <input type="radio" name="pregunta{{i}}" (change)="selectOption(pregunta.idPregunta, alternativa)">
+        <mat-radio-group (change)="selectOption(i, $event.value)">
+          <mat-radio-button *ngFor="let alternativa of [pregunta.alternativaUno, pregunta.alternativaDos, pregunta.alternativaTres]" 
+                            [value]="alternativa">
             {{ alternativa }}
-          </label>
-        </div>
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
+
       <hr>
 
       <h6>Comentarios adicionales (opcional)</h6>
