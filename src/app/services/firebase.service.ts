@@ -369,4 +369,10 @@ export class FirebaseService {
     return this.firestore.collection('encuestas', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
   }
   
+  getSucursales2(): Observable<any[]> {
+    return this.firestore.collection('sucursales').valueChanges();
+  }
+  getEncuestas2(): Observable<any[]> {
+    return this.firestore.collection('encuestas').valueChanges();
+  }
 }

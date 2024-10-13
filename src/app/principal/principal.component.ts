@@ -45,47 +45,58 @@ export class PrincipalComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarioLogueado = this.authService.getUsuarioLogueado();
-    if (this.usuarioLogueado?.idEmpresa === 3) {
+    if (this.usuarioLogueado) {
       this.cargarDatos();
+    } else {
+      console.error("probando data para las card");
     }
   }
+  
 
 
   cargarDatos() {
-
     if (this.datosCargados) {
       return;
     }
     this.datosCargados = true;
   
+    // Obtener las empresas y cargar el gráfico para todas las empresas
     this.firebaseService.getEmpresas().subscribe((empresas: any[]) => {
       this.empresas = empresas;
-      this.cargarEncuestas();
+      this.cargarEncuestas(); // Cargar encuestas para todas las empresas
+      console.log('Empresas (todas):', empresas);  
     });
+  
     if (this.usuarioLogueado?.idEmpresa === 3) {
-      // Mostrar todas las encuestas y sucursales
+      // Para SuperAdmin, obtener todas las sucursales y encuestas
       this.firebaseService.getSucursales().subscribe((sucursales: any[]) => {
-        this.totalSucursales = sucursales.length;
+        this.totalSucursales = sucursales.length; 
+        console.log('Sucursales (todas):', sucursales);  
       });
   
       this.firebaseService.getEncuestas().subscribe((encuestas: any[]) => {
-        this.totalEncuestas = encuestas.length;
-        this.calcularPromedioCalificaciones(encuestas);
-        this.cargarEncuestas(); // Asegúrate de llamar a cargarEncuestas aquí también
+        this.totalEncuestas = encuestas.length; 
+        this.calcularPromedioCalificaciones(encuestas); 
+        console.log('Encuestas (todas):', encuestas);  
       });
     } else {
-      // Filtrar por idEmpresa del usuario logueado
+      // Para usuarios con idEmpresa diferente de 3, filtrar por empresa
       this.firebaseService.getSucursalesFiltrado(this.usuarioLogueado.idEmpresa).subscribe((sucursales: any[]) => {
-        this.totalSucursales = sucursales.length;
+        this.totalSucursales = sucursales.length; 
+        console.log('Sucursales filtradas:', sucursales);  
       });
   
       this.firebaseService.getEncuestasFiltrado(this.usuarioLogueado.idEmpresa).subscribe((encuestas: any[]) => {
-        this.totalEncuestas = encuestas.length;
-        this.calcularPromedioCalificaciones(encuestas);
-        this.cargarEncuestas(); // Asegúrate de llamar a cargarEncuestas aquí también
+        this.totalEncuestas = encuestas.length; 
+        this.calcularPromedioCalificaciones(encuestas); 
+        console.log('Encuestas filtradas:', encuestas);  
       });
     }
   }
+  
+  
+  
+  
   
 
   calcularPromedioCalificaciones(encuestas: any[]): void {
@@ -94,7 +105,7 @@ export class PrincipalComponent implements OnInit {
   }
 
   cargarEncuestas() {
-    this.encuestaPorEmpresa = {}; // Reinicializar
+    this.encuestaPorEmpresa = {}; 
 
     this.firebaseService.getEncuestas().subscribe((encuestas: any[]) => {
       encuestas.forEach(encuesta => {
@@ -106,7 +117,6 @@ export class PrincipalComponent implements OnInit {
         }
       });
 
-      // Asegúrate de que solo llames actualizarGrafico si las empresas están cargadas
       if (this.empresas.length > 0) {
         this.actualizarGrafico();
       }
@@ -115,16 +125,17 @@ export class PrincipalComponent implements OnInit {
 
   actualizarGrafico() {
     if (this.empresas.length === 0) {
-      return; // Asegúrate de que haya empresas antes de actualizar el gráfico
+      return;
     }
-
+  
+    // Muestra las encuestas para todas las empresas
     const empresasNombres = this.empresas.map(empresa => empresa.nombreEmpresa);
     const encuestasPorEmpresa = this.empresas.map(empresa => this.encuestaPorEmpresa[empresa.idEmpresa] || 0);
-
+  
     this.chartOptions.xaxis = {
       categories: empresasNombres
     };
-
+  
     this.chartOptions.series = [
       {
         name: 'Encuestas',
@@ -132,6 +143,7 @@ export class PrincipalComponent implements OnInit {
       }
     ];
   }
+  
 
   toggleSidenav() {
     if (this.sidenav) {
