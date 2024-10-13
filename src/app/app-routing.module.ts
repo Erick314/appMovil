@@ -13,6 +13,8 @@ import { SucursalComponent } from './sucursal/sucursal.component';
 import { EncuestaFinalizadaComponent } from './encuesta-finalizada/encuesta-finalizada.component';
 import { PreguntaComponent } from './pregunta/pregunta.component';
 import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.component';
+import { InformacionDiariaComponent } from './informacion-diaria/informacion-diaria.component';
+import { InformacionPeriodoComponent } from './informacion-periodo/informacion-periodo.component'; 
 
 
 const routes: Routes = [
@@ -20,7 +22,13 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'encuesta', component: EncuestaComponent },
-  { path: 'principal', component: PrincipalComponent },
+  {path: 'principal', component: PrincipalComponent,
+    children: [
+      { path: '', redirectTo: 'informacion-diaria', pathMatch: 'full' },  
+      { path: 'informacion-diaria', component: InformacionDiariaComponent },
+      { path: 'informacion-periodo', component: InformacionPeriodoComponent },
+    ]
+  },  
   { path: 'recuperar', component: RecuperarComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'empresa', component: EmpresaComponent },

@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  BrowserModule,
-  provideClientHydration,
-} from '@angular/platform-browser';
+import {BrowserModule,provideClientHydration} from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,7 +26,7 @@ import { SplashComponent } from './splash/splash.component';
 import { DatePipe } from '@angular/common'; 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
-
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 //Principal
@@ -52,6 +49,9 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.component';
+import { InformacionDiariaComponent } from './informacion-diaria/informacion-diaria.component';
+import { InformacionPeriodoComponent } from './informacion-periodo/informacion-periodo.component';
+
 
 
 
@@ -75,7 +75,9 @@ import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.co
     PreguntaComponent,
     PreguntaModalComponent,
     AsignarPreguntaSucursalComponent,
-    ReporteEncuestaComponent
+    ReporteEncuestaComponent,
+    InformacionDiariaComponent,
+    InformacionPeriodoComponent
   ],
   imports: [
     BrowserModule,
@@ -84,6 +86,7 @@ import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.co
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatInputModule,
+    NgApexchartsModule,
     MatButtonModule,
     MatFormFieldModule,
     BrowserModule,

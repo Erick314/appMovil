@@ -1,26 +1,27 @@
 <div class="main-container">
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav mode="side" opened>
-      <div class="sidenav-content">
-        <mat-nav-list class="nav-list">
+      <div class="sidenav-content"> <!-- Asegura que ocupe toda la altura -->
+        <mat-nav-list class="nav-list"> <!-- Lista de navegación crece -->
           <a mat-list-item (click)="CambioPestana('principal')" class="nav-item">Inicio</a>
           <a *ngIf="usuarioLogueado?.tipoUsuario === 'SuperAdmin'" mat-list-item (click)="CambioPestana('empresa')" class="nav-item">
             Super Administración
           </a>
-          <a mat-list-item (click)="CambioPestana('sucursal')" class="nav-item">Administrar Sucursales</a>
-          <a mat-list-item (click)="CambioPestana('pregunta')" class="nav-item">Crear Pregunta</a>
-          <a mat-list-item (click)="CambioPestana('reporte-encuesta')" class="nav-item">Reportes</a>
-        </mat-nav-list>
+            <a mat-list-item (click)="CambioPestana('sucursal')" class="nav-item">Administrar Sucursales</a>
+            <a mat-list-item (click)="CambioPestana('pregunta')" class="nav-item">Crear Pregunta</a>
+            <a mat-list-item (click)="CambioPestana('reporte-encuesta')" class="nav-item">Reportes</a>
+          </mat-nav-list>
         <div class="logo-container">
           <img src="assets/2.png" alt="Logo" class="logo-image">
         </div>
-        <div class="bottom-nav">
-          <a mat-list-item (click)="logout()" class="nav-item logout-item">Cerrar Sesión</a>
+        <div class="bottom-nav"> <!-- Cerrar sesión se mantiene en la parte inferior -->
+          <a mat-list-item (click)="CambioPestana('login')" class="nav-item logout-item">Cerrar Sesión</a>
         </div>
       </div>
     </mat-sidenav>
 
     <mat-sidenav-content>
+      <!-- Header con título y usuario -->
       <header class="header">
         <button mat-icon-button (click)="toggleSidenav()" class="custom-menu-button">
           <mat-icon>menu</mat-icon>
@@ -34,38 +35,48 @@
           <a href=""><img src="assets/cerrarS.png" alt="Cerrar" class="menu-icon" (click)="logout()"></a>
         </div>
       </header>
-      
 
-      <div class="dashboard-cards">
-        <!-- Aquí están las tarjetas que tenías antes -->
-        <mat-card class="dashboard-card">
-          <mat-card-title>Cantidad sucursales</mat-card-title>
-          <mat-card-content>{{ cantidadSucursales }}</mat-card-content>
-        </mat-card>
-        
-        <mat-card class="dashboard-card">
-          <mat-card-title>Cantidad preguntas</mat-card-title>
-          <mat-card-content>{{ cantidadPreguntas }}</mat-card-content>
-        </mat-card>
-        <mat-card class="dashboard-card">
-          <mat-card-title>Cantidad empresas</mat-card-title>
-          <mat-card-content>P. de desarrollo</mat-card-content>
-        </mat-card>
-        <mat-card class="dashboard-card">
-          <mat-card-title>Encuestas totales contestadas</mat-card-title>
-          <mat-card-content>P. de desarrollo</mat-card-content>
-        </mat-card>
-        <mat-card class="dashboard-card">
-          <mat-card-title>Encuestas contestadas hoy</mat-card-title>
-          <mat-card-content>P. de desarrollo</mat-card-content>
-        </mat-card>
-        <mat-card class="dashboard-card">
-          <mat-card-title>Promedio de evaluación</mat-card-title>
-          <mat-card-content>P. de desarrollo</mat-card-content>
-        </mat-card>
-        
+      <!-- Tarjetas con datos -->
+  <div class="dashboard-cards">
+    <mat-card class="dashboard-card green-card">
+      <mat-card-title>Total de Sucursales</mat-card-title>
+      <mat-card-content>{{ totalSucursales }}</mat-card-content>
+    </mat-card>
+    
+    <mat-card class="dashboard-card yellow-card">
+      <mat-card-title>Total de Encuestas</mat-card-title>
+      <mat-card-content>{{ totalEncuestas }}</mat-card-content>
+    </mat-card>
+    
+    <mat-card class="dashboard-card blue-card">
+      <mat-card-title>Promedio de Calificaciones</mat-card-title>
+      <mat-card-content>{{ promedioCalificaciones | number:'1.1-2' }}</mat-card-content>
+    </mat-card>
+  </div>
+
+
+      <br><br>
+      <div *ngIf="usuarioLogueado?.idEmpresa === 3">
+        <h2>Encuestas contestadas por Empresa </h2>
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [yaxis]="chartOptions.yaxis"
+        ></apx-chart>
       </div>
+      
+      <br><br>
 
+      <!-- Contenedor de tabs para las children -->
+      <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <a class="nav-link" routerLink="informacion-diaria" routerLinkActive="active">Información Semanal</a>
+            <a class="nav-link" routerLink="informacion-periodo" routerLinkActive="active">Información Mensual</a>
+        </ul>
+        <!-- Aquí se cargan los children -->
+        <router-outlet></router-outlet>
+      </div>
       <footer class="footer">
         <p>&copy; 2024 J.E.J. Todos los derechos reservados.</p>
       </footer>
