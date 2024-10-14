@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import {BrowserModule,provideClientHydration} from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -52,6 +52,7 @@ import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.co
 import { InformacionDiariaComponent } from './informacion-diaria/informacion-diaria.component';
 import { InformacionPeriodoComponent } from './informacion-periodo/informacion-periodo.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 
@@ -114,7 +115,13 @@ import { NotFoundComponent } from './not-found/not-found.component';
     AngularFirestoreModule,
     CommonModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     provideClientHydration(),

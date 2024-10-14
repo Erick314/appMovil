@@ -46,15 +46,16 @@ export class LoginComponent {
           console.log(usuarioLogueado.tipoUsuario); // Para verificar el tipo de usuario
 
           // Ingresar con autenticación
-          if (this.authService.getUsuarioLogueado().tipoUsuario === 'Empresa' || this.authService.getUsuarioLogueado().tipoUsuario === 'SuperAdmin') {
+          if (this.authService.getUsuarioLogueado().tipoUsuario === 'Empresa' || this.authService.getUsuarioLogueado().tipoUsuario === 'SuperAdmin') 
+            {
             this.router.navigate(['/principal']);
           } else if (this.authService.getUsuarioLogueado().tipoUsuario === 'Cliente') {
             this.router.navigate(['/encuesta']);
           }
-        } else {
-          this.router.navigate(['/login']);  // Permitir el acceso al sistema
-        }
-      }).catch(error => {
+           else {
+            this.router.navigate(['/login']);  // Permitir el acceso al sistema
+          }
+      }}).catch(error => {
         alert(error);
       });
     }

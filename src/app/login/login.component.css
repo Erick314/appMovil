@@ -1,38 +1,36 @@
-:host {
+.container-fluid {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(135deg, #2e4053, #74b9ff); 
+  background: linear-gradient(135deg, #2e4053, #74b9ff);
   position: relative;
-  overflow: hidden; 
 }
 
-.container {
-  padding: 30px;
+.card-container {
+  display: flex;
+  max-width: 900px; /* Ajusta el tamaño total */
+}
+
+.login-card {
   background-color: #ffffff;
   border-radius: 16px;
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2); 
-  width: 100%;
-  max-width: 400px;
-  z-index: 10; 
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  width: 400px;
 }
 
-.bg-image-container {
+.info-card {
+  background-color: #2e4053; /* Azul oscuro */
+  border-radius: 16px;
+  margin-left: 20px;
+  width: 400px;
   text-align: center;
-  position: absolute;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  z-index: 1; 
 }
 
-.bg-image-container img {
+.logo {
   max-width: 120px;
-  height: auto;
   border-radius: 50%;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
 
 .link-style {
@@ -45,38 +43,91 @@
   color: #2e4053;
 }
 
-
-
-
-
-/********* Wave **************/
-/* Contenedor de la ola */
+/* Wave Styles */
 .wave-container {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 150px;
-  overflow: hidden; /* Ocultar cualquier contenido que desborde */
-  z-index: 0; /* Debajo del contenido principal */
+  overflow: hidden;
+  z-index: 0;
 }
 
-/* Estilo del SVG de la ola */
 .wave {
   position: absolute;
-  width: 300%; /* Duplicar el ancho para crear el efecto de repetición */
+  width: 300%;
   height: 100%;
-  animation: wave-animation 5s linear infinite; /* Animación continua */
+  animation: wave-animation 5s linear infinite;
 }
 
 .wave path {
-  fill: #2e4053; /* Color de la ola */
+  fill: #2e4053;
 }
 
 @keyframes wave-animation {
   0% {
-    transform: translateX(0); /* Iniciar la ola en su posición original */
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%); /* Mover la ola a la mitad para crear el efecto de repetición */
+    transform: translateX(-50%);
   }
+}
+@media (max-width: 768px) {
+  .wave-container {
+    height: 100px; /* Ajustar la altura de la ola en dispositivos más pequeños */
+  }
+  
+  .wave {
+    transform: scaleX(1.5); /* Ajuste del escalado en pantallas pequeñas */
+  }
+}
+/* fin wave */
+.container {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  max-width: 800px; /* Asegúrate de ajustar el ancho total */
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+}
+
+.left-box, .right-box {
+  width: 50%; /* Ambos cuadros ocupan el mismo espacio */
+  padding: 30px;
+}
+
+.left-box {
+  background-color: #ffffff;
+}
+
+.right-box {
+  background-color: #1f354d; /* Fondo oscuro */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 0 16px 16px 0;
+}
+
+.right-box img {
+  max-width: 120px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.right-box h2 {
+  font-size: 24px;
+}
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
+}
+.slogan {
+  font-size: 16px;
+  color: #ffffff;
+  margin-top: 10px;
+  text-align: center;
 }

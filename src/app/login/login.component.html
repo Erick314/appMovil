@@ -1,24 +1,13 @@
-<div class="bg-image-container">
-  <img src="assets/2.png" alt="cacapoto" class="img-fluid mx-auto d-block">
-</div>
-
-<div class="d-flex justify-content-center align-items-center vh-100">
-  <div class="card p-4 shadow" style="width: 100%; max-width: 400px">
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+ <div class="container">
+  <div class="left-box">
     <h2 class="text-center">BIENVENIDO</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group mb-3">
         <mat-form-field class="full-width">
           <mat-label>Usuario</mat-label>
-          <input
-            matInput
-            placeholder="Ingrese su usuario"
-            formControlName="usuario"
-          />
-          <mat-error
-            *ngIf="
-              loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched
-            "
-          >
+          <input matInput placeholder="Ingrese su usuario" formControlName="usuario" />
+          <mat-error *ngIf="loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched">
             Por favor ingrese un usuario válido.
           </mat-error>
         </mat-form-field>
@@ -27,41 +16,31 @@
       <div class="form-group mb-3">
         <mat-form-field class="full-width">
           <mat-label>Contraseña</mat-label>
-          <input
-            matInput
-            type="password"
-            placeholder="Ingrese su contraseña"
-            formControlName="password"
-          />
-          <mat-error
-            *ngIf="
-              loginForm.get('password')?.invalid &&
-              loginForm.get('password')?.touched
-            "
-          >
+          <input matInput type="password" placeholder="Ingrese su contraseña" formControlName="password" />
+          <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
             La contraseña debe contener 8 dígitos.
           </mat-error>
         </mat-form-field>
       </div>
-      <span (click)="crearUsuario()" class="link-style" > Crear usuario </span><br>
+      <span (click)="crearUsuario()" class="link-style">Crear usuario</span><br>
       <span (click)="recuperar()" class="link-style">Recuperar contraseña</span><br><br>
-
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="loginForm.invalid"
-        class="w-100"
-      >
-        Ingresar
-      </button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid" class="w-100">Ingresar</button>
     </form>
   </div>
+
+  <div class="right-box">
+    <img src="assets/2.png" alt="Logo" />
+    <h2>¡Bienvenido!</h2>
+    <p class="slogan">Organiza tus opiniones, optimiza tus decisiones.</p>
+
+  </div>
 </div>
+
+</div>
+
 <!-- Contenedor de ondas -->
 <div class="wave-container">
   <svg class="wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
     <path d="M0,120 C150,200 350,0 600,80 C850,160 1050,0 1200,80 L1200,200 L0,200 Z"></path>
   </svg>
 </div>
-
