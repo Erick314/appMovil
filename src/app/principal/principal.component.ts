@@ -7,8 +7,6 @@ import { ApexOptions } from 'ng-apexcharts';
 import { take } from 'rxjs/operators';
 
 
-
-
 @Component({
   selector: 'app-principal',
   templateUrl: './principal.component.html',
@@ -55,8 +53,6 @@ export class PrincipalComponent implements OnInit {
       console.error("probando data para las card");
     }
   }
-  
-
 
   cargarDatos() {
     if (this.datosCargados) {

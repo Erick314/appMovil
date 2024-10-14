@@ -51,6 +51,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.component';
 import { InformacionDiariaComponent } from './informacion-diaria/informacion-diaria.component';
 import { InformacionPeriodoComponent } from './informacion-periodo/informacion-periodo.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 
@@ -77,7 +78,8 @@ import { InformacionPeriodoComponent } from './informacion-periodo/informacion-p
     AsignarPreguntaSucursalComponent,
     ReporteEncuestaComponent,
     InformacionDiariaComponent,
-    InformacionPeriodoComponent
+    InformacionPeriodoComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

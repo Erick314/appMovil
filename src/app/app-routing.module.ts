@@ -15,29 +15,34 @@ import { PreguntaComponent } from './pregunta/pregunta.component';
 import { ReporteEncuestaComponent } from './reporte-encuesta/reporte-encuesta.component';
 import { InformacionDiariaComponent } from './informacion-diaria/informacion-diaria.component';
 import { InformacionPeriodoComponent } from './informacion-periodo/informacion-periodo.component'; 
+import { AuthGuard } from './guards/auth.guard';
+import { NotFoundComponent } from './not-found/not-found.component';
+
 
 
 const routes: Routes = [
   { path: '', component: SplashComponent },  
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'encuesta', component: EncuestaComponent },
+  { path: 'encuesta', component: EncuestaComponent , canActivate: [AuthGuard]},
   {path: 'principal', component: PrincipalComponent,
     children: [
       { path: '', redirectTo: 'informacion-diaria', pathMatch: 'full' },  
-      { path: 'informacion-diaria', component: InformacionDiariaComponent },
-      { path: 'informacion-periodo', component: InformacionPeriodoComponent },
+      { path: 'informacion-diaria', component: InformacionDiariaComponent, canActivate: [AuthGuard] },
+      { path: 'informacion-periodo', component: InformacionPeriodoComponent , canActivate: [AuthGuard]},
     ]
   },  
   { path: 'recuperar', component: RecuperarComponent },
-  { path: 'admin', component: AdminComponent },
-  { path: 'empresa', component: EmpresaComponent },
+  { path: 'admin', component: AdminComponent , canActivate: [AuthGuard]},
+  { path: 'empresa', component: EmpresaComponent, canActivate: [AuthGuard] },
   { path: 'crear', component: CrearusuarioComponent },
-  { path: 'sucursal', component: SucursalComponent },
+  { path: 'sucursal', component: SucursalComponent, canActivate: [AuthGuard] },
   { path: 'pregunta', component: PreguntaComponent },
-  { path: 'reporte-encuesta', component: ReporteEncuestaComponent },
+  { path: 'reporte-encuesta', component: ReporteEncuestaComponent, canActivate: [AuthGuard] },
   { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent },
+  { path: 'not-found', component: NotFoundComponent }, 
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
+
 ];
 
 @NgModule({

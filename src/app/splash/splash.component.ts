@@ -19,7 +19,9 @@ export class SplashComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       // Solo ejecutar la redirección en el navegador
       setTimeout(() => {
-        this.router.navigateByUrl('login'); // Redirigir a la página de login después de 4 segundos
+        console.log('Redirigiendo a login...');
+
+        this.router.navigate(['login']);  // Cambiar navigateByUrl por navigate
       }, 4000);
     } 
   }

@@ -106,4 +106,11 @@ export class AuthService {
   registrarUsuario(email: string, password: string): Promise<any> {
     return this.afAuth.createUserWithEmailAndPassword(email, password);
   }
+
+  //método usado para verificar si está lautentificado en el guard
+  isLoggedIn(): boolean {
+    const user = this.afAuth.currentUser;
+    return user !== null; // Retorna true si hay un usuario autenticado
+  }
+  
 }

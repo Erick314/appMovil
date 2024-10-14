@@ -40,7 +40,11 @@ export class LoginComponent {
       const { usuario, password } = this.loginForm.value;
 
       this.authService.loginPorNombre(usuario, password).then((credenciales) => {
-        if (credenciales) {
+        const usuarioLogueado = this.authService.getUsuarioLogueado();
+
+        if (usuarioLogueado) {
+          console.log(usuarioLogueado.tipoUsuario); // Para verificar el tipo de usuario
+
           // Ingresar con autenticación
           if (this.authService.getUsuarioLogueado().tipoUsuario === 'Empresa' || this.authService.getUsuarioLogueado().tipoUsuario === 'SuperAdmin') {
             this.router.navigate(['/principal']);
@@ -48,12 +52,7 @@ export class LoginComponent {
             this.router.navigate(['/encuesta']);
           }
         } else {
-          if(usuario === 'LatteReyna'){
-            this.router.navigate(['/encuesta']);  // Permitir el acceso al sistema
-          }
-          else {
-            this.router.navigate(['/principal']);  // Permitir el acceso al sistema
-          }
+          this.router.navigate(['/login']);  // Permitir el acceso al sistema
         }
       }).catch(error => {
         alert(error);
