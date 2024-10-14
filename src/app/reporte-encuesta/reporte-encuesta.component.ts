@@ -144,7 +144,9 @@ export class ReporteEncuestaComponent implements OnInit {
 
   // Método para cerrar sesión
   logout() {
-    this.router.navigate(['/login']);
+    this.authService.logout().then(() => {
+      this.router.navigate(['/login']);
+    });
   }
 }
 

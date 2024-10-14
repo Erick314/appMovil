@@ -362,12 +362,17 @@ export class FirebaseService {
     return this.firestore.collection('encuestas', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
   }
   getSucursalesFiltrado(idEmpresa: number): Observable<any[]> {
-    return this.firestore.collection('sucursales', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
+    return this.firestore.collection('sucursales', ref => ref.where('empresa', '==', idEmpresa)).get().pipe(
+      map(snapshot => snapshot.docs.map(doc => doc.data()))
+    );
   }
   
   getEncuestasFiltrado(idEmpresa: number): Observable<any[]> {
-    return this.firestore.collection('encuestas', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
+    return this.firestore.collection('encuestas', ref => ref.where('empresa', '==', idEmpresa)).get().pipe(
+      map(snapshot => snapshot.docs.map(doc => doc.data()))
+    );
   }
+  
   
   getSucursales2(): Observable<any[]> {
     return this.firestore.collection('sucursales').valueChanges();

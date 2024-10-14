@@ -168,7 +168,9 @@ export class PreguntaComponent {
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.authService.logout().then(() => {
+      this.router.navigate(['/login']);
+    });
   }
   ngOnInit() {
     this.usuarioLogueado = this.authService.getUsuarioLogueado();

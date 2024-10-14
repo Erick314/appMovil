@@ -73,7 +73,9 @@ export class SucursalComponent {
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.authService.logout().then(() => {
+      this.router.navigate(['/login']);
+    });
   }
 
   CambioPestana(pestaña: string) {

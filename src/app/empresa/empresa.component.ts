@@ -105,7 +105,9 @@ export class EmpresaComponent {
     }  }
 
     logout() {
-      this.router.navigate(['/login']);
+      this.authService.logout().then(() => {
+        this.router.navigate(['/login']);
+      });
     }
 
   ngOnInit() {

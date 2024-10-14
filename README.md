@@ -34,3 +34,4 @@ Instalar para comenzar ambientar proyecto:
 - npm install -g firebase-tools
 - firebase login 
 - npm install xlsx
+- npm install apexcharts ng-apexcharts --save
