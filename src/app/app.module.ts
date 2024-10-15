@@ -53,6 +53,7 @@ import { InformacionDiariaComponent } from './informacion-diaria/informacion-dia
 import { InformacionPeriodoComponent } from './informacion-periodo/informacion-periodo.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AuthGuard } from './guards/auth.guard';
 
 
 

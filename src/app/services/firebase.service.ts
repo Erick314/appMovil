@@ -6,10 +6,6 @@ import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -75,15 +71,12 @@ export class FirebaseService {
       return this.firestore.collection('sucursales', ref => ref.where('empresa', '==', usuarioLogueado.idEmpresa)).valueChanges();
     }
   }
-    // Método para validar si el código de empresa existe
   validarCodigoEmpresa(codigo: string): Observable<any> {
     return this.firestore.collection('empresas', ref => ref.where('codigoEmpresa', '==', codigo)).valueChanges();
   }
-    // Método para agregar un nuevo usuario
   addUsuario(usuario: any): Promise<any> {
     return this.firestore.collection('usuarios').add(usuario);
   }
-  //metodo para validar el login
   getUsuarioByNombre(nombre: string): Observable<any[]> {
     return this.firestore.collection('usuarios', ref => ref.where('nombre', '==', nombre)).valueChanges();
   }
@@ -94,8 +87,6 @@ export class FirebaseService {
   enviarCorreoRestablecimiento(email: string): Promise<void> {
     return this.afAuth.sendPasswordResetEmail(email);
   }
-  
- 
   getFormattedDate(): string {
     const today = new Date();
     const day = ('0' + today.getDate()).slice(-2);
@@ -103,7 +94,6 @@ export class FirebaseService {
     const year = today.getFullYear();
     return `${day}-${month}-${year}`;
   }
-
   addPregunta(pregunta: any): Promise<any> {
     const usuarioLogueado = this.authService.getUsuarioLogueado();
     
@@ -121,9 +111,7 @@ export class FirebaseService {
   getPreguntasAsignadasPorSucursal(nombreSucursal: string): Observable<any[]> {
     return this.firestore.collection('asignaciones', ref => ref.where('nombreSucursal', '==', nombreSucursal)).valueChanges();
   }
-  
-  // Método para obtener todas las preguntas
-  getPreguntas(): Observable<any[]> {
+    getPreguntas(): Observable<any[]> {
     return this.firestore.collection('preguntas').valueChanges();
   }
   getPreguntaPorId(idPregunta: string): Observable<any> {
@@ -163,9 +151,7 @@ export class FirebaseService {
         const diaSemanaHoy = hoy.getDay(); // Domingo = 0, Lunes = 1, ..., Sábado = 6
         const inicioSemana = new Date(hoy.setDate(hoy.getDate() - diaSemanaHoy + (diaSemanaHoy === 0 ? -6 : 1))); // Lunes de esta semana
         inicioSemana.setHours(0, 0, 0, 0); // Restablecer la hora al inicio del día
-  
-        console.log('Inicio de la semana:', inicioSemana);
-  
+    
         encuestas.forEach(encuesta => {
           let fechaRealizacion = encuesta.fechaRealizacion;
         
@@ -177,9 +163,7 @@ export class FirebaseService {
         
           // Establecer las horas de fechaRealizacion a 0 para evitar diferencias en la comparación
           fechaRealizacion.setHours(0, 0, 0, 0);
-        
-          console.log('Fecha de realización:', fechaRealizacion);
-        
+                
           // Comparar si la encuesta pertenece a esta semana
           if (fechaRealizacion >= inicioSemana) {
             // Convertir el nombre del día a minúsculas y sin acentos para que coincida con las claves del objeto
@@ -188,8 +172,6 @@ export class FirebaseService {
               .toLowerCase()
               .normalize('NFD')
               .replace(/[\u0300-\u036f]/g, '');
-        
-            console.log('Día de la semana:', diaSemana); // Asegúrate de que el sábado se muestre correctamente aquí
         
             // Incrementar el contador del día correspondiente
             if (diasDeLaSemana[diaSemana] !== undefined) {
@@ -372,8 +354,6 @@ export class FirebaseService {
       map(snapshot => snapshot.docs.map(doc => doc.data()))
     );
   }
-  
-  
   getSucursales2(): Observable<any[]> {
     return this.firestore.collection('sucursales').valueChanges();
   }

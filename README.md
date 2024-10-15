@@ -35,11 +35,11 @@ Instalar para comenzar ambientar proyecto:
 - firebase login 
 - npm install xlsx
 - npm install apexcharts ng-apexcharts --save
-
-para compilar se utilizó:
-- ng add @angular/pwa --force
-luego para reparar errores:
 - npm install @angular/service-worker@18.2.4 --legacy-peer-deps
+
+
+para compilar se utilizó: (Fallido, aún no aplica)
+- ng add @angular/pwa --force
 - ng build --configuration production
 
 
