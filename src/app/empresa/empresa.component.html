@@ -1,8 +1,8 @@
 <div class="main-container">
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav mode="side" opened>
-      <div class="sidenav-content"> <!-- Asegura que ocupe toda la altura -->
-        <mat-nav-list class="nav-list"> <!-- Lista de navegación crece -->
+      <div class="sidenav-content">
+        <mat-nav-list class="nav-list">
           <a mat-list-item (click)="CambioPestana('principal')" class="nav-item">Inicio</a>
           <a *ngIf="usuarioLogueado?.tipoUsuario === 'SuperAdmin'" mat-list-item (click)="CambioPestana('empresa')" class="nav-item">
             Super Administración
@@ -14,7 +14,7 @@
         <div class="logo-container">
           <img src="assets/2.png" alt="Logo" class="logo-image">
         </div>
-        <div class="bottom-nav"> <!-- Cerrar sesión se mantiene en la parte inferior -->
+        <div class="bottom-nav"> 
           <a mat-list-item (click)="logout()" class="nav-item logout-item">Cerrar Sesión</a>
         </div>
       </div>

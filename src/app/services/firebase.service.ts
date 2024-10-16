@@ -179,10 +179,7 @@ export class FirebaseService {
             }
           }
         });
-        
-  
-        console.log('Data por día de la semana:', diasDeLaSemana);
-  
+          
         return diasDeLaSemana;
       })
     );
