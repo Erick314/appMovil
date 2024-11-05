@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Editar Empresa</h1>
+<div mat-dialog-content>
+  <form [formGroup]="editForm">
+    <mat-form-field>
+      <mat-label>Nombre de la Empresa</mat-label>
+      <input matInput formControlName="nombreEmpresa">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>RUT Empresa</mat-label>
+      <input matInput formControlName="rutEmpresa">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Razón Social</mat-label>
+      <input matInput formControlName="razonSocial">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Región</mat-label>
+      <mat-select formControlName="region">
+        <mat-option *ngFor="let reg of data.regiones" [value]="reg">{{ reg }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-button color="primary" (click)="save()">Guardar</button>
+</div>

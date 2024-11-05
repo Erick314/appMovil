@@ -4,6 +4,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FirebaseService } from '../services/firebase.service'; 
 import { AuthService } from '../services/auth.service';  
 import { MatSidenav } from '@angular/material/sidenav';
+import { EditEmpresaDialogComponent } from '../edit-empresa-dialog/edit-empresa-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 
 
@@ -12,7 +15,7 @@ import { MatSidenav } from '@angular/material/sidenav';
   templateUrl: './empresa.component.html',
   styleUrls: ['./empresa.component.css']
 })
-export class EmpresaComponent {
+export class EmpresaComponent implements OnInit {
   usuarioLogueado: any = null; 
   empresaNombre: string = '';
   rutEmpresa: string = '';
@@ -40,14 +43,16 @@ export class EmpresaComponent {
     'Magallanes y de la Antártica Chilena'
   ];
 
-  displayedColumns: string[] = ['idEmpresa', 'nombreEmpresa', 'rutEmpresa', 'codigoEmpresa', 'region', 'fechaCreacion', 'vigencia'];
+  displayedColumns: string[] = ['idEmpresa', 'nombreEmpresa', 'rutEmpresa', 'codigoEmpresa', 'region', 'fechaCreacion', 'vigencia', 'editar', 'eliminar'];
 
   empresas = new MatTableDataSource<any>();
 
   constructor(
     private router: Router, 
     private firebaseService: FirebaseService,
-    private authService: AuthService
+    private authService: AuthService,
+    public dialog: MatDialog
+
   ) {}
 
   // Método para obtener la fecha actual en formato dd-MM-yyyy
@@ -71,26 +76,81 @@ export class EmpresaComponent {
 
   // Método para crear una empresa y guardar en Firestore
   crearEmpresa() {
-    if (this.empresaNombre && this.rutEmpresa && this.razonSocial && this.region) {
-      const nuevaEmpresa = {
-        idEmpresa: this.empresas.data.length + 1, // Si necesitas un ID, puedes usar esto o usar el auto-generado de Firestore.
-        nombreEmpresa: this.empresaNombre,
-        rutEmpresa: this.rutEmpresa,
-        razonSocial: this.razonSocial,
-        region: this.region,
-        codigoEmpresa: this.generarCodigoEmpresa(), // Generar código aleatorio
-        fechaCreacion: this.getFormattedDate(),
-        vigencia: 'Vigente'
-      };
-      this.firebaseService.addEmpresa(nuevaEmpresa).then(() => {
-        console.log('Empresa agregada exitosamente a Firestore');
-        this.limpiarCampos(); // Limpiar los campos del formulario después de agregar
-      }).catch(error => {
-        console.error('Error al agregar empresa a Firestore: ', error);
-      });
+    const nuevaEmpresa = {
+      idEmpresa: this.empresas.data.length + 1,
+      nombreEmpresa: this.empresaNombre,
+      rutEmpresa: this.rutEmpresa,
+      razonSocial: this.razonSocial,
+      region: this.region,
+      codigoEmpresa: this.generarCodigoEmpresa(),
+      fechaCreacion: this.getFormattedDate(),
+      vigencia: 'Vigente'
+    };
+  
+    console.log('Enviando nueva empresa:', nuevaEmpresa);
+  
+    this.firebaseService.addEmpresa(nuevaEmpresa).subscribe(
+      (response) => {
+        console.log('Empresa agregada exitosamente:', response);
+        this.empresas.data.push(response); // Agregar la empresa a la tabla
+        this.empresas._updateChangeSubscription(); // Actualizar la tabla
+        this.limpiarCampos();
+      },
+      (error) => {
+        console.error('Error al agregar empresa: ', error);
+      }
+    );
+  }
+  
+  eliminarEmpresa(codigoEmpresa: string, idEmpresa: number) {
+    if (confirm('¿Estás seguro de que deseas eliminar esta empresa?')) {
+      this.firebaseService.deleteEmpresa(codigoEmpresa, idEmpresa).subscribe(
+        () => {
+          console.log('Empresa eliminada con éxito');
+          // Actualizar la tabla eliminando la empresa
+          this.empresas.data = this.empresas.data.filter(empresa =>
+            empresa.codigoEmpresa !== codigoEmpresa || empresa.idEmpresa !== idEmpresa
+          );
+          this.empresas._updateChangeSubscription(); // Actualizar la tabla
+        },
+        (error) => {
+          console.error('Error al eliminar empresa: ', error);
+        }
+      );
     }
   }
-
+  
+  
+  editarEmpresa(empresa: any) {
+    const dialogRef = this.dialog.open(EditEmpresaDialogComponent, {
+      width: '400px',
+      data: { ...empresa, regiones: this.regiones }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const empresaActualizada = {
+          ...empresa,
+          ...result
+        };
+        this.firebaseService.updateEmpresa(empresa.codigoEmpresa, empresaActualizada).subscribe(
+          () => {
+            console.log('Empresa actualizada con éxito');
+            const index = this.empresas.data.findIndex(e => e.codigoEmpresa === empresa.codigoEmpresa);
+            if (index !== -1) {
+              this.empresas.data[index] = empresaActualizada;
+              this.empresas._updateChangeSubscription(); // Actualizar la tabla
+            }
+          },
+          (error) => {
+            console.error('Error al actualizar empresa: ', error);
+          }
+        );
+      }
+    });
+  }
+  
+  
   // Método para limpiar los campos del formulario después de agregar una empresa
   limpiarCampos() {
     this.empresaNombre = '';
@@ -110,18 +170,18 @@ export class EmpresaComponent {
       });
     }
 
-  ngOnInit() {
-    // Obtener las empresas desde Firestore
-    this.firebaseService.getEmpresas().subscribe(empresas => {
-      this.empresas.data = empresas;
-    });
-    this.usuarioLogueado = this.authService.getUsuarioLogueado();
-    
-    if (!this.usuarioLogueado) {
-      return;
+    ngOnInit() {
+      this.firebaseService.getEmpresas().subscribe(
+        (empresas) => {
+          this.empresas.data = empresas;
+        },
+        (error) => {
+          console.error('Error al obtener empresas:', error);
+        }
+      );
+      this.usuarioLogueado = this.authService.getUsuarioLogueado();
     }
-
-  }
+    
 
   CambioPestana(pestaña: string) {
     this.router.navigate(['/' + pestaña]);

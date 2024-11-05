@@ -5,23 +5,72 @@ import { AuthService } from './auth.service';
 import { from } from 'rxjs'; 
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
+  private apiUrl = 'http://localhost:3000/api';
 
-  constructor(private firestore: AngularFirestore, private authService: AuthService,private afAuth: AngularFireAuth) {}
+  constructor(private firestore: AngularFirestore, private authService: AuthService,private afAuth: AngularFireAuth, private http: HttpClient) {}
 
   // Método para agregar una nueva empresa
-  addEmpresa(empresa: any): Promise<any> {
-    return this.firestore.collection('empresas').add(empresa);
+  addEmpresa(empresa: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/addEmpresa`, empresa);
   }
 
   // Método para obtener todas las empresas
   getEmpresas(): Observable<any[]> {
-    return this.firestore.collection('empresas').valueChanges({ idField: 'id' });
+    return this.http.get<any[]>(`${this.apiUrl}/getEmpresa`);
   }
+  // Eliminar empresa
+  deleteEmpresa(codigoEmpresa: string, idEmpresa: number): Observable<void> {
+    return new Observable<void>((observer) => {
+      this.firestore.collection('empresas', ref =>
+        ref.where('codigoEmpresa', '==', codigoEmpresa)
+           .where('idEmpresa', '==', idEmpresa)
+      ).get().subscribe(snapshot => {
+        if (!snapshot.empty) {
+          // Si se encuentra un documento, procedemos a eliminarlo
+          const docId = snapshot.docs[0].id;
+          this.firestore.collection('empresas').doc(docId).delete()
+            .then(() => {
+              observer.next();
+              observer.complete();
+            })
+            .catch(error => observer.error(error));
+        } else {
+          observer.error(new Error('No se encontró la empresa con el código y ID proporcionados'));
+        }
+      }, error => observer.error(error));
+    });
+  }
+  
+
+  // Modificar empresa
+  updateEmpresa(codigoEmpresa: string, empresaActualizada: any): Observable<void> {
+    return new Observable<void>((observer) => {
+      this.firestore.collection('empresas', ref =>
+        ref.where('codigoEmpresa', '==', codigoEmpresa)
+      ).get().subscribe(snapshot => {
+        if (!snapshot.empty) {
+          // Si se encuentra un documento, procedemos a actualizarlo
+          const docId = snapshot.docs[0].id;
+          this.firestore.collection('empresas').doc(docId).update(empresaActualizada)
+            .then(() => {
+              observer.next();
+              observer.complete();
+            })
+            .catch(error => observer.error(error));
+        } else {
+          observer.error(new Error('No se encontró la empresa con el código proporcionado'));
+        }
+      }, error => observer.error(error));
+    });
+  }
+  
 
   getSucursalesByEmpresa(idEmpresa: number): Observable<any[]> {
     return this.firestore.collection('sucursales', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
@@ -122,7 +171,7 @@ export class FirebaseService {
   }
   guardarEncuesta(respuestasEncuesta: any): Promise<any> {
     return this.firestore.collection('encuestas').add(respuestasEncuesta);
-}
+  }
 
   guardarRespuesta(encuestaId: string, respuesta: any) {
     return this.firestore.collection(`encuestas/${encuestaId}/respuestasPreguntas`).add(respuesta);

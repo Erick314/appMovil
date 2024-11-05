@@ -54,6 +54,7 @@ import { InformacionPeriodoComponent } from './informacion-periodo/informacion-p
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AuthGuard } from './guards/auth.guard';
+import { EditEmpresaDialogComponent } from './edit-empresa-dialog/edit-empresa-dialog.component';
 
 
 
@@ -81,7 +82,8 @@ import { AuthGuard } from './guards/auth.guard';
     ReporteEncuestaComponent,
     InformacionDiariaComponent,
     InformacionPeriodoComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    EditEmpresaDialogComponent
   ],
   imports: [
     BrowserModule,
