@@ -20,21 +20,20 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { SucursalModule } from './sucursal/sucursal.module';
 
 
-
 const routes: Routes = [
-  { path: '', component: SplashComponent },  
+  { path: '', component: SplashComponent },  // Esta es la ruta por defecto al cargar la aplicación
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'encuesta', component: EncuestaComponent , canActivate: [AuthGuard]},
-  {path: 'principal', component: PrincipalComponent,
+  { path: 'encuesta', component: EncuestaComponent, canActivate: [AuthGuard] },
+  { path: 'principal', component: PrincipalComponent,
     children: [
       { path: '', redirectTo: 'informacion-diaria', pathMatch: 'full' },  
       { path: 'informacion-diaria', component: InformacionDiariaComponent, canActivate: [AuthGuard] },
-      { path: 'informacion-periodo', component: InformacionPeriodoComponent , canActivate: [AuthGuard]},
+      { path: 'informacion-periodo', component: InformacionPeriodoComponent, canActivate: [AuthGuard] },
     ]
-  },  
+  },
   { path: 'recuperar', component: RecuperarComponent },
-  { path: 'admin', component: AdminComponent , canActivate: [AuthGuard]},
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
   { path: 'empresa', component: EmpresaComponent, canActivate: [AuthGuard] },
   { path: 'crear', component: CrearusuarioComponent },
   { path: 'sucursal', loadChildren: () => import('./sucursal/sucursal.module').then(m => m.SucursalModule), canActivate: [AuthGuard] },
@@ -43,7 +42,6 @@ const routes: Routes = [
   { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent },
   { path: 'not-found', component: NotFoundComponent }, 
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
-
 ];
 
 @NgModule({

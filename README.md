@@ -37,9 +37,13 @@ Instalar para comenzar ambientar proyecto:
 - npm install apexcharts ng-apexcharts --save
 - npm install @angular/service-worker@18.2.4 --legacy-peer-deps
 
+backend:
+- npm install (en el backend)
+- npm start
 
 para compilar se utilizó: (Fallido, aún no aplica)
 - ng add @angular/pwa --force
 - ng build --configuration production
+
 
 
