@@ -17,6 +17,7 @@ import { InformacionDiariaComponent } from './informacion-diaria/informacion-dia
 import { InformacionPeriodoComponent } from './informacion-periodo/informacion-periodo.component'; 
 import { AuthGuard } from './guards/auth.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { SucursalModule } from './sucursal/sucursal.module';
 
 
 
@@ -36,7 +37,7 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent , canActivate: [AuthGuard]},
   { path: 'empresa', component: EmpresaComponent, canActivate: [AuthGuard] },
   { path: 'crear', component: CrearusuarioComponent },
-  { path: 'sucursal', component: SucursalComponent, canActivate: [AuthGuard] },
+  { path: 'sucursal', loadChildren: () => import('./sucursal/sucursal.module').then(m => m.SucursalModule), canActivate: [AuthGuard] },
   { path: 'pregunta', component: PreguntaComponent },
   { path: 'reporte-encuesta', component: ReporteEncuestaComponent, canActivate: [AuthGuard] },
   { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent },
@@ -46,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), SucursalModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

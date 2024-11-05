@@ -37,7 +37,6 @@ import { InicioComponent } from './inicio/inicio.component';
 import { AdminComponent } from './admin/admin.component';
 import { EmpresaComponent } from './empresa/empresa.component';
 import { AgradecimientoDialogComponent } from './agradecimiento-dialog/agradecimiento-dialog.component';
-import { SucursalComponent } from './sucursal/sucursal.component';
 import { CrearusuarioComponent } from './crearusuario/crearusuario.component'; 
 import { EncuestaComponent } from './encuesta/encuesta.component';
 import { LoginComponent } from './login/login.component';
@@ -74,7 +73,6 @@ import { EditEmpresaDialogComponent } from './edit-empresa-dialog/edit-empresa-d
     EmpresaComponent,
     AgradecimientoDialogComponent,
     CrearusuarioComponent,
-    SucursalComponent,
     EncuestaFinalizadaComponent,
     PreguntaComponent,
     PreguntaModalComponent,
@@ -88,7 +86,6 @@ import { EditEmpresaDialogComponent } from './edit-empresa-dialog/edit-empresa-d
   imports: [
     BrowserModule,
     MatRadioModule,
-    AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatInputModule,
