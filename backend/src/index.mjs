@@ -2,14 +2,24 @@ import express from 'express';
 import firebaseAdmin from './firebase.js';
 import cors from 'cors'; 
 
+//para la api web
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../swagger.json' assert { type: "json" }; // Ruta a swagger.json
+
+
 const app = express();
 const port = 3000;
 
-app.use(express.json());
 
+app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:4200' // Permite solo el acceso desde esta URL
 }));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+
 
 // Endpoint  Empresas
 //Get para mostrar
@@ -63,4 +73,6 @@ app.put('/api/updateEmpresa/:id', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`API listening at http://localhost:${port}`);
+  console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
+
 });

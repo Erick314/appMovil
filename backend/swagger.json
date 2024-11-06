@@ -1,0 +1,204 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API DimeTú",
+      "version": "1.0.0",
+      "description": "API para la gestión de empresas",
+      "contact": {
+        "name": "Nombre del Desarrollador",
+        "email": "dimeTu@gmail.com"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000",
+        "description": "Servidor local"
+      }
+    ],
+    "paths": {
+      "/api/getEmpresa": {
+        "get": {
+          "summary": "Obtener todas las empresas",
+          "description": "Devuelve una lista de todas las empresas en la base de datos.",
+          "responses": {
+            "200": {
+              "description": "Lista de empresas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Empresa"
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error en el servidor"
+            }
+          }
+        }
+      },
+      "/api/addEmpresa": {
+        "post": {
+          "summary": "Agregar una nueva empresa",
+          "description": "Añade una nueva empresa a la base de datos.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empresa"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Empresa creada con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Empresa"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error en el servidor"
+            }
+          }
+        }
+      },
+      "/api/deleteEmpresa/{id}": {
+        "delete": {
+          "summary": "Eliminar una empresa por ID",
+          "description": "Elimina una empresa específica de la base de datos utilizando su ID.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID de la empresa a eliminar"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Empresa eliminada con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "Empresa eliminada con éxito"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Empresa no encontrada"
+            },
+            "500": {
+              "description": "Error en el servidor"
+            }
+          }
+        }
+      },
+      "/api/updateEmpresa/{id}": {
+        "put": {
+          "summary": "Actualizar una empresa por ID",
+          "description": "Actualiza los datos de una empresa específica utilizando su ID.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID de la empresa a actualizar"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empresa"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Empresa actualizada con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "Empresa actualizada con éxito"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Empresa no encontrada"
+            },
+            "500": {
+              "description": "Error en el servidor"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Empresa": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "ID único de la empresa"
+            },
+            "nombre": {
+              "type": "string",
+              "description": "Nombre de la empresa"
+            },
+            "direccion": {
+              "type": "string",
+              "description": "Dirección de la empresa"
+            },
+            "telefono": {
+              "type": "string",
+              "description": "Número de teléfono de la empresa"
+            },
+            "email": {
+              "type": "string",
+              "description": "Correo electrónico de la empresa"
+            }
+          },
+          "example": {
+            "id": "abc123",
+            "nombre": "Empresa de Ejemplo",
+            "direccion": "123 Calle Falsa",
+            "telefono": "123456789",
+            "email": "empresa@example.com"
+          }
+        }
+      }
+    }
+  }
+  
