@@ -41,6 +41,10 @@ backend:
 - npm install (en el backend)
 - npm start
 
+Apk:
+- npm install --legacy-peer-deps
+- npm install --force
+
 para compilar se utilizó: (Fallido, aún no aplica)
 - ng add @angular/pwa --force
 - ng build --configuration production
