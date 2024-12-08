@@ -8,7 +8,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 
 
 interface Pregunta {
-  idPregunta: number;
+  idPregunta?: number;
   pregunta: string;
   alternativaUno: string;
   alternativaDos: string;
@@ -34,7 +34,7 @@ interface Asignacion {
 })
 export class PreguntaComponent {
   @ViewChild('sidenav') sidenav?: MatSidenav;
-  displayedColumns: string[] = ['idPregunta', 'pregunta', 'alternativaUno', 'alternativaDos', 'alternativaTres', 'vigencia'];
+  displayedColumns: string[] = ['idPregunta', 'pregunta', 'alternativaUno', 'alternativaDos', 'alternativaTres', 'vigencia',  'acciones',  ];
   displayedColumnsAsignaciones: string[] = [ 'nombreSucursal', 'pregunta', 'fechaAsignacion'];
   usuarioLogueado: any = null; 
   preguntas: Pregunta[] = [];
@@ -59,7 +59,15 @@ export class PreguntaComponent {
           this.todasLasPreguntasAsignadas = asignacionesData;
 
           this.firebaseService.getPreguntas().subscribe((data: any[]) => {
-            this.preguntas = data;  });
+            // Mapea los datos para asegurarte de que `idPregunta` siempre esté presente
+            this.preguntas = data.map((pregunta) => ({
+              ...pregunta,
+              idPregunta: pregunta.idPregunta || pregunta.pregunta || null,
+            }));
+    
+            console.log('Datos obtenidos después de mapear:', this.preguntas); // Verificar datos procesados
+          });
+            
           
         });
       });
@@ -160,9 +168,41 @@ export class PreguntaComponent {
       console.warn('Debe seleccionar una sucursal y al menos una pregunta para asignar.');
     }
   }
+
+  editarPregunta(pregunta: any): void {
+    const dialogRef = this.dialog.open(PreguntaModalComponent, {
+      width: '400px',
+      data: { ...pregunta }, // Pasar los datos de la pregunta al modal
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Datos actualizados recibidos:', result);
+  
+        // Encontrar el índice de la pregunta actualizada
+        const index = this.preguntas.findIndex((p) => p.pregunta === pregunta.pregunta);
+  
+        // Actualizar el elemento en la lista local si se encuentra
+        if (index !== -1) {
+          this.preguntas[index] = result; // Reemplazar la pregunta con los datos actualizados
+        } else {
+          console.warn('Pregunta no encontrada para actualizar.');
+        }
+      }
+    });
+  }
   
   
   
+  eliminarPregunta(pregunta: any): void {
+    const confirmacion = confirm(`¿Estás seguro de que deseas eliminar la pregunta: "${pregunta.pregunta}"?`);
+    if (confirmacion) {
+      this.preguntas = this.preguntas.filter(p => p.pregunta !== pregunta.pregunta); // Eliminar de la vista
+      console.log('Pregunta eliminada de la vista:', pregunta);
+    }
+  }
+  
+
   CambioPestana(pestaña: string) {
     this.router.navigate(['/' + pestaña]);
   }

@@ -592,6 +592,27 @@ app.get('/api/getSucursalesByEmpresa/:idEmpresa', authMiddleware, async (req, re
       res.status(500).json({ error: error.message });
     }
   });
+  app.put('/api/updatePregunta/:id', authMiddleware, async (req, res) => {
+    try {
+      const preguntaId = req.params.id;
+      const datosActualizados = req.body;
+      await firebaseAdmin.firestore().collection('preguntas').doc(preguntaId).update(datosActualizados);
+      res.status(200).json({ message: 'Pregunta actualizada con éxito' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  app.delete('/api/deletePregunta/:id', authMiddleware, async (req, res) => {
+    try {
+      const preguntaId = req.params.id;
+      await firebaseAdmin.firestore().collection('preguntas').doc(preguntaId).delete();
+      res.status(200).json({ message: 'Pregunta eliminada con éxito' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
+  
   // ============  Endpoint Asignaciones   ============
   //GetAsignaciones
 

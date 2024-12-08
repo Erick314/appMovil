@@ -5,7 +5,8 @@ import { AuthService } from './auth.service';
 import { from } from 'rxjs'; 
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
+
 
 
 @Injectable({
@@ -13,9 +14,21 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FirebaseService {
   private apiUrl = 'http://localhost:3000/api';
+  private testToken = '563cef1e7b666c0de142'; // Token fijo para pruebas
+
 
   constructor(private firestore: AngularFirestore, private authService: AuthService,private afAuth: AngularFireAuth, private http: HttpClient) {}
 
+ // Método para obtener el token desde el localStorage
+ private getAuthHeaders(): HttpHeaders {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('Token no encontrado en localStorage');
+  }
+  return new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+  });
+}
   // Método para agregar una nueva empresa
   addEmpresa(empresa: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/addEmpresa`, empresa, {
@@ -138,9 +151,7 @@ export class FirebaseService {
   getPreguntasAsignadasPorSucursal(nombreSucursal: string): Observable<any[]> {
     return this.firestore.collection('asignaciones', ref => ref.where('nombreSucursal', '==', nombreSucursal)).valueChanges();
   }
-    getPreguntas(): Observable<any[]> {
-    return this.firestore.collection('preguntas').valueChanges();
-  }
+
   getPreguntaPorId(idPregunta: string): Observable<any> {
     return this.firestore.collection('preguntas').doc(idPregunta).valueChanges();
   }
@@ -387,4 +398,30 @@ export class FirebaseService {
   getEncuestas2(): Observable<any[]> {
     return this.firestore.collection('encuesta').valueChanges();
   }
+
+  // Método para obtener todas las preguntas con el token directamente
+  getPreguntas(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getPregunta`, {
+      headers: { Authorization: this.testToken },
+    });
+  }
+
+  // Actualizar una pregunta con token directo
+  updatePregunta(preguntaTexto: string, preguntaActualizada: any): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/updatePregunta/${preguntaTexto}`, preguntaActualizada, {
+      headers: { Authorization: 'Bearer ' + this.testToken },
+    });
+  }
+  
+  
+  // Eliminar una pregunta a través de la API
+  deletePregunta(id: string): Observable<void> {
+    console.log('Enviando solicitud para eliminar:', id);
+    return this.http.delete<void>(`${this.apiUrl}/deletePregunta/${id}`, {
+      headers: { Authorization: this.testToken },
+    });
+  }
+  
+  
+  
 }

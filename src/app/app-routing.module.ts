@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'sucursal', loadChildren: () => import('./sucursal/sucursal.module').then(m => m.SucursalModule), canActivate: [AuthGuard] },
   { path: 'pregunta', component: PreguntaComponent },
   { path: 'reporte-encuesta', component: ReporteEncuestaComponent, canActivate: [AuthGuard] },
-  { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent },
+  { path: 'encuesta-finalizada', component: EncuestaFinalizadaComponent, canActivate: [AuthGuard]},
   { path: 'not-found', component: NotFoundComponent }, 
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];

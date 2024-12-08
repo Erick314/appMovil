@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FirebaseService } from '../services/firebase.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-pregunta-modal',
@@ -15,10 +17,17 @@ export class PreguntaModalComponent {
     vigencia: true
   };
 
+  isEditMode: boolean = false; // Indica si el modal está en modo edición
+
   constructor(
     public dialogRef: MatDialogRef<PreguntaModalComponent>,
-    private firebaseService: FirebaseService // Inyectar el servicio para guardar
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: any // Recibe los datos de la pregunta
+  ) {
+    if (data) {
+      this.pregunta = { ...data }; // Carga los datos en el formulario
+      this.isEditMode = true; // Habilita el modo de edición
+    }
+  }
 
   // Método para cancelar
   onCancel(): void {
@@ -27,14 +36,6 @@ export class PreguntaModalComponent {
 
   // Método para guardar la pregunta
   onSave(): void {
-    // Guardar la pregunta en Firebase con el servicio
-    this.firebaseService.addPregunta(this.pregunta)
-      .then(() => {
-        console.log('Pregunta guardada exitosamente');
-        this.dialogRef.close(this.pregunta);
-      })
-      .catch(error => {
-        console.error('Error al guardar la pregunta:', error);
-      });
+    this.dialogRef.close(this.pregunta); // Retorna los datos actualizados
   }
 }

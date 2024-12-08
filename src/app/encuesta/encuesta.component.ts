@@ -95,22 +95,22 @@ export class EncuestaComponent implements OnInit {
   finalizarEncuesta() {
     if (this.usuarioLogueado) {
       const respuestasEncuesta = {
-        calificacion: this.selectedEmojiValue,
-        pregunta1: this.pregunta1,
-        pregunta2: this.pregunta2,
-        pregunta3: this.pregunta3,
-        pregunta4: this.pregunta4,
-        pregunta5: this.pregunta5,
-        comentarioAdicional: this.message || '',
-        usuario: this.usuarioLogueado.nombre,
-        empresa: this.usuarioLogueado.idEmpresa,
-        fechaRealizacion: this.getFormattedDate()
+     //   calificacion: this.selectedEmojiValue,
+      //  pregunta1: this.pregunta1,
+      //  pregunta2: this.pregunta2,
+      //  pregunta3: this.pregunta3,
+      //  pregunta4: this.pregunta4,
+      //  pregunta5: this.pregunta5,
+      //  comentarioAdicional: this.message || '',
+      //  usuario: this.usuarioLogueado.nombre,
+      //  empresa: this.usuarioLogueado.idEmpresa,
+      // fechaRealizacion: this.getFormattedDate()
       };
 
       // Guardar la encuesta completa en Firebase
       this.firebaseService.guardarEncuesta(respuestasEncuesta).then(() => {
         console.log('Encuesta guardada correctamente');
-        this.router.navigate(['/agradecimiento']);
+        this.router.navigate(['/encuesta-finalizada']);
       }).catch(err => {
         console.error('Error al guardar la encuesta:', err);
       });

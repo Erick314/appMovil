@@ -8,19 +8,19 @@
 
   <!-- Encuesta de satisfacción -->
   <div class="survey-container">
-    <h3>Encuesta de satisfacción</h3>
+    <h3>Encuesta de Satisfacción</h3>
     <hr>
     <h6>¿Cómo se siente con la atención recibida?</h6>
     <div class="emoji-container">
-      <img src="assets/enojado.png" alt="Enojado" (click)="selectEmoji(1)" 
+      <img src="assets/enojado.png" alt="Enojado" (click)="selectEmoji(1)"
            [class.selected-emoji]="selectedEmojiValue === 1" class="emoji">
-      <img src="assets/triste.png" alt="Triste" (click)="selectEmoji(2)" 
+      <img src="assets/triste.png" alt="Triste" (click)="selectEmoji(2)"
            [class.selected-emoji]="selectedEmojiValue === 2" class="emoji">
-      <img src="assets/confuso.png" alt="Confuso" (click)="selectEmoji(3)" 
+      <img src="assets/confuso.png" alt="Confuso" (click)="selectEmoji(3)"
            [class.selected-emoji]="selectedEmojiValue === 3" class="emoji">
-      <img src="assets/feliz.png" alt="Contento" (click)="selectEmoji(4)" 
+      <img src="assets/feliz.png" alt="Contento" (click)="selectEmoji(4)"
            [class.selected-emoji]="selectedEmojiValue === 4" class="emoji">
-      <img src="assets/feliz2.png" alt="Feliz" (click)="selectEmoji(5)" 
+      <img src="assets/feliz2.png" alt="Feliz" (click)="selectEmoji(5)"
            [class.selected-emoji]="selectedEmojiValue === 5" class="emoji">
     </div>
 
@@ -29,7 +29,8 @@
     <!-- Opciones para continuar o finalizar la encuesta -->
     <div *ngIf="!showAdditionalQuestions && selectedEmojiValue !== null">
       <button (click)="continuarEncuesta()" class="submit-button">Contestar encuesta completa</button>
-      <button (click)="finalizarEncuesta()" class="submit-button">Finalizar</button>
+      <br>
+      <button (click)="finalizarEncuesta()" class="submit-button accent">Finalizar</button>
     </div>
 
     <!-- Preguntas adicionales -->
@@ -45,7 +46,34 @@
           </mat-radio-button>
         </mat-radio-group>
       </div>
+      <div>
+        <h6>¿Qué te pareció el espacio?</h6>
+        <mat-radio-group (change)="selectOption(0, $event.value)">
+          <mat-radio-button value="Incómodo">Incómodo</mat-radio-button>
+          <mat-radio-button value="Está bien">Está bien</mat-radio-button>
+          <mat-radio-button value="Muy agradable">Muy agradable</mat-radio-button>
+        </mat-radio-group>
+      </div>
 
+      <!-- Pregunta 2 -->
+      <div>
+        <h6>¿Qué opinas de la decoración?</h6>
+        <mat-radio-group (change)="selectOption(1, $event.value)">
+          <mat-radio-button value="Aburrida">Aburrida</mat-radio-button>
+          <mat-radio-button value="Normal">Normal</mat-radio-button>
+          <mat-radio-button value="Muy aesthetic">Muy aesthetic</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Pregunta 3 -->
+      <div>
+        <h6>La calidad del café te parece la adecuada?</h6>
+        <mat-radio-group (change)="selectOption(2, $event.value)">
+          <mat-radio-button value="No me gustó">No me gustó</mat-radio-button>
+          <mat-radio-button value="Está normal">Está normal</mat-radio-button>
+          <mat-radio-button value="Me encantó la calidad">Me encantó la calidad</mat-radio-button>
+        </mat-radio-group>
+      </div>
       <hr>
 
       <h6>Comentarios adicionales (opcional)</h6>
