@@ -57,7 +57,7 @@
   position: absolute;
   width: 300%;
   height: 100%;
-  animation: wave-animation 5s linear infinite;
+  animation: wave-animation 15s linear infinite;
 }
 
 .wave path {

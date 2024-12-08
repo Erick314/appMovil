@@ -60,9 +60,6 @@ export class LoginComponent {
     }
   }
   
-  
-  
-
   recuperar() {
     this.router.navigate(['/recuperar']);
   }
