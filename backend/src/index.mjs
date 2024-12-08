@@ -115,6 +115,19 @@ app.post('/api/login', async (req, res) => {
         return res.status(401).json({ error: 'idToken inválido o expirado' });
       }
 
+      // Buscar datos adicionales del usuario en Firestore usando `uid`
+      const userSnapshot = await firebaseAdmin.firestore().collection('usuarios')
+        .where('uid', '==', decodedToken.uid)
+        .limit(1)
+        .get();
+
+      if (userSnapshot.empty) {
+        return res.status(404).json({ error: 'Usuario no encontrado en Firestore' });
+      }
+
+      const userDoc = userSnapshot.docs[0];
+      const user = userDoc.data();
+
       // Generar un token de acceso personalizado para la API
       const apiToken = generateToken();
       await firebaseAdmin.firestore().collection('tokens').doc(apiToken).set({
@@ -122,7 +135,17 @@ app.post('/api/login', async (req, res) => {
         createdAt: new Date(),
       });
 
-      return res.status(200).json({ token: apiToken });
+      // Responder con el token y los datos adicionales del usuario
+      return res.status(200).json({
+        token: apiToken,
+        usuario: {
+          id: userDoc.id,
+          nombre: user.nombre,
+          tipoUsuario: user.tipoUsuario,
+          idEmpresa: user.idEmpresa || null,
+          email: user.email || null,
+        },
+      });
     } else {
       // Caso 2: Verificar directamente en la colección `usuarios`
       const userSnapshot = await firebaseAdmin.firestore().collection('usuarios')
@@ -145,7 +168,17 @@ app.post('/api/login', async (req, res) => {
         createdAt: new Date(),
       });
 
-      return res.status(200).json({ token: apiToken });
+      // Responder con el token y los datos adicionales del usuario
+      return res.status(200).json({
+        token: apiToken,
+        usuario: {
+          id: userDoc.id,
+          nombre: user.nombre,
+          tipoUsuario: user.tipoUsuario,
+          idEmpresa: user.idEmpresa || null,
+          email: user.email || null,
+        },
+      });
     }
   } catch (error) {
     console.error('Error en login:', error.message);
@@ -153,17 +186,8 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Usar el middleware en rutas que requieran autenticación
-app.get('/api/getEmpresa', authMiddleware, async (req, res) => {
-  try {
-    const db = firebaseAdmin.firestore();
-    const snapshot = await db.collection('empresas').get();
-    const data = snapshot.docs.map(doc => doc.data());
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
+
 
 
 /**
@@ -290,7 +314,7 @@ app.get('/api/getEmpresa', authMiddleware, async (req, res) => {
  *         description: Error del servidor
  */
 
-app.get('/api/getEmpresa', async (req, res) => {
+app.get('/api/getEmpresa', authMiddleware, async (req, res) => {
   try {
     const db = firebaseAdmin.firestore();
     const snapshot = await db.collection('empresas').get();
@@ -325,7 +349,8 @@ app.get('/api/getEmpresa', async (req, res) => {
  *         description: Error del servidor
  */
 
-app.post('/api/addEmpresa', async (req, res) => {
+// Endpoint para agregar una empresa
+app.post('/api/addEmpresa', authMiddleware, async (req, res) => {
   try {
     const db = firebaseAdmin.firestore();
     const nuevaEmpresa = req.body;
@@ -359,7 +384,8 @@ app.post('/api/addEmpresa', async (req, res) => {
  *         description: Error del servidor
  */
 
-app.delete('/api/deleteEmpresa/:id', async (req, res) => {
+// Endpoint para eliminar una empresa
+app.delete('/api/deleteEmpresa/:id', authMiddleware, async (req, res) => {
   try {
     const db = firebaseAdmin.firestore();
     const empresaId = req.params.id;
@@ -398,7 +424,8 @@ app.delete('/api/deleteEmpresa/:id', async (req, res) => {
  *       500:
  *         description: Error del servidor
  */
-app.put('/api/updateEmpresa/:id', async (req, res) => {
+// Endpoint para actualizar una empresa
+app.put('/api/updateEmpresa/:id', authMiddleware, async (req, res) => {
   try {
     const db = firebaseAdmin.firestore();
     const empresaId = req.params.id;
@@ -432,14 +459,46 @@ app.put('/api/updateEmpresa/:id', async (req, res) => {
  *         description: Error del servidor
  */
 
-app.get('/api/getSucursal', async (req, response) => {
-  try{
+// Endpoint para obtener sucursales
+app.get('/api/getSucursal', authMiddleware, async (req, res) => {
+  try {
     const data = (await firebaseAdmin.firestore().collection('sucursales').get()).docs.map(doc => doc.data());
-    response.status(200).json(data);
+    res.status(200).json(data);
   } catch (error) {
-    response.status(500).json({ error: error.message})
-  }});
+    res.status(500).json({ error: error.message });
+  }
+});
   
+app.get('/api/getSucursalesByEmpresa/:idEmpresa', authMiddleware, async (req, res) => {
+  try {
+    const idEmpresa = parseInt(req.params.idEmpresa, 10); // Convertir idEmpresa a número
+    if (!idEmpresa) {
+      return res.status(400).json({ error: 'El parámetro idEmpresa es obligatorio' });
+    }
+
+    // Consulta a Firestore
+    const sucursalesSnapshot = await firebaseAdmin.firestore()
+      .collection('sucursales')
+      .where('empresa', '==', idEmpresa)
+      .get();
+
+    const sucursales = sucursalesSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    if (!sucursales.length) {
+      return res.status(404).json({ error: 'No se encontraron sucursales para esta empresa' });
+    }
+
+    res.status(200).json(sucursales);
+  } catch (error) {
+    console.error('Error al obtener sucursales por empresa:', error.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+
   // ============  Endpoint Encuesta   ============
   //GetEncuesta
 
@@ -463,13 +522,44 @@ app.get('/api/getSucursal', async (req, response) => {
    *         description: Error del servidor
    */
   
-  app.get('/api/getEncuesta',async (req, response) => {
+  app.get('/api/getEncuesta', authMiddleware, async (req, res) => {
     try {
       const data = (await firebaseAdmin.firestore().collection('encuestas').get()).docs.map(doc => doc.data());
-      response.status(200).json(data);
-    }catch (error){
-      response.status(500).json({error: error.message})
-    }});
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  //Api getEncuesta por idEmpresa
+  app.get('/api/getEncuestasByEmpresa/:idEmpresa', authMiddleware, async (req, res) => {
+    try {
+      const idEmpresa = parseInt(req.params.idEmpresa, 10); // Convertir idEmpresa a número
+      if (!idEmpresa) {
+        return res.status(400).json({ error: 'El parámetro idEmpresa es obligatorio' });
+      }
+  
+      // Consulta a Firestore
+      const encuestasSnapshot = await firebaseAdmin.firestore()
+        .collection('encuestas')
+        .where('empresa', '==', idEmpresa)
+        .get();
+  
+      const encuestas = encuestasSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+  
+      if (!encuestas.length) {
+        return res.status(404).json({ error: 'No se encontraron encuestas para esta empresa' });
+      }
+  
+      res.status(200).json(encuestas);
+    } catch (error) {
+      console.error('Error al obtener encuestas por empresa:', error.message);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  });
   
   // ============  Endpoint Preguntas  ============
   //GetPregunta
@@ -494,13 +584,14 @@ app.get('/api/getSucursal', async (req, response) => {
    *         description: Error del servidor
    */
   
-  app.get('/api/getPregunta', async (req, response) => {
-    try{
+  app.get('/api/getPregunta', authMiddleware, async (req, res) => {
+    try {
       const data = (await firebaseAdmin.firestore().collection('preguntas').get()).docs.map(doc => doc.data());
-      response.status(200).json(data);
-    }catch (error){
-      response.status(500).json({error: error.message})
-    }});
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
   // ============  Endpoint Asignaciones   ============
   //GetAsignaciones
 
@@ -524,45 +615,25 @@ app.get('/api/getSucursal', async (req, response) => {
    *         description: Error del servidor
    */
   
-  app.get('/api/getAsignacion', async (req, response) =>{
+  app.get('/api/getAsignacion', authMiddleware, async (req, res) => {
     try {
-      const data =(await firebaseAdmin.firestore().collection('asignaciones').get()).docs.map(doc => doc.data());
-      response.status(200).json(data);
-    }catch (error){
-      response.status(500).json({error: error.message})
+      const data = (await firebaseAdmin.firestore().collection('asignaciones').get()).docs.map(doc => doc.data());
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
   });
-  
-  // ============  Endpoint Token   ============}
-  //GetToken
 
-  /**
-   * @swagger
-   * /api/getToken:
-   *   get:
-   *     summary: Obtener todas las token
-   *     tags: 
-   *       - Token
-   *     responses:
-   *       200:
-   *         description: Lista de token
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: array
-   *               items:
-   *                 $ref: '#/components/schemas/Token'
-   *       500:
-   *         description: Error del servidor
-   */
   
-  app.get('/api/getToken', async (req, response) =>{
-    try {
-      const data = (await firebaseAdmin.firestore().collection('token').get()).docs.map(doc => doc.data());
-      response.status(200).json(data);
-    }catch (error){
-      response.status(500).json({error: error.message});
-    }});
+  // Endpoint para obtener tokens
+app.get('/api/getToken', authMiddleware, async (req, res) => {
+  try {
+    const data = (await firebaseAdmin.firestore().collection('tokens').get()).docs.map(doc => doc.data());
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
   
   
 // Puerto de salida

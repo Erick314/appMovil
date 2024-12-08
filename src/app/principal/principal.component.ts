@@ -44,6 +44,7 @@ export class PrincipalComponent implements OnInit, AfterViewChecked {
     private firebaseService: FirebaseService
   ) {}
 
+
   ngOnInit(): void {
     this.usuarioLogueado = this.authService.getUsuarioLogueado();
     if (this.usuarioLogueado) {
@@ -58,47 +59,89 @@ export class PrincipalComponent implements OnInit, AfterViewChecked {
   }
   
 
-  cargarDatos() {
-    if (this.datosCargados) {
-      return;
-    }
-    this.datosCargados = true;
+  
+cargarDatos() {
+  if (this.datosCargados) {
+    return;
+  }
+  this.datosCargados = true;
 
-    this.firebaseService.getEmpresas().pipe(take(1)).subscribe((empresas: any[]) => {
-      this.empresas = empresas;
-      this.cargarEncuestas();
+  // Obtener empresas desde la API
+  this.firebaseService.getEmpresas().subscribe((empresas: any[]) => {
+    console.log('Empresas recibidas:', empresas);
+
+    this.empresas = empresas;
+    this.cargarEncuestas();
+  },
+  (error) => {
+    console.error('Error al obtener empresas:', error);
+  }
+  );
+  const idEmpresa = localStorage.getItem('idEmpresa');
+  console.log('ID Empresa desde localStorage:', idEmpresa);
+  
+
+  if (this.usuarioLogueado?.idEmpresa === 3) {
+    // SuperAdmin: obtener todas las sucursales y encuestas
+    this.firebaseService.getSucursales().subscribe((sucursales: any[]) => {
+      console.log('Sucursales recibidas:', sucursales);
+
+      this.totalSucursales = sucursales.length;
+    },
+    (error) => {
+      console.error('Error al obtener sucursales:', error);
+      console.log('probando error sucursal dentro');
+
+    });
+    console.log('probando');
+    this.firebaseService.getEncuestas().subscribe((encuestas: any[]) => {
+      console.log('Encuestas recibidas:', encuestas);
+
+      this.totalEncuestas = encuestas.length;
+      this.calcularPromedioCalificaciones(encuestas);
+    },
+    (error) => {
+      console.error('Error al obtener encuestas:', error);
+      console.log('probando error sucursal dentro2222');
+
+    });
+  } else {
+    // Filtrar datos por empresa específica
+    this.firebaseService.getSucursalesFiltrado(this.usuarioLogueado.idEmpresa).subscribe((sucursales: any[]) => {
+      console.log('Sucursales filtradas recibidas:', sucursales);
+
+      this.totalSucursales = sucursales.length;
+    },
+    (error) => {
+      console.log('probando error sucursal dentro3333');
+
+      console.error('Error al obtener sucursales filtradas:', error);
     });
 
-    if (this.usuarioLogueado?.idEmpresa === 3) {
-      this.firebaseService.getSucursales().pipe(take(1)).subscribe((sucursales: any[]) => {
-        this.totalSucursales = sucursales.length;
-      });
+    this.firebaseService.getEncuestasFiltrado(this.usuarioLogueado.idEmpresa).subscribe((encuestas: any[]) => {
+      console.log('Encuestas filtradas recibidas:', encuestas);
+      this.totalEncuestas = encuestas.length;
+      this.calcularPromedioCalificaciones(encuestas);
+    },
+    (error) => {
+      console.log('probando error sucursal dentro4444');
 
-      this.firebaseService.getEncuestas().pipe(take(1)).subscribe((encuestas: any[]) => {
-        this.totalEncuestas = encuestas.length;
-        this.calcularPromedioCalificaciones(encuestas);
-      });
-    } else {
-      this.firebaseService.getSucursalesFiltrado(this.usuarioLogueado.idEmpresa).pipe(take(1)).subscribe((sucursales: any[]) => {
-        this.totalSucursales = sucursales.length;
-      });
-
-      this.firebaseService.getEncuestasFiltrado(this.usuarioLogueado.idEmpresa).pipe(take(1)).subscribe((encuestas: any[]) => {
-        this.totalEncuestas = encuestas.length;
-        this.calcularPromedioCalificaciones(encuestas);
-      });
-    }
+      console.error('Error al obtener encuestas filtradas:', error);
+    });
   }
+}
 
   calcularPromedioCalificaciones(encuestas: any[]): void {
     const sumaCalificaciones = encuestas.reduce((sum, encuesta) => sum + (encuesta.calificacion || 0), 0);
     this.promedioCalificaciones = encuestas.length ? (sumaCalificaciones / encuestas.length) : 0;
   }
 
+  
   cargarEncuestas() {
     this.encuestaPorEmpresa = {};
 
-    this.firebaseService.getEncuestas().pipe(take(1)).subscribe((encuestas: any[]) => {
+    // Obtener encuestas desde la API
+    this.firebaseService.getEncuestas().subscribe((encuestas: any[]) => {
       encuestas.forEach(encuesta => {
         const empresaId = encuesta.empresa;
         if (this.encuestaPorEmpresa[empresaId]) {

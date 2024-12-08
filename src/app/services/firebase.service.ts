@@ -18,63 +18,38 @@ export class FirebaseService {
 
   // Método para agregar una nueva empresa
   addEmpresa(empresa: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/addEmpresa`, empresa);
+    return this.http.post<any>(`${this.apiUrl}/addEmpresa`, empresa, {
+      headers: { Authorization: localStorage.getItem('token') || '' }
+    });
   }
 
   // Método para obtener todas las empresas
   getEmpresas(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/getEmpresa`);
+    return this.http.get<any[]>(`${this.apiUrl}/getEmpresa`, {
+      headers: { Authorization: localStorage.getItem('token') || '' }
+    });
   }
   // Eliminar empresa
   deleteEmpresa(codigoEmpresa: string, idEmpresa: number): Observable<void> {
-    return new Observable<void>((observer) => {
-      this.firestore.collection('empresas', ref =>
-        ref.where('codigoEmpresa', '==', codigoEmpresa)
-           .where('idEmpresa', '==', idEmpresa)
-      ).get().subscribe(snapshot => {
-        if (!snapshot.empty) {
-          // Si se encuentra un documento, procedemos a eliminarlo
-          const docId = snapshot.docs[0].id;
-          this.firestore.collection('empresas').doc(docId).delete()
-            .then(() => {
-              observer.next();
-              observer.complete();
-            })
-            .catch(error => observer.error(error));
-        } else {
-          observer.error(new Error('No se encontró la empresa con el código y ID proporcionados'));
-        }
-      }, error => observer.error(error));
+    return this.http.delete<void>(`${this.apiUrl}/deleteEmpresa/${codigoEmpresa}/${idEmpresa}`, {
+      headers: { Authorization: localStorage.getItem('token') || '' }
     });
   }
   
 
   // Modificar empresa
   updateEmpresa(codigoEmpresa: string, empresaActualizada: any): Observable<void> {
-    return new Observable<void>((observer) => {
-      this.firestore.collection('empresas', ref =>
-        ref.where('codigoEmpresa', '==', codigoEmpresa)
-      ).get().subscribe(snapshot => {
-        if (!snapshot.empty) {
-          // Si se encuentra un documento, procedemos a actualizarlo
-          const docId = snapshot.docs[0].id;
-          this.firestore.collection('empresas').doc(docId).update(empresaActualizada)
-            .then(() => {
-              observer.next();
-              observer.complete();
-            })
-            .catch(error => observer.error(error));
-        } else {
-          observer.error(new Error('No se encontró la empresa con el código proporcionado'));
-        }
-      }, error => observer.error(error));
+    return this.http.put<void>(`${this.apiUrl}/updateEmpresa/${codigoEmpresa}`, empresaActualizada, {
+      headers: { Authorization: localStorage.getItem('token') || '' }
     });
   }
   
-
   getSucursalesByEmpresa(idEmpresa: number): Observable<any[]> {
-    return this.firestore.collection('sucursales', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
+    return this.http.get<any[]>(`${this.apiUrl}/getSucursalesByEmpresa/${idEmpresa}`, {
+      headers: { Authorization: localStorage.getItem('token') || '' },
+    });
   }
+  
   getAsignaciones(): Observable<any[]> {
     return this.firestore.collection('asignaciones').valueChanges();
   }
@@ -107,8 +82,11 @@ export class FirebaseService {
     }
   }
   
-  getSucursales() {
-    return this.firestore.collection('sucursales').valueChanges();
+
+  getSucursales(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getSucursal`, {
+      headers: { Authorization: localStorage.getItem('token') || '' }
+    });
   }
   getSucursalesEmpresa() {
     const usuarioLogueado = this.authService.getUsuarioLogueado();
@@ -180,7 +158,9 @@ export class FirebaseService {
     return this.firestore.collection('preguntas', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
   }
   getEncuestas(): Observable<any[]> {
-    return this.firestore.collection('encuestas').valueChanges();
+    return this.http.get<any[]>(`${this.apiUrl}/getEncuesta`, {
+      headers: { Authorization: localStorage.getItem('token') || '' }
+    });
   }
   getEncuestasPorDia(): Observable<any> {
     return this.getEncuestas().pipe(
@@ -390,20 +370,21 @@ export class FirebaseService {
     return this.firestore.collection('encuestas', ref => ref.where('empresa', '==', idEmpresa)).valueChanges();
   }
   getSucursalesFiltrado(idEmpresa: number): Observable<any[]> {
-    return this.firestore.collection('sucursales', ref => ref.where('empresa', '==', idEmpresa)).get().pipe(
-      map(snapshot => snapshot.docs.map(doc => doc.data()))
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/getSucursalesByEmpresa/${idEmpresa}`, {
+      headers: { Authorization: localStorage.getItem('token') || '' }
+    });
   }
   
   getEncuestasFiltrado(idEmpresa: number): Observable<any[]> {
-    return this.firestore.collection('encuestas', ref => ref.where('empresa', '==', idEmpresa)).get().pipe(
-      map(snapshot => snapshot.docs.map(doc => doc.data()))
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/getEncuestasByEmpresa/${idEmpresa}`, {
+      headers: { Authorization: localStorage.getItem('token') || '' }
+    });
   }
+  
   getSucursales2(): Observable<any[]> {
-    return this.firestore.collection('sucursales').valueChanges();
+    return this.firestore.collection('sucursal').valueChanges();
   }
   getEncuestas2(): Observable<any[]> {
-    return this.firestore.collection('encuestas').valueChanges();
+    return this.firestore.collection('encuesta').valueChanges();
   }
 }

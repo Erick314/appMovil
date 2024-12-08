@@ -1,116 +1,82 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'; // Importar HttpClient
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
-import firebase from 'firebase/compat/app';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  private apiUrl = 'http://localhost:3000/api'; // URL base de la API
   private usuarioLogueado: any = null; 
-  private alertaMostrada: number = 0; 
-  private maxAlertas: number = 2;      
 
-  constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore) {}
+  constructor(private http: HttpClient,private afAuth: AngularFireAuth) {}
 
-  loginPorNombre(nombre: string, password: string): Promise<firebase.auth.UserCredential | null> {
-    return new Promise((resolve, reject) => {
-      this.firestore.collection<any>('usuarios', ref => ref.where('nombre', '==', nombre))
-        .valueChanges({ idField: 'id' })
-        .subscribe({
-          next: (usuarios) => {
-            if (usuarios.length > 0) {
-              const usuario = usuarios[0]; 
-              const email = usuario.email;
-              
-              if (email) {
-                this.afAuth.signInWithEmailAndPassword(email, password)
-                  .then(credenciales => {
-                    this.usuarioLogueado = usuario;
-                    resolve(credenciales);
-                  })
-                  .catch(error => {
-                    if (error.code === 'auth/quota-exceeded') {
-                      if (this.alertaMostrada < this.maxAlertas) {
-                        console.warn('Autenticación no disponible: acceso sin autenticación.');
-                        this.alertaMostrada++;  
-                      }
-                      this.usuarioLogueado = usuario; // Almacenar usuario aunque no se autentifique
-                      resolve(null);  //
-                    } else {
-                      reject('Error de autenticación: ' + error.message);
-                    }
-                  });
-              } else {
-                reject('No se encontró el email para el usuario');
-              }
-            } else {
-              reject('Usuario no encontrado');
-            }
-          },
-          error: (err) => {
-            reject('Error obteniendo usuarios: ' + err.message);
-          }
-        });
+  // Método modificado para realizar login y obtener el token
+  loginPorNombre(nombre: string, password: string): Promise<any> {
+    const body = { username: nombre, password: password };
+    return this.http.post<any>(`${this.apiUrl}/login`, body).toPromise().then(response => {
+      if (response && response.token && response.usuario) {
+        localStorage.setItem('token', response.token); // Guarda el token
+        localStorage.setItem('idEmpresa', response.usuario.idEmpresa); // Guarda idEmpresa
+        localStorage.setItem('tipoUsuario', response.usuario.tipoUsuario); // Guarda tipoUsuario
+        this.usuarioLogueado = response.usuario; // Guarda el usuario logueado en memoria
+        return response;
+      } else {
+        throw new Error('Error en la autenticación: Datos incompletos');
+      }
+    }).catch(error => {
+      throw new Error('Error al iniciar sesión: ' + error.message);
     });
   }
   
-  cambiarContrasena(nuevaContrasena: string): Promise<void> {
-    return this.afAuth.currentUser
-      .then(user => {
-        if (user) {
-          return user.updatePassword(nuevaContrasena);
-        } else {
-          throw new Error('No hay usuario autenticado');
-        }
-      })
-      .catch(error => {
-        throw new Error('Error al actualizar la contraseña: ' + error.message);
-      });
+  
+
+  sincronizarUsuario(): Promise<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return Promise.reject('Token no encontrado');
+    }
+    return this.http.get<any>(`${this.apiUrl}/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).toPromise().then(usuario => {
+      this.usuarioLogueado = usuario;
+      return usuario;
+    });
   }
+  
 
   enviarCorreoRestablecimiento(email: string): Promise<void> {
-    return this.afAuth.sendPasswordResetEmail(email);
+    return Promise.resolve(); // Reemplaza con tu lógica
   }
-  reauthenticateUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
-    const credential = firebase.auth.EmailAuthProvider.credential(email, password);
-    return this.afAuth.currentUser
-      .then(user => {
-        if (user) {
-          return user.reauthenticateWithCredential(credential); // Devuelve un UserCredential
-        } else {
-          throw new Error('No hay usuario autenticado');
-        }
-      });
-  }
-  
-  
   
   // Método para obtener los datos del usuario logueado
   getUsuarioLogueado(): any {
+    if (!this.usuarioLogueado) {
+      this.usuarioLogueado = {
+        idEmpresa: localStorage.getItem('idEmpresa'),
+        tipoUsuario: localStorage.getItem('tipoUsuario'),
+      };
+    }
     return this.usuarioLogueado;
   }
+  
+  
 
+  // Método para cerrar sesión
+  
   logout(): Promise<void> {
-    this.usuarioLogueado = null;
-    this.alertaMostrada = 0;  
-    return this.afAuth.signOut();
-  }
-
-  getLoggedInUser(): Observable<firebase.User | null> {
-    return this.afAuth.authState;
-  }
-
-  registrarUsuario(email: string, password: string): Promise<any> {
-    return this.afAuth.createUserWithEmailAndPassword(email, password);
-  }
-
-  //método usado para verificar si está lautentificado en el guard
-  isLoggedIn(): boolean {
-    const user = this.afAuth.currentUser;
-    return user !== null; // Retorna true si hay un usuario autenticado
+    localStorage.removeItem('token'); // Eliminar el token del localStorage
+    this.usuarioLogueado = null; // Limpiar el usuario logueado
+    return Promise.resolve(); // Devolver una promesa resuelta (útil para encadenar)
   }
   
+  registrarUsuario(email: string, password: string): Promise<any> {
+    return Promise.resolve(); // Reemplaza con tu lógica
+  }
+  
+  // Método para verificar si el usuario está autenticado
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token'); // Verifica el token en el localStorage
+  }
 }

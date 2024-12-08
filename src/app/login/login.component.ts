@@ -38,28 +38,30 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { usuario, password } = this.loginForm.value;
-
-      this.authService.loginPorNombre(usuario, password).then((credenciales) => {
+  
+      this.authService.loginPorNombre(usuario, password).then((response) => {
         const usuarioLogueado = this.authService.getUsuarioLogueado();
-
+  
         if (usuarioLogueado) {
-          console.log(usuarioLogueado.tipoUsuario); // Para verificar el tipo de usuario
-
-          // Ingresar con autenticación
-          if (this.authService.getUsuarioLogueado().tipoUsuario === 'Empresa' || this.authService.getUsuarioLogueado().tipoUsuario === 'SuperAdmin') 
-            {
+          console.log('Tipo de usuario logueado:', usuarioLogueado.tipoUsuario);
+  
+          // Redirigir según el tipo de usuario
+          if (usuarioLogueado.tipoUsuario === 'Empresa' || usuarioLogueado.tipoUsuario === 'SuperAdmin') {
             this.router.navigate(['/principal']);
-          } else if (this.authService.getUsuarioLogueado().tipoUsuario === 'Cliente') {
+          } else if (usuarioLogueado.tipoUsuario === 'Cliente') {
             this.router.navigate(['/encuesta']);
+          } else {
+            this.router.navigate(['/login']);
           }
-           else {
-            this.router.navigate(['/login']);  // Permitir el acceso al sistema
-          }
-      }}).catch(error => {
-        alert(error);
+        }
+      }).catch(error => {
+        alert('Error al iniciar sesión: ' + error.message);
       });
     }
   }
+  
+  
+  
 
   recuperar() {
     this.router.navigate(['/recuperar']);

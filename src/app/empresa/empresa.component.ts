@@ -166,21 +166,35 @@ export class EmpresaComponent implements OnInit {
 
     logout() {
       this.authService.logout().then(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login']); // Redirige al usuario al login
+      }).catch(error => {
+        console.error('Error al cerrar sesión:', error);
       });
     }
+    
+    
 
     ngOnInit() {
+      if (!this.authService.isLoggedIn()) {
+        this.router.navigate(['/login']); // Redirige al login si no está autenticado
+        return;
+      }
+    
       this.firebaseService.getEmpresas().subscribe(
         (empresas) => {
           this.empresas.data = empresas;
         },
         (error) => {
           console.error('Error al obtener empresas:', error);
+          if (error.status === 403) {
+            this.router.navigate(['/login']); // Redirige al login si el token es inválido
+          }
         }
       );
+    
       this.usuarioLogueado = this.authService.getUsuarioLogueado();
     }
+    
     
 
   CambioPestana(pestaña: string) {

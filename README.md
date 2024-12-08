@@ -45,6 +45,10 @@ Apk:
 - npm install --legacy-peer-deps
 - npm install --force
 
+Librería para api:
+- npm install swagger-jsdoc
+
+
 para compilar se utilizó: (Fallido, aún no aplica)
 - ng add @angular/pwa --force
 - ng build --configuration production

@@ -54,6 +54,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AuthGuard } from './guards/auth.guard';
 import { EditEmpresaDialogComponent } from './edit-empresa-dialog/edit-empresa-dialog.component';
+import { AuthInterceptor } from './services/auth.interceptor'; // Importa tu interceptor
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 
@@ -121,7 +123,12 @@ import { EditEmpresaDialogComponent } from './edit-empresa-dialog/edit-empresa-d
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
-    DatePipe
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS, // Registra el interceptor
+      useClass: AuthInterceptor, // Clase del interceptor
+      multi: true // Permite agregar múltiples interceptores si es necesario
+    }
 
   ],
   bootstrap: [AppComponent],
