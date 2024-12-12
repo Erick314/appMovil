@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card'; 
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
@@ -111,6 +111,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     AngularFirestoreModule,
     CommonModule,
     MatTableModule,
+    HttpClientModule,
     MatCheckboxModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),

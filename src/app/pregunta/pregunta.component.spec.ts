@@ -1,6 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PreguntaComponent } from './pregunta.component';
+
+const firebaseConfig = {
+  apiKey: 'test-api-key',
+  authDomain: 'test-auth-domain',
+  projectId: 'test-project-id',
+  storageBucket: 'test-storage-bucket',
+  messagingSenderId: 'test-sender-id',
+  appId: 'test-app-id',
+};
 
 describe('PreguntaComponent', () => {
   let component: PreguntaComponent;
@@ -8,7 +19,9 @@ describe('PreguntaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PreguntaComponent]
+      declarations: [PreguntaComponent],
+      imports: [HttpClientTestingModule, AngularFireModule.initializeApp(firebaseConfig)],
+			providers: [AngularFireAuth],
     })
     .compileComponents();
 
