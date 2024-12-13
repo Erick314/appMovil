@@ -28,25 +28,35 @@ export class InformacionDiariaComponent implements OnInit {
   constructor(private firebaseService: FirebaseService, private authService: AuthService) {}
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      console.log('Token encontrado en localStorage:', token);
+    } else {
+      console.error('Token no encontrado en localStorage.');
+    }
     const usuarioLogueado = this.authService.getUsuarioLogueado();
 
-    // Verificar si usuarioLogueado es null antes de acceder a sus propiedades
     if (usuarioLogueado && usuarioLogueado.idEmpresa !== null) {
       if (usuarioLogueado.idEmpresa === 3) {
-        this.firebaseService.getEncuestasPorDia().subscribe((data) => {
-          this.actualizarGrafico(data);
-        });
+        // Usamos el método que obtiene todas las encuestas por día desde la API
+        this.firebaseService.getEncuestasPorDia().subscribe(
+          (data) => this.actualizarGrafico(data),
+          (error) => console.error('Error al obtener encuestas por día:', error)
+        );
       } else {
-        this.firebaseService.getEncuestasPorDiaFiltrado(usuarioLogueado.idEmpresa).subscribe((data) => {
-          this.actualizarGrafico(data);
-        });
+        // Usamos el método filtrado para la empresa específica desde la API
+        this.firebaseService.getEncuestasPorDiaFiltrado(usuarioLogueado.idEmpresa).subscribe(
+          (data) => this.actualizarGrafico(data),
+          (error) => console.error('Error al obtener encuestas filtradas por día:', error)
+        );
       }
     } else {
       console.error('Error: Usuario no autenticado o idEmpresa no disponible.');
     }
   }
-
   actualizarGrafico(data: any): void {
+    console.log('Datos recibidos para el gráfico:', data);
+  
     this.chartOptions.series = [
       {
         name: 'Encuestas',
@@ -62,4 +72,6 @@ export class InformacionDiariaComponent implements OnInit {
       }
     ];
   }
+  
+  
 }

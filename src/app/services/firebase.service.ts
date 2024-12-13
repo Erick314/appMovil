@@ -186,44 +186,40 @@ export class FirebaseService {
           domingo: 0
         };
   
-        // Obtener el lunes de la semana actual
         const hoy = new Date();
         const diaSemanaHoy = hoy.getDay(); // Domingo = 0, Lunes = 1, ..., Sábado = 6
-        const inicioSemana = new Date(hoy.setDate(hoy.getDate() - diaSemanaHoy + (diaSemanaHoy === 0 ? -6 : 1))); // Lunes de esta semana
-        inicioSemana.setHours(0, 0, 0, 0); // Restablecer la hora al inicio del día
-    
+        const inicioSemana = new Date(hoy);
+        inicioSemana.setDate(hoy.getDate() - diaSemanaHoy + (diaSemanaHoy === 0 ? -6 : 1)); // Ajusta al lunes de esta semana
+        inicioSemana.setHours(0, 0, 0, 0); // Restablece las horas a 00:00:00
+  
         encuestas.forEach(encuesta => {
-          let fechaRealizacion = encuesta.fechaRealizacion;
-        
-          // Conversión del string "DD-MM-YYYY" a un objeto Date
-          if (typeof fechaRealizacion === 'string') {
-            const [day, month, year] = fechaRealizacion.split('-');
-            fechaRealizacion = new Date(Number(year), Number(month) - 1, Number(day)); // Crear el objeto Date
-          }
-        
-          // Establecer las horas de fechaRealizacion a 0 para evitar diferencias en la comparación
-          fechaRealizacion.setHours(0, 0, 0, 0);
-                
-          // Comparar si la encuesta pertenece a esta semana
-          if (fechaRealizacion >= inicioSemana) {
-            // Convertir el nombre del día a minúsculas y sin acentos para que coincida con las claves del objeto
-            const diaSemana = fechaRealizacion
-              .toLocaleDateString('es-ES', { weekday: 'long' })
-              .toLowerCase()
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '');
-        
-            // Incrementar el contador del día correspondiente
-            if (diasDeLaSemana[diaSemana] !== undefined) {
-              diasDeLaSemana[diaSemana]++;
+          const fechaStr = encuesta.fechaRealizacion; // Campo correcto de la fecha
+          if (fechaStr) {
+            // Conversión de string "DD-MM-YYYY" a objeto Date
+            const [dia, mes, anio] = fechaStr.split('-');
+            const fecha = new Date(Number(anio), Number(mes) - 1, Number(dia)); // Crear la fecha correctamente
+  
+            // Compara si la fecha pertenece a la semana actual
+            if (fecha >= inicioSemana && fecha <= hoy) {
+              const diaSemana = fecha
+                .toLocaleDateString('es-ES', { weekday: 'long' }) // Nombre del día
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, ''); // Normaliza para quitar acentos
+  
+              if (diasDeLaSemana[diaSemana] !== undefined) {
+                diasDeLaSemana[diaSemana]++;
+              }
             }
           }
         });
-          
+  
         return diasDeLaSemana;
       })
     );
   }
+  
+  
   getEncuestasPorDiaFiltrado(idEmpresa: number): Observable<any> {
     return this.getEncuestas().pipe(
       map(encuestas => {

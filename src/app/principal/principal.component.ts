@@ -166,6 +166,9 @@ cargarDatos() {
 
     const empresasNombres = this.empresas.map(empresa => empresa.nombreEmpresa);
     const encuestasPorEmpresa = this.empresas.map(empresa => this.encuestaPorEmpresa[empresa.idEmpresa] || 0);
+    console.log('Entrando a graficos:', empresasNombres);
+    console.log('Entrando a graficos 2:', encuestasPorEmpresa);
+
 
     this.chartOptions.xaxis = {
       categories: empresasNombres
@@ -177,6 +180,7 @@ cargarDatos() {
         data: encuestasPorEmpresa
       }
     ];
+    
   }
   
 
